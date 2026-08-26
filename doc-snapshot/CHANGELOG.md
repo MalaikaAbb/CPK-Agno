@@ -8,6 +8,151 @@ Holds the 3 most recent dated entries. When a change lands on a fourth
 date, the oldest entry is dropped. Entries are counted, not aged, so a gap of
 weeks between changes does not expire anything.
 
+## 2026-08-26
+
+### 09:21 UTC — 9 pages, highest severity high
+
+**High — Quickstart**
+
+`/agno/quickstart` · route `/quickstart` · under “Quickstart”
+
+15 code lines, 26 prose lines changed. The number of fenced code blocks changed.
+
+````diff
+- body="Add persistent threads and the inspector with the Enterprise Intelligence Platform."
++ body="Add persistent threads and the inspector with CopilotKit Intelligence."
+- <SignupLink surface="docs_agno_quickstart_step1">Sign up for a free developer account</SignupLink> on our Enterprise Intelligence Platform to get a license key. You'll use it later to enable persistent threads and the inspector.
++ <SignupLink surface="docs_agno_quickstart_step1">Sign up for a free developer account</SignupLink> for CopilotKit Intelligence to get a license key. You'll use it later to enable persistent threads and the inspector.
+- - **Enterprise Intelligence Platform** — persistent threads and the inspector. Choose **Yes** to scaffold a project pre-wired for the platform (the CLI walks you through sign-up, or you can [create an account](https://dashboard.operations.copilotkit.ai/?utm_source=docs&utm_medium=cta&utm_campaign=intelligence&utm_content=docs_cli_prompt) first), or **No** for a standard Agno setup.
++ - **CopilotKit Intelligence** — persistent threads and the inspector. Choose **Yes** to scaffold a project pre-wired for the platform (the CLI walks you through sign-up, or you can [create an account](https://dashboard.operations.copilotkit.ai/?utm_source=docs&utm_medium=cta&utm_campaign=intelligence&utm_content=docs_cli_prompt) first), or **No** for a standard Agno setup.
++ CopilotKitIntelligence,
+- InMemoryAgentRunner,
+````
+
+**High — Overview**
+
+`/agno/threads` · route `/threads` · under “Get started”
+
+6 code lines, 2 headings, 24 prose lines changed.
+
+````diff
+- Create a new CopilotKit app connected to cloud-hosted Enterprise Intelligence. Your application and CopilotKit Runtime run locally while Enterprise Intelligence stores and synchronizes Rich Threads.
++ Create a new CopilotKit app connected to cloud-hosted CopilotKit Intelligence. Your application and CopilotKit Runtime run locally while CopilotKit Intelligence stores and synchronizes Rich Threads.
+- Enterprise Intelligence.
++ CopilotKit Intelligence.
+- sign-in and Enterprise Intelligence project selection when needed. Use the
++ sign-in and CopilotKit Intelligence project selection when needed. Use the
+- manual Enterprise Intelligence environment configuration. Do not set up a local
++ manual CopilotKit Intelligence environment configuration. Do not set up a local
+````
+
+**Medium — Copilot Runtime**
+
+`/agno/copilot-runtime` · route `/backend/copilot-runtime` · under “Enterprise Intelligence Platform”
+
+2 headings, 2 prose lines changed.
+
+````diff
+- ### Enterprise Intelligence Platform
++ ### CopilotKit Intelligence
+- Features like [threads](/agno/threads) and the [inspector](/agno/inspector) are provided through the runtime and the Enterprise Intelligence Platform. These give you conversation persistence and debugging capabilities out of the box.
++ Features like [threads](/agno/threads) and the [inspector](/agno/inspector) are provided through the runtime and CopilotKit Intelligence. These give you conversation persistence and debugging capabilities out of the box.
+````
+
+**Medium — Headless Threads**
+
+`/agno/headless-threads` · route `/threads/headless` · under “What is this?”
+
+2 headings, 14 prose lines changed.
+
+````diff
+- CopilotKit Rich Threads enable persistent, resumable multi-turn conversations. The `useThreads` hook lists, creates, renames, archives, and deletes Enterprise Intelligence Platform threads with realtime synchronization via WebSocket. Threads work with any agent framework — the Enterprise Intelligence Platform stores conversation history server-side, so users can close their browser and pick up where they left off. It does not list or mutate native LangGraph, ADK, or other framework stores unless your backend explicitly bridges those systems. Thread metadata updates (renames, archives, new threads) appear on connected clients without polling.
++ CopilotKit Rich Threads enable persistent, resumable multi-turn conversations. The `useThreads` hook lists, creates, renames, archives, and deletes CopilotKit Intelligence threads with realtime synchronization via WebSocket. Threads work with any agent framework — CopilotKit Intelligence stores conversation history server-side, so users can close their browser and pick up where they left off. It does not list or mutate native LangGraph, ADK, or other framework stores unless your backend explicitly bridges those systems. Thread metadata updates (renames, archives, new threads) appear on connected clients without polling.
+- title="Threads run on the Enterprise Intelligence Platform"
++ title="Threads run in CopilotKit Intelligence"
+- - A CopilotKit application connected to Enterprise Intelligence
++ - A CopilotKit application connected to CopilotKit Intelligence
+- Enterprise Intelligence. To move historical Google ADK or LangGraph
++ CopilotKit Intelligence. To move historical Google ADK or LangGraph
+````
+
+**Medium — Synchronize Thread History**
+
+`/agno/threads-import` · route `/threads/import` · under “Import & Synchronize Thread History”
+
+2 headings, 18 prose lines changed.
+
+````diff
+- > Import historical conversations into Enterprise Intelligence, then keep future CopilotKit runs synchronized with Rich Threads.
++ > Import historical conversations into CopilotKit Intelligence, then keep future CopilotKit runs synchronized with Rich Threads.
+- Import and synchronization bring existing conversations into Enterprise Intelligence as Rich Threads without replacing the native storage or analytics you already use. Import supported history once, then continue running those conversations through CopilotKit so users can resume them through the same thread UI as new conversations.
++ Import and synchronization bring existing conversations into CopilotKit Intelligence as Rich Threads without replacing the native storage or analytics you already use. Import supported history once, then continue running those conversations through CopilotKit so users can resume them through the same thread UI as new conversations.
+- Built-in import currently supports Google ADK and LangGraph, with more sources coming soon. You can keep LangSmith, LangGraph, or ADK storage and analytics in place. For future CopilotKit-mediated runs, Enterprise Intelligence persists the Rich Thread event history. When your agent remains connected to a durable LangGraph checkpointer or durable ADK session service with appropriate retention, those future runs continue through the native persistence path as well.
++ Built-in import currently supports Google ADK and LangGraph, with more sources coming soon. You can keep LangSmith, LangGraph, or ADK storage and analytics in place. For future CopilotKit-mediated runs, CopilotKit Intelligence persists the Rich Thread event history. When your agent remains connected to a durable LangGraph checkpointer or durable ADK session service with appropriate retention, those future runs continue through the native persistence path as well.
+- By default, the importer targets the Enterprise Intelligence project selected when you created the app with the CopilotKit CLI. If that is the project that should receive the imported threads, continue to the dry run.
++ By default, the importer targets the CopilotKit Intelligence project selected when you created the app with the CopilotKit CLI. If that is the project that should receive the imported threads, continue to the dry run.
+````
+
+**Low — AG-UI**
+
+`/agno/ag-ui` · route `/backend/ag-ui` · under “The proxy pattern”
+
+2 prose lines changed.
+
+````diff
+- routing, and CopilotKit Enterprise Intelligence without changing how the
++ routing, and CopilotKit Intelligence without changing how the
+````
+
+**Low — Threads Drawer**
+
+`/agno/prebuilt-components/copilot-threads-drawer` · route `/threads/drawer` · under “When should I use this?”
+
+4 prose lines changed.
+
+````diff
+- It requires the Enterprise Intelligence Platform (threads are stored and synced
++ It requires CopilotKit Intelligence (threads are stored and synced
+- title="Threads run on the Enterprise Intelligence Platform"
++ title="Threads run in CopilotKit Intelligence"
+````
+
+**Low — Threads & Persistence Architecture**
+
+`/agno/premium/threads-explained` · route `/threads/architecture` · under “Threads & Persistence Architecture”
+
+10 prose lines changed.
+
+````diff
+- body="Persistent threads ship with the Enterprise Intelligence Platform on the free Developer tier."
++ body="Persistent threads ship with CopilotKit Intelligence on the free Developer tier."
+- | `CopilotRuntime` | Server-side layer that executes agents, stores thread data on the Enterprise Intelligence Platform, and relays events to connected clients. |
++ | `CopilotRuntime` | Server-side layer that executes agents, stores thread data in CopilotKit Intelligence, and relays events to connected clients. |
+- As an agent runs, the runtime writes each event (messages, tool calls, and state updates) to the thread on the Enterprise Intelligence Platform. It stores the raw event stream rather than a snapshot of the final message list, so a returning client can be restored to the exact state it left, and can fetch only the events it missed rather than reloading the whole history.
++ As an agent runs, the runtime writes each event (messages, tool calls, and state updates) to the thread in CopilotKit Intelligence. It stores the raw event stream rather than a snapshot of the final message list, so a returning client can be restored to the exact state it left, and can fetch only the events it missed rather than reloading the whole history.
+- that run through CopilotKit are persisted to Enterprise Intelligence. When the
++ that run through CopilotKit are persisted to CopilotKit Intelligence. When the
+````
+
+**Low — Thread & History Lifecycle**
+
+`/agno/threads-lifecycle` · route `/threads/lifecycle` · under “The lifecycle at a glance”
+
+12 prose lines changed.
+
+````diff
+- 2. **Run.** Messages and tool calls stream under that `threadId`. If a server-side store is configured (the Enterprise Intelligence Platform, or a persisting `AgentRunner`), they are persisted as they happen so the thread can be replayed later. A runtime with no persistence layer keeps nothing server-side. See [Threads & Persistence Architecture](/agno/premium/threads-explained) for the full server-side model.
++ 2. **Run.** Messages and tool calls stream under that `threadId`. If a server-side store is configured (CopilotKit Intelligence, or a persisting `AgentRunner`), they are persisted as they happen so the thread can be replayed later. A runtime with no persistence layer keeps nothing server-side. See [Threads & Persistence Architecture](/agno/premium/threads-explained) for the full server-side model.
+- Replay requires a **server-side store to replay from**: the Enterprise Intelligence Platform, or a persisting `AgentRunner` (e.g. the SQLite runner). A self-hosted runtime with no persistence layer has nothing to replay, so `connectAgent()` returns an empty stream and the conversation starts blank. If history isn't restoring, check that a store is configured, not the client code. The [Persistence Architecture](/agno/premium/threads-explained) page covers how replay works server-side.
++ Replay requires a **server-side store to replay from**: CopilotKit Intelligence, or a persisting `AgentRunner` (e.g. the SQLite runner). A self-hosted runtime with no persistence layer has nothing to replay, so `connectAgent()` returns an empty stream and the conversation starts blank. If history isn't restoring, check that a store is configured, not the client code. The [Persistence Architecture](/agno/premium/threads-explained) page covers how replay works server-side.
+- Enterprise Intelligence combines that application user identity with the
++ CopilotKit Intelligence combines that application user identity with the
+- | **CopilotKit threads** | Conversation list + full AG-UI event history (messages, tool calls, state), with realtime sync | The Enterprise Intelligence Platform, via `useThreads` |
++ | **CopilotKit threads** | Conversation list + full AG-UI event history (messages, tool calls, state), with realtime sync | CopilotKit Intelligence, via `useThreads` |
+````
+
+---
+
 ## 2026-08-24
 
 ### 09:24 UTC — 5 pages, highest severity high
@@ -99,6 +244,8 @@ weeks between changes does not expire anything.
 
 ---
 
+---
+
 ## 2026-08-21
 
 ### 13:15 UTC — 4 pages, highest severity medium
@@ -128,97 +275,3 @@ Updated CLI scaffolding step formatting and instructions.
 Added inspector callout guidance to overview page.
 
 ---
-
-## 2026-08-21
-
-### 15:10 UTC — 4 pages, highest severity medium
-
-**Medium — Quickstart**
-
-`/agno/quickstart` · route `/quickstart` · under “🎉 Start chatting!”
-
-1 heading, 13 prose lines changed.
-
-````diff
-+ 
-+ <Step>
-+ ### Open Inspector and confirm setup
-+ 
-+ On localhost, click the Inspector button in the corner of the app.
-+ 
-+ 1. Open **Agents**, then **Agent**. Your agent is listed.
-+ 2. Send a chat message. Open **Agents**, then **AG-UI Events**. Events are moving.
-````
-
-**Low — Headless Threads**
-
-`/agno/headless-threads` · route `/threads/headless` · under “Switch between threads”
-
-12 prose lines changed.
-
-````diff
-- <WhenFrameworkHas flag="thread_persistence_pattern" equals="langgraph">
-- <Callout type="info" title="LangGraph persistence">
-- When you pass an explicit CopilotKit `threadId`, CopilotKit forwards it to your backend as the AG-UI `threadId`. A LangGraph backend can use that value directly, or map it to its own checkpoint/thread identifier, when you implement that mapping. LangGraph Platform thread IDs must be UUIDs. CopilotKit `useThreads` manages Enterprise Intelligence Platform thread records; rename, archive, and delete operations do not update LangGraph stores unless your backend adds that bridge.
-- </Callout>
-- </WhenFrameworkHas>
-- <WhenFrameworkHas flag="thread_persistence_pattern" equals="adk-session">
-- <Callout type="info" title="ADK sessions">
-- When you pass an explicit CopilotKit `threadId`, CopilotKit forwards it to your backend as the AG-UI `threadId`. An ADK backend can map that value to an ADK session ID, but the current showcase uses in-memory ADK services, so those sessions are not durable by default. Durable ADK session persistence requires configuring a separate ADK session service. CopilotKit `useThreads` manages Enterprise Intelligence Platform thread records, not ADK's native session store.
-````
-
-**Low — Inspector**
-
-`/agno/inspector` · route `/custom-look-and-feel/inspector` · under “Showing or hiding the Inspector”
-
-7 prose lines changed.
-
-````diff
-+ `NEXT_PUBLIC_COPILOTKIT_LICENSE_KEY` is a browser-visible publishable key and is
-+ a **different credential** from the server-side `INTELLIGENCE_API_KEY` that
-+ `copilotkit project select` writes into your `.env`. The server-side key is
-+ consumed by the `CopilotKitIntelligence` client described in
-+ [Runtime endpoints](/agno/backend/runtime-endpoints). Do not substitute one for the
-+ other, and never expose the server-side key to the browser.
-+ 
-````
-
-**Low — Overview**
-
-`/agno/threads` · route `/threads` · under “Rich Threads”
-
-20 prose lines changed.
-
-````diff
-+ <Callout type="info" title="See this in Inspector">
-+ Open Inspector on localhost. Stay on **Threads** (it is the default).
-+ Real threads appear when Intelligence is on. Enable Intelligence appears when it is off.
-+ 
-+ More detail: [Inspector](/agno/inspector).
-+ </Callout>
-+ 
-+ 
-````
-
----
-
-## 2026-08-17
-
-### 12:29 UTC — 1 page, highest severity high
-
-**High — Human in the Loop** · _local snapshot edit, not an upstream change_
-
-`/agno/human-in-the-loop` · route `/human-in-the-loop` · under “Define the frontend tool in your Agno agent” · in a `python` block
-
-10 code lines changed.
-
-````diff
-+ 
-+ @tool(external_execution=True)
-+ def offerOptions(option_1: str, option_2: str):
-+ """
-+ Give the user a choice between two options and have them select one.
-+ 
-+ Args:
-+ option_1: str: The first option
-````

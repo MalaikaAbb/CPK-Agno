@@ -63,9 +63,9 @@ export const PAGES = definePages([
         endLine: 26,
       },
       {
-        filePath: 'frontend/src/app/api/copilotkit/route.ts',
-        startLine: 20,
-        endLine: 38,
+        filePath: 'frontend/src/app/api/copilotkit/[[...slug]]/route.ts',
+        startLine: 14,
+        endLine: 28,
       },
       {
         filePath: 'backend/main.py',
@@ -207,6 +207,21 @@ export const PAGES = definePages([
     waitAfterPromptMs: 4000,
   },
   {
+    id: 'interactive',
+    name: 'Generative UI - Interactive Component (Empty Doc)',
+    videoName: 'Interactive',
+    docPath: 'generative-ui/your-components/interactive',
+    route: 'generative-ui/your-components/interactive',
+    ideFile:
+      'frontend/src/app/generative-ui/your-components/interactive/page.tsx',
+    startLine: 1,
+    endLine: 16,
+    docOnly: true,
+    docViewDurationMs: 6000,
+    prompt: 'N/A',
+    waitAfterPromptMs: 6000,
+  },
+  {
     id: 'tool-rendering',
     name: 'Generative UI - Tool Rendering',
     videoName: 'ToolRendering',
@@ -271,9 +286,9 @@ export const PAGES = definePages([
     endLine: 50,
     extraTabs: [
       {
-        filePath: 'frontend/src/app/api/copilotkit/route.ts',
-        startLine: 20,
-        endLine: 38,
+        filePath: 'frontend/src/app/api/copilotkit/[[...slug]]/route.ts',
+        startLine: 14,
+        endLine: 28,
       },
     ],
     // Two registered ids resolving to the same Agno process, one turn each.

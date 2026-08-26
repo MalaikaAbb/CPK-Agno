@@ -125,6 +125,39 @@ and correctness are different questions — the run summary answers the second o
 
 ---
 
+## Pages that are supposed to fail
+
+Not every demo works, and some do not work for reasons outside this repo. On this
+stack `display-only` and `frontend-tools` both stream an answer, run their tool,
+and then stop: Agno needs a configured database to resume after an
+externally-executed tool, and this repo configures none.
+
+Recording those two as successes would imply a working feature; failing them
+would produce nothing to look at. Both handlers instead capture what the browser
+reported during the run and then surface it on screen — `actions/error-console.ts`.
+The video shows the feature working, and then the error that ended it.
+
+### Next.js Dev Error Overlay (`openNextJsErrorOverlay`)
+
+Autorecorder includes built-in support for rendering the official Next.js 16 Dev
+Error Overlay:
+1. Displays the bottom-left red **"N 1 Issue ✕"** toast badge (docked above the taskbar).
+2. Smoothly glides the virtual cursor to the toast badge and clicks it.
+3. Opens the sleek dark Next.js Dev Error window showing the `< 1/1 >` header,
+   `Next.js Turbopack` status badge, `Console Error` pill, the exact red error
+   message, and `Call Stack` frame count.
+4. Glides the virtual cursor up to the error message for comfortable reading.
+
+Alternatively, `openDevToolsConsole` remains available to dock a simulated Chrome
+DevTools console along the bottom.
+
+Two rules keep that from becoming a way to hide real breakage:
+
+- The error overlay only appears when an error is captured or specified. A silent
+  page still fails the run.
+- The reply is still awaited normally. A page that neither answers nor errors is
+  an unexplained failure and is treated as one.
+
 ## Reading the summary
 
 ```
@@ -160,6 +193,8 @@ autorecorder/
 │
 ├── actions/                    ← ★ what to DO on each page
 │   ├── index.ts                  page id → handler registry
+│   ├── page-ready.ts             wait until the app can actually be driven
+│   ├── error-console.ts          put browser errors on screen when that is the story
 │   └── *.action.ts               per-page interaction scripts
 │
 ├── core/                       ← ✖ DO NOT EDIT — no framework knowledge here

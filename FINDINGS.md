@@ -14,6 +14,12 @@ Stack: `@copilotkit/react-core`/`runtime` 1.73.3, `@ag-ui/agno` 0.0.6, `@ag-ui/c
 - **Doc:** learned-skills:64 says "Python uses `copilotkit-intelligence-runtime`", and learning:41 recommends the LangGraph Python example. Neither is flagged.
 - **Error:** `copilotkit-intelligence-runtime`, `-langgraph` and `-adk` all return 404 on PyPI, and pip says `No matching distribution found`. There is no Agno adapter.
 
+### [Frontend Tools](https://docs.copilotkit.ai/agno/frontend-tools) / [Display-only](https://docs.copilotkit.ai/agno/generative-ui/your-components/display-only) / [Interactive](https://docs.copilotkit.ai/agno/generative-ui/your-components/interactive)
+**#39 Backend won't start: `pip install sqlalchemy` no longer brings `greenlet`.**
+- **Doc:** "Install the SQLite dependency: `pip install sqlalchemy`", then `from agno.db.sqlite import SqliteDb`.
+- **Error:** `ImportError: The SQLAlchemy asyncio module requires that the Python 'greenlet' library is installed. ... use the 'sqlalchemy[asyncio]' install target`. Importing `agno.db.sqlite` loads `async_sqlite.py` whatever the app uses.
+- **Versions:** installed sqlalchemy 2.1.0 (declared `>=2.0.0`; docs: bare `sqlalchemy`), agno 3.0.11 (declared `>=2.8.6`). Worked on sqlalchemy 2.0.54, which pulled in greenlet 3.5.6.
+
 ## Minor notes
 - #12 Quickstart/Frontend Tools: the agent is built with no `db`. `SqliteDb(db_file="tmp/agno.db")` is relative to the working directory, and the page uses `pip` while the rest of the docs use `uv`.
 - #20 Quickstart: switched `.env.local` → `.env` without saying so. A leftover `.env.local` value silently wins.

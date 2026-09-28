@@ -2,15 +2,8 @@
 
 > Architecture and mental model behind CopilotKit threads: how persistent conversations work, how reconnection replays history, and what to expect from thread lifecycle operations.
 
-<<<<<<< HEAD:doc-snapshot/pages/agno__premium__threads-explained.md
-<OpsPlatformCTA
-  variant="inline"
-  title="Want to see threads in your own app?"
-  body="Persistent threads ship with CopilotKit Intelligence on the free Developer tier."
-=======
 <IntelligenceOnboardingPrompt
   feature="threads"
->>>>>>> 23ef07893fe03d959de4e40de0979229a7b19679:doc-snapshot/pages/agno__intelligence__threads-explained.md
   surface="docs_learn_threads"
 />
 
@@ -92,24 +85,6 @@ In either case the transition from replayed history to live updates is seamless.
 
 The frontend thread client maintains a WebSocket subscription for thread metadata changes. When any client creates, renames, archives, or deletes a thread, the update is pushed to all connected clients automatically. This is how a thread created on one tab appears in the sidebar on another tab without polling.
 
-<<<<<<< HEAD:doc-snapshot/pages/agno__premium__threads-explained.md
-### Future runs and native persistence
-
-Importing history is a one-time adoption step. Afterward, future conversations
-that run through CopilotKit are persisted to CopilotKit Intelligence. When the
-agent also keeps a durable LangGraph checkpointer or LangGraph Platform
-deployment wired, the same runs continue through LangGraph's native persistence.
-An ADK agent behaves similarly when it remains connected to a durable session
-service that retains its sessions.
-
-That coordinated future persistence lets teams retain native framework storage
-and analytics while adding the Rich Threads experience for users. It is not a
-general replication link between databases: frontend thread operations such as
-rename, archive, and delete change the CopilotKit Intelligence thread and do not
-mutate records in LangGraph, ADK, or another native store.
-
-=======
->>>>>>> 23ef07893fe03d959de4e40de0979229a7b19679:doc-snapshot/pages/agno__intelligence__threads-explained.md
 ### Pessimistic updates
 
 Thread mutations (`rename`, `archive`, `delete`) use a pessimistic update model: the client waits for the server to confirm via WebSocket before updating the thread list. This means:

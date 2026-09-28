@@ -9,14 +9,74 @@ them unprompted.
 import os
 
 from agno.agent import Agent
+from agno.db.sqlite import SqliteDb
 from agno.models.openai import OpenAIChat
+from openai import Timeout
 
 from tools import ALL_TOOLS
 
 # The Agno quickstart prints `gpt-5.4`. That id is not available on every
 # account, so the default here is a model anyone with an OpenAI key can call.
 # Override with OPENAI_MODEL to test against whatever the docs currently show.
-DEFAULT_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o")
+DEFAULT_MODEL = os.getenv("OPENAI_MODEL", "gpt-5.4-mini")
+
+# The OpenAI SDK ships a 5-second *connect* timeout
+# (`openai._constants.DEFAULT_TIMEOUT` is `Timeout(timeout=600, connect=5.0)`),
+# and agno forwards a timeout to the client only when one is given, so leaving
+# these unset meant the agent gave up on opening a socket after 5 seconds.
+#
+# That is invisible on an idle developer machine, where connecting takes about
+# 100ms. It is not invisible on a machine that is still busy with installs, a
+# Turbopack build and a browser when the agent's first call goes out: every
+# recorded demo there failed with
+#
+#     ERROR  API connection error from OpenAI API: Connection error.
+#
+# which is how `APIConnectionError` stringifies a wrapped `ConnectTimeout`.
+#
+# Connect stays separate from read: a slow connect is worth waiting for, a hung
+# one is not, and streaming replies still need a long read budget.
+CONNECT_TIMEOUT = float(os.getenv("OPENAI_CONNECT_TIMEOUT", "30"))
+REQUEST_TIMEOUT = float(os.getenv("OPENAI_REQUEST_TIMEOUT", "600"))
+# Retries cover the transient case and cost nothing when the first attempt
+# succeeds. The SDK default of 2 only ever bought 15 seconds of patience.
+MAX_RETRIES = int(os.getenv("OPENAI_MAX_RETRIES", "5"))
+
+
+def _model() -> OpenAIChat:
+    """The chat model, with its connection behaviour stated rather than inherited.
+
+    `client_params` rather than agno's own `timeout=` field: that field is typed
+    as a float, which would apply a single value to connect *and* read. Passing
+    the SDK's own `Timeout` keeps the two apart.
+
+    `openai.Timeout` is re-exported by the OpenAI SDK, so this pins no httpx
+    version. That matters here — `openai` 3.x moved to the `httpx2` package
+    while agno still type-checks `http_client` against `httpx` 0.28, so handing
+    agno an `httpx.AsyncClient` would satisfy its isinstance check and then
+    reach a client that no longer speaks that type.
+    """
+    return OpenAIChat(
+        id=DEFAULT_MODEL,
+        # A key pasted into an env file can arrive with surrounding whitespace,
+        # which becomes an illegal HTTP header value rather than a clean 401.
+        api_key=(os.getenv("OPENAI_API_KEY") or "").strip() or None,
+        client_params={
+            "timeout": Timeout(timeout=REQUEST_TIMEOUT, connect=CONNECT_TIMEOUT),
+            "max_retries": MAX_RETRIES,
+        },
+    )
+
+# /agno/frontend-tools (and human-in-the-loop, and both your-components
+# pages) gained a "Configure session storage" callout on 30 Aug: Agno has to
+# store the paused run before a frontend tool can hand its result back, so the
+# Agent that owns the external tool needs a `db`. Four routes here call
+# frontend tools.
+#
+# The published snippet is `SqliteDb(db_file="tmp/agno.db")` -- a path relative
+# to the process working directory, which the page never states. It goes in
+# verbatim; it lands in whichever directory the server was started from.
+db = SqliteDb(db_file="tmp/agno.db")
 
 INSTRUCTIONS = """\
 You are the test agent for a CopilotKit + Agno integration harness. Each page of
@@ -42,8 +102,10 @@ def build_agent() -> Agent:
         # [5] Agno agent: configure the model and tools
         # [!code highlight:3]
         name="Agno Test Harness Agent",
-        model=OpenAIChat(id=DEFAULT_MODEL),
+        model=_model(),
         tools=ALL_TOOLS,
+        # Session storage. Frontend tools cannot return a result without it.
+        db=db,
         description=(
             "A helpful assistant used to exercise every CopilotKit feature "
             "documented for the Agno integration."

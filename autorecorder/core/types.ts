@@ -1,8 +1,37 @@
 import { type Page } from 'playwright';
 import { PROJECT, demoUrlFor, docUrlFor } from '../config/project.config';
+import { type ServiceDefinition } from './cli/service';
 import { type IdeTabConfig } from './ide/generator';
 
 export { type IdeTabConfig };
+
+/**
+ * A dev server this page's demo needs, and which the recording shows starting.
+ *
+ * When present, the engine boots it before filming, replays its boot in a
+ * terminal window between the IDE and the demo, points the demo at
+ * `originUrl`, and kills it afterwards. The terminal segment is therefore the
+ * actual process serving the app in the next segment.
+ */
+export interface PageDevServer extends ServiceDefinition {
+  /** Where the demo is reached once this is up, e.g. `http://localhost:3101`. */
+  originUrl: string;
+
+  /**
+   * Path to open on that origin. Defaults to `/`.
+   *
+   * A scaffolded starter is a different application from this repo's frontend —
+   * it has its own routes and none of this project's `demoSuffix` convention —
+   * so its URL is built from the origin and this, not from `route`.
+   */
+  demoPath?: string;
+
+  /** Terminal title-bar text. Defaults to the command line. */
+  title?: string;
+
+  /** Pacing for the boot replay. A cold compile is mostly waiting. */
+  render?: { maxGapSec?: number; speed?: number };
+}
 
 /**
  * What an adaptation writes in `config/pages.config.ts`.
@@ -20,6 +49,16 @@ export interface PageDefinition {
 
   /** Video filename stem: `<videoPrefix>-<NN>-<videoName>.webm`. */
   videoName: string;
+
+  /**
+   * Replaces the derived `<NN>-<videoName>` stem with this, after the prefix.
+   *
+   * For pages that belong to a numbered *set* rather than to the doc-nav order —
+   * the per-package-manager videos, where the three files of one manager's set
+   * need to sort together and be readable as a set. Leave unset everywhere else,
+   * so nav order keeps naming the files.
+   */
+  videoFile?: string;
 
   /** Appended to `PROJECT.docBaseUrl`. Query strings are fine. */
   docPath: string;
@@ -46,13 +85,94 @@ export interface PageDefinition {
   /** Reading pause after the reply finishes streaming. */
   waitAfterPromptMs?: number;
 
-  /** When true, only records the doc page (e.g. for empty stub doc pages) without IDE/demo steps. */
+  /**
+   * Boot a dev server for this page, and show it booting.
+   *
+   * Omit for pages that run against the repo's own frontend — which is all of
+   * them, apart from the package-manager matrix, where each scaffold is its own
+   * app on its own port.
+   */
+  devServer?: PageDevServer;
+
+  /**
+   * This page's `ideFile` does not exist until the CLI pipeline has run.
+   *
+   * The doctor must not fail on a matrix page before the scaffold has been
+   * created and distributed — the files genuinely are not there yet — but it
+   * still says so, because a missing file at record time is a real problem.
+   */
+  generated?: boolean;
+
+  /**
+   * Only record the doc page -- no IDE, no demo. For a doc section that is
+   * an empty stub: there is no source worth showing and no route to drive,
+   * and the take is the doc read on camera.
+   */
   docOnly?: boolean;
 
-  /** Duration in ms to display the doc page when docOnly is true (defaults to 6000ms). */
+  /** How long to hold on the doc page when `docOnly` (defaults to 6000ms). */
   docViewDurationMs?: number;
+
+  /** Per-page overrides of the recorder's fixed waits. See `RecorderTimeouts`. */
+  timeouts?: Partial<RecorderTimeouts>;
+
+  /**
+   * The take, as data. Pages whose handler was "send the prompt, rest the
+   * cursor on the thing under test, check it rendered" describe that here and
+   * use the standard handler; a bespoke handler in actions/ is only for pages
+   * whose failure diagnosis needs code (A2UI's two reasons, the write page's
+   * button-first flow).
+   */
+  demo?: DemoScript;
 }
 
+/** A place to rest the cursor: a selector (first visible match) or fixed coordinates. */
+export type DemoGlideTarget =
+  | string
+  | { selector: string; beatMs?: number; offset?: { x: number; y: number } }
+  | { x: number; y: number; beatMs?: number };
+
+/** A verdict on what the page shows once the reply is in. */
+export interface DemoCheck {
+  /** Playwright selector; `text=...` allowed. First match unless `last` is set. */
+  selector: string;
+  last?: boolean;
+  /** Pass when the element's text contains every entry (case-insensitive). */
+  contains?: string | string[];
+  /** Pass when the element is NOT visible. */
+  absent?: boolean;
+  /** Pass when the element's enabled state matches. */
+  enabled?: boolean;
+  timeoutMs?: number;
+  /** A failed check is a defect (`fail`) or a note on the clip (`warn`, default). */
+  severity?: 'fail' | 'warn';
+  /** Logged on a pass. */
+  ok?: string;
+  /** Reported on a miss. `{found}`/`{total}` expand for `contains` lists; `{text}` is what was read. */
+  message: string;
+}
+
+export interface DemoScript {
+  /** Before the prompt: rest on these, in order. Missing targets are skipped. */
+  before?: DemoGlideTarget[];
+  /** Composer submit timeout. */
+  sendTimeoutMs?: number;
+  /** Capture the browser alert the prompt provokes; `missing` is the warning if none fires. */
+  alert?: { missing: string };
+  /**
+   * After the prompt: the thing under test. Waited for, then rested on. If
+   * `required` is set and it never renders, that message is the take's defect.
+   */
+  render?: { selector: string; last?: boolean; timeoutMs?: number; beatMs?: number; required?: string };
+  /** Click this once `render` (or the prompt) is done, then wait for the follow-up reply. */
+  click?: { selector: string; missing: string; beatMs?: number };
+  /** After the prompt, before the reply finishes: rest on these, in order. */
+  glideTo?: DemoGlideTarget[];
+  /** Once the reply has finished. */
+  checks?: DemoCheck[];
+}
+
+/** A page definition with everything resolved. What the engine consumes. */
 /** A page definition with everything resolved. What the engine consumes. */
 export interface PageRecordConfig extends PageDefinition {
   docUrl: string;
@@ -75,14 +195,58 @@ export function definePages(defs: PageDefinition[]): PageRecordConfig[] {
       ...def,
       order,
       docUrl: docUrlFor(def.docPath),
-      demoUrl: demoUrlFor(def.route),
-      filename: `${PROJECT.videoPrefix}-${String(order).padStart(2, '0')}-${def.videoName}`,
+      demoUrl: def.devServer
+        ? `${def.devServer.originUrl.replace(/\/$/, '')}${def.devServer.demoPath ?? '/'}`
+        : demoUrlFor(def.route),
+      filename: def.videoFile
+        ? `${PROJECT.videoPrefix}-${def.videoFile}`
+        : `${PROJECT.videoPrefix}-${String(order).padStart(2, '0')}-${def.videoName}`,
     };
   });
+}
+
+/**
+ * How a page handler reports what it saw, so the summary sees it too.
+ *
+ * Before this, a handler that noticed "the weather card never rendered" could
+ * only `console.log` it. The run still printed `[PASS]` with no asterisk, and
+ * the results file carried nothing. `warn` puts the note on the result as `PASS*`;
+ * `fail` marks the recording failed once the handler returns, so the clip is
+ * still filmed to the end and still saved as evidence.
+ */
+export interface ActionContext {
+  /** The clip is usable but something the doc promises was not observed. */
+  warn: (message: string) => void;
+  /** The feature under test did not work. The recording finishes, then fails. */
+  fail: (message: string) => void;
+  /** Resolved timeouts for this page. */
+  timeouts: RecorderTimeouts;
+}
+
+/**
+ * Every fixed wait in the recorder, in one place.
+ *
+ * These used to be literals scattered through `core/`, and the yarn demo
+ * failed on exactly one of them: a cold turbopack compile overran the 45s
+ * demo navigation budget. Defaults live in `core/timeouts.ts`; a project sets
+ * `PROJECT.timeouts` and a page sets `timeouts` to override.
+ */
+export interface RecorderTimeouts {
+  /** Loading the external doc page. */
+  docNavMs: number;
+  /** Loading the demo route. First hit on a dev route compiles it. */
+  demoNavMs: number;
+  /** Chat surface visible after the demo route loads. */
+  chatReadyMs: number;
+  /** A reply *starting* after the prompt is sent. */
+  replyStartMs: number;
+  /** A reply finishing once it has started. */
+  replyStreamMs: number;
 }
 
 export type PageActionHandler = (
   page: Page,
   config: PageRecordConfig,
   rootPath: string,
+  ctx: ActionContext,
 ) => Promise<void>;

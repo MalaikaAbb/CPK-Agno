@@ -1,0 +1,118 @@
+import { type Page } from 'playwright';
+import { promptsFor, sendPrompt, waitForAgentResponseCompletion } from '../core/actions';
+import { sleep } from '../core/overlays/cursor';
+import { type ActionContext, type PageActionHandler, type PageRecordConfig } from '../core/types';
+import { waitForDomSettled } from './page-ready';
+import { copilotkitVersionLine, markServerLogs, showEvidence } from './error-evidence';
+import { glideClick, glideTo, visibleWithin, waitForText } from './glide-click';
+
+/**
+ * Memories & Recall -- the documented runtime, then the undocumented option.
+ *
+ * Pass one is the page as written: the hook's panel on the Quickstart's
+ * runtime reads `isAvailable false`, the save button returns 404, and the agent
+ * cheerfully says it will remember. Pass two switches to the same runtime with
+ * `memory: { access }` added -- the option the page never mentions -- and saves
+ * again, so the clip ends on what the platform itself says about this project.
+ *
+ * Nothing here fails the take on a 404 or 403: those are the finding, and the
+ * take reports them as a warning (`[PASS*]`). The handler only fails
+ * when the surface it needs to film is missing.
+ */
+
+/** The fixed part of the note; what the saves returned is appended per take. */
+const NOTE = [
+  'memories - blocked on entitlement',
+  '',
+  'as documented: /api/copilotkit/memories -> 404',
+  'runtime needs memory: { access }, page never says',
+  'with it: 403 MEMORY_NOT_ENTITLED, org has no memory',
+  'managed platform, so no embedder config needed',
+  'import path fixed upstream 2026-09-21: page now says /v2',
+];
+
+async function save(page: Page, ctx: ActionContext, label: string): Promise<string> {
+  const button = page.locator('[data-testid=memory-save]');
+  if (!(await visibleWithin(button, 8000))) {
+    ctx.fail(`${label}: the save button never rendered`);
+    return '';
+  }
+  await glideClick(page, button);
+  const result = await waitForText(
+    page.locator('[data-testid=memory-save-result]'),
+    (t) => t.length > 0 && !t.startsWith('saving'),
+    20_000,
+  );
+  await glideTo(page, page.locator('[data-testid=memory-probe]'), 2500);
+  return result;
+}
+
+/**
+ * Waits until the hook has heard back from the runtime: `isAvailable` flips to
+ * false (a 404) or an error shows up. `isLoading` is no signal -- it reads
+ * false before the memory store has even started, and a save clicked then
+ * fails client-side with "Runtime URL is not configured", which says nothing
+ * about the runtime under test. Times out quietly: a runtime that never gets
+ * asked (no Intelligence connection) is itself what the take shows.
+ */
+async function settledMemory(page: Page): Promise<void> {
+  const deadline = Date.now() + 25_000;
+  while (Date.now() < deadline) {
+    const available = (await page.locator('[data-testid=memory-isAvailable]').textContent().catch(() => '')) ?? '';
+    const error = (await page.locator('[data-testid=memory-error]').textContent().catch(() => '')) ?? '';
+    if (available.trim() === 'false' || (error.trim() && error.trim() !== 'null')) return;
+    await sleep(500);
+  }
+}
+
+export const runMemoriesAction: PageActionHandler = async (
+  page: Page,
+  config: PageRecordConfig,
+  rootPath: string,
+  ctx: ActionContext,
+) => {
+  const logs = markServerLogs(rootPath);
+  const prompts = promptsFor(config);
+
+  // Pass 1 -- as documented.
+  console.log('   [Memories] 1/2: the runtime the page describes...');
+  await settledMemory(page);
+  await glideTo(page, page.locator('[data-testid=memory-list]'), 1500);
+  const documented = await save(page, ctx, 'documented runtime');
+  console.log(`   [Memories] save on the documented runtime: ${documented}`);
+
+  const msgCount = await sendPrompt(page, prompts[0]);
+  await waitForAgentResponseCompletion(page, config.waitAfterPromptMs ?? 3000, msgCount);
+
+  // Pass 2 -- with the option the page leaves out.
+  console.log('   [Memories] 2/2: the same runtime with memory.access...');
+  await glideClick(page, page.locator('[data-testid=memory-runtime-memory-access]'));
+  await sleep(500);
+  await waitForDomSettled(page, { settleMs: 1500 });
+  await settledMemory(page);
+  await glideTo(page, page.locator('[data-testid=memory-list]'), 1500);
+  const opened = await save(page, ctx, 'memory.access runtime');
+  console.log(`   [Memories] save with memory.access: ${opened}`);
+
+  // This repo's recorder has no `knownIssue`, so the finding rides on the
+  // result as a warning: the take is usable, and what it shows is a defect.
+  ctx.warn(
+    `Memory unusable as documented -- documented runtime save: "${documented}"; ` +
+      `with the undocumented memory.access option: "${opened}"`,
+  );
+
+  await showEvidence(page, logs, {
+    fileName: 'memories.txt',
+    // What the saves returned, as observed -- the documented-runtime save
+    // sometimes 404s at the runtime and sometimes never leaves the browser
+    // ("Runtime URL is not configured"), so the note quotes this take.
+    text: [
+      ...NOTE,
+      '',
+      `save, as documented: ${documented}`,
+      `save, with memory.access: ${opened}`,
+      '',
+      copilotkitVersionLine(rootPath),
+    ].join('\n'),
+  }, { relevant: /memor|MEMORY_/i });
+};

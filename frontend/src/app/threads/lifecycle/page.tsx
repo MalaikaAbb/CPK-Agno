@@ -7,7 +7,7 @@ const IDENTIFY_SNIPPET = `import { CopilotKitIntelligence, CopilotRuntime } from
 // \`apiKey\` is the only required field. The key scopes the project, so there is
 // no separate project or organization id to pass.
 const intelligence = new CopilotKitIntelligence({
-  apiKey: process.env.INTELLIGENCE_API_KEY!,
+  apiKey: process.env.CPK_INTELLIGENCE_API_KEY!,
 });
 
 const runtime = new CopilotRuntime({
@@ -75,7 +75,7 @@ export default function Page() {
       <Callout tone="premium" title="Replay needs a store">
         Pinning an id keeps it stable, but reloading will not bring the messages
         back in this install. Replay reads from a server-side store — the
-        Enterprise Intelligence Platform, or a persisting{" "}
+        CopilotKit Intelligence, or a persisting{" "}
         <code>AgentRunner</code> — and this repo configures neither. The Agno
         agent does not persist CopilotKit threads.
       </Callout>

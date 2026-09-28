@@ -96,7 +96,7 @@ This README is the front door of the repo — someone should be able to clone it
 ### 1. Header
 - Project title: `CopilotKit + {Framework} Test Suite`
 - One-line description of what this repo demonstrates
-- Badges/status line: build status if CI exists, doc-sync date (the date Step 0 was last run against live docs), CopilotKit package versions used
+- Badges/status line: build status, doc-sync date (the date Step 0 was last run against live docs), CopilotKit package versions used
 
 ### 2. Overview
 - 2–4 sentences: what this framework integration is, and what this repo is for (a navigable, working test harness covering every `docs.copilotkit.ai/{framework}` page)
@@ -121,7 +121,7 @@ This README is the front door of the repo — someone should be able to clone it
 
 ### 6. Running the project
 - The exact command(s) to start frontend and backend (single command if the CLI starts both, separate commands if not)
-- What a successful startup looks like in the terminal (e.g. "you should see `Uvicorn running on http://localhost:8000`")
+- What a successful startup looks like in the terminal (e.g. "you should see `Uvicorn running on http://localhost:8010`")
 - The URL to open
 
 ### 7. What to expect — walkthrough per section

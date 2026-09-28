@@ -45,11 +45,11 @@ export async function BackendHealth() {
         <Row
           ok={health.licenseKeySet}
           neutral={!health.licenseKeySet}
-          label="Enterprise Intelligence license"
+          label="CopilotKit Intelligence license"
           detail={
             health.licenseKeySet
-              ? "Key present — thread routes should be fully functional."
-              : "Not set — Rich Threads routes will show their locked state."
+              ? "Runtime credential present — thread routes should be fully functional."
+              : "Not set — the Runtime reports no entitlement, so Rich Threads routes show their locked state."
           }
         />
       </ul>

@@ -6,9 +6,9 @@
 
 ## What is this?
 
-Import and synchronization bring existing conversations into CopilotKit Intelligence as Rich Threads without replacing the native storage or analytics you already use. Import supported history once, then continue running those conversations through CopilotKit so users can resume them through the same thread UI as new conversations.
+Import brings existing conversations into CopilotKit Intelligence as Rich Threads while you keep the native storage or analytics you already use. Import supported history once, then continue running those conversations through CopilotKit so users can resume them through the same thread UI as new conversations.
 
-Built-in import currently supports Google ADK and LangGraph, with more sources coming soon. You can keep LangSmith, LangGraph, or ADK storage and analytics in place. For future CopilotKit-mediated runs, CopilotKit Intelligence persists the Rich Thread event history. When your agent remains connected to a durable LangGraph checkpointer or durable ADK session service with appropriate retention, those future runs continue through the native persistence path as well.
+Built-in import currently supports Google ADK and LangGraph, with more sources coming soon. You can keep LangSmith, LangGraph, or ADK storage and analytics in place. For future CopilotKit-mediated runs, CopilotKit Intelligence persists the thread event history. When your agent remains connected to a durable LangGraph checkpointer or durable ADK session service with appropriate retention, those future runs continue through the native persistence path as well.
 
 New to the feature? Read the [Rich Threads overview](/agno/threads) first to understand the shared thread store and choose between the prebuilt Drawer and a custom headless UI.
 
@@ -92,7 +92,7 @@ It does not import agent state snapshots, framework transport noise, LangSmith t
 
     ```bash title="Terminal"
     export INTELLIGENCE_API_URL="https://..."
-    export INTELLIGENCE_API_KEY="cpk_..."
+    export CPK_INTELLIGENCE_API_KEY="cpk-..."
     ```
 
     `COPILOTKIT_API_KEY` is also accepted for the key. You can pass the same values directly with `--api-url` and `--api-key` instead.
@@ -116,20 +116,22 @@ It does not import agent state snapshots, framework transport noise, LangSmith t
   </Step>
 
   <Step>
-    ### Keep future conversations synced
+    ### Continue using your framework's persistence
 
-    Your CLI-created app sends future CopilotKit conversations to CopilotKit Intelligence. Reopen a conversation with the same CopilotKit `threadId` so its Rich Thread history stays continuous. If the agent remains wired to its durable native persistence mechanism, the future run continues there as well.
+    Your app sends future conversations that run through CopilotKit to CopilotKit Intelligence. Keep your durable LangGraph or ADK persistence configured so those runs continue using both persistence layers. Reopen a conversation with the same CopilotKit `threadId` and a stable mapping to its native thread or session so its history stays continuous.
+
+    Importing copies supported history; it does not establish ongoing database replication. Intelligence rename, archive, and delete operations affect only Intelligence records.
 
     - **Threads Drawer:** already included in CLI-created starters. Use the [Threads Drawer guide](/agno/prebuilt-components/copilot-threads-drawer) to customize its ready-made thread UI.
     - **Headless Threads:** use the [Headless Threads guide](/agno/headless-threads) only when you need a custom UI. Select a thread with `useThreads`, store its `thread.id`, and pass that value to your chat component as `threadId`.
 
     Create one new conversation through CopilotKit, then confirm that it appears in CopilotKit Intelligence and in the native persistence store that remains connected to your agent.
 
-    For the underlying persistence and replay model, see [Threads & Persistence Architecture](/agno/premium/threads-explained).
+    For the underlying persistence and replay model, see [Threads & Persistence Architecture](/agno/intelligence/threads-explained).
   </Step>
 </Steps>
 
 ## Deployment notes
 
-- **Cloud-hosted CopilotKit Intelligence:** export the destination values generated in the CLI-created app's `.env`, or pass them with `--api-url` and `--api-key`. `project select` can rewrite the app's generated values, but the importer still reads only flags or the current process environment. See [Cloud-hosted CopilotKit Intelligence](/agno/premium/managed-intelligence-platform).
-- **Self-hosted CopilotKit Intelligence:** pass the deployment's app-api URL with `--api-url` and a project-scoped `cpk` runtime key with `--api-key`. See [Self-host CopilotKit Intelligence](/agno/premium/self-hosting).
+- **Cloud-hosted CopilotKit Intelligence:** export the destination values generated in the CLI-created app's `.env`, or pass them with `--api-url` and `--api-key`. `project select` can rewrite the app's generated values, but the importer still reads only flags or the current process environment. See [Cloud-hosted CopilotKit Intelligence](/agno/intelligence/managed-intelligence-platform).
+- **Self-hosted CopilotKit Intelligence:** pass the deployment's app-api URL with `--api-url` and a project-scoped `cpk` runtime key with `--api-key`. See [Self-host CopilotKit Intelligence](/agno/intelligence/self-hosting).

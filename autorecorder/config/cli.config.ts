@@ -23,8 +23,7 @@
  * ── Before the first run ───────────────────────────────────────────────────
  * `npm run capture -- --login` once. Sign-in opens a browser and cannot be
  * automated; doing it up front turns the mid-run auth pause into a precondition
- * and makes everything after it deterministic. It is also why these flows are
- * local-only and are not part of CI.
+ * and makes everything after it deterministic.
  *
  * ── Status of the prompts encoded here ─────────────────────────────────────
  * PREDICTED, not observed. The real CLI has never been run in this repo. Every
@@ -115,24 +114,6 @@ const CLI_DOC_PATH = 'quickstart?agent=starter';
  */
 const LOGIN_TIMEOUT_MS = 15 * 60_000;
 
-/**
- * Makes the CopilotKit CLI draw its prompts while it runs, on a CI runner too.
- *
- * The CLI renders with ink, and ink checks `CI` / `CONTINUOUS_INTEGRATION`.
- * When either is set (to anything but "0" or "false") it keeps each frame in
- * memory and writes only the last one, once, when the process exits. GitHub
- * Actions sets `CI=true`, so on a runner the whole "App name" screen stayed
- * unwritten for as long as the prompt waited, then appeared all at once when
- * the recorder killed the process. The flow could only time out on a prompt
- * that was already being shown to nobody. Read off the bundled source of
- * copilotkit 4.11.0 (`is_in_ci_default` in its ink renderer).
- *
- * Locally neither variable is set, which is why this never happened by hand.
- * Applied only to the commands that drive the CLI's own TUI, so npm, pnpm,
- * yarn and bun keep behaving as they normally would in CI.
- */
-const INTERACTIVE_TUI_ENV = { CI: 'false', CONTINUOUS_INTEGRATION: 'false' };
-
 /** Package managers the scaffold is installed with, one flow each. */
 const PACKAGE_MANAGERS: readonly { id: string; command: string }[] = [
   { id: 'npm', command: 'npm' },
@@ -174,7 +155,6 @@ export const CLI_FLOWS = defineCliFlows([
     cwd: '.',
     command: 'npx',
     args: ['copilotkit@latest', 'login'],
-    env: INTERACTIVE_TUI_ENV,
     // Manual because it hands off to a browser: the operator finishes the round
     // trip, and nothing here can wait on that meaningfully. Run it once, then
     // the scaffold flow needs no human at all.
@@ -246,7 +226,6 @@ export const CLI_FLOWS = defineCliFlows([
     // command's children via git's own env-var config, so nothing global
     // changes for the machine.
     env: {
-      ...INTERACTIVE_TUI_ENV,
       GIT_CONFIG_COUNT: '1',
       GIT_CONFIG_KEY_0: 'http.version',
       GIT_CONFIG_VALUE_0: 'HTTP/1.1',
@@ -539,7 +518,6 @@ export const CLI_FLOWS = defineCliFlows([
     cwd: INTELLIGENCE_APP_DIR,
     command: 'npx',
     args: ['copilotkit@latest', 'project', 'select'],
-    env: INTERACTIVE_TUI_ENV,
 
     // Manual for the same reason as `login`: it needs a CLI session that only
     // exists once a human has finished a browser round trip. Excluded from

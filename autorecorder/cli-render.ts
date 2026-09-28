@@ -27,7 +27,6 @@ import { fileURLToPath } from 'node:url';
 import { CLI_FLOWS, CLI_VIDEOS, PROVES_BROKEN, REMEDIATED_FLOWS } from './config/cli.config';
 import { PAGES } from './config/pages.config';
 import { muxAudio } from './core/cli/audio';
-import { refuseInCi } from './core/cli/ci-guard';
 import { compressCast, readCast } from './core/cli/cast';
 import { type CliRunResult } from './core/cli/driver';
 import { buildDemoFindingNote, buildFindingNote, type DemoRunResult } from './core/cli/finding';
@@ -246,8 +245,6 @@ async function filmDemoFindings(
 }
 
 async function main(): Promise<void> {
-  refuseInCi('npm run render');
-
   const args = process.argv.slice(2);
   if (
     args.length === 0 ||

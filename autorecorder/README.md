@@ -118,7 +118,7 @@ any `extraTabs` — plus its own page definition, so changing a prompt or a
 highlighted line range marks it stale exactly as an edit to the code does.
 
 `npm run manifest:check` prints without writing and exits 1 if anything is stale
-or missing, which is the form to put in CI.
+or missing, which is the form to use from a script.
 
 **What it does not tell you: whether the run passed.** Playwright saves the video
 even when a page fails, so a clip from a failed run still looks current. Freshness
@@ -188,12 +188,12 @@ Two rules keep that from becoming a way to hide real breakage:
 - **FAIL** — the demo route 404'd, never rendered a chat surface, the agent never
   answered, the IDE view could not be built, or the handler reported that the
   feature under test did not work (`ctx.fail`). The clip is still saved as
-  evidence. The process exits 1, so this is safe to gate CI on.
+  evidence. The process exits 1, so a script can act on it.
 
 Every run also writes `videos/RECORD_RESULTS.json` — one entry per page with
-the verdict, duration, warnings and distinct console errors. `ci/lib/report.mjs`
-reads it, so the CI report lists what *this run* recorded rather than every
-`.webm` that happens to be in the folder.
+the verdict, duration, warnings and distinct console errors — so what *this
+run* recorded can be read back, rather than guessed from every `.webm` that
+happens to be in the folder.
 
 ---
 
@@ -206,8 +206,8 @@ diagnosed verdict, the browser console errors, and this page's slice of
 take began). Each section is windowed around the line most worth reading --
 a traceback, an `Error`, a 4xx/5xx -- and that line is painted red, so the
 clip itself shows the cause. The same text is written to
-`videos/logs/<page-id>.error.log`, which CI uploads with the run, so an agent
-can diagnose from the log without re-running anything locally.
+`videos/logs/<page-id>.error.log`, so an agent can diagnose from the log
+without re-running anything.
 
 Passing takes are untouched: the terminal appears only on failure, which is
 what a person who hit an error would do. `core/failure-evidence.ts` holds
@@ -277,7 +277,7 @@ to change for a port, that is a bug in this folder — see ADAPT.md.
 
 Every pace in a take comes from `core/overlays/human.ts`, seeded from the
 page id. So two clips do not type, pause and scroll in the same rhythm — but
-tonight's Quickstart clip is identical to last night's, which keeps two
+today's Quickstart clip is identical to yesterday's, which keeps two
 recordings of the same page comparable.
 
 - **Typing** has a person's rhythm everywhere it happens: the chat prompt, the
@@ -286,7 +286,7 @@ recordings of the same page comparable.
 - **Scrolling** is in bursts: a few wheel notches, a reading pause, a few more,
   sometimes a nudge back up.
 - **Pauses** vary by about a quarter around their nominal length. They are
-  the only thing `AUTORECORD_PACE` scales (CI sets `0.85`): a reading or
+  the only thing `AUTORECORD_PACE` scales (`0.85` for a brisker take): a reading or
   thinking pause gets shorter, the typing, the mouse and the scrolling do not.
 - **The cursor** overshoots slightly on long travel and settles, hovers a
   variable moment before a click, drifts while a reply streams instead of
@@ -317,8 +317,7 @@ Two details worth knowing, because both were bugs once:
 The quickstart's own first step is `npx copilotkit@latest create`, and this
 folder records it for real: the CLI driven through a PTY, then the scaffold
 installed with each of npm, pnpm, yarn and bun, then each copy's dev server
-booted and its app driven. It is local-only — sign-in needs a browser — and
-`ci-guard.ts` refuses to run it on a runner.
+booted and its app driven. It is local-only: sign-in needs a browser.
 
 ```bash
 npm run capture -- --login        # once; opens a browser
@@ -327,17 +326,6 @@ npm run capture -- --distribute   # copies the scaffold into the four folders
 npm run capture -- --install-npm  # and pnpm, yarn, bun
 npm run cli:videos                # films everything the reports say to film
 ```
-
-### On a runner: `.github/workflows/cli-recorder.yml`
-
-The guard above still stands for an ordinary CI job. The CLI workflow lifts it
-deliberately, one reason at a time: it restores the CLI's saved session from
-the `COPILOTKIT_CLI_SESSION` secret (so no browser opens), runs the driver
-under node-pty (so there is a terminal), is weekly and opt-in (so the account
-is spent knowingly), and restores the session in its own named step (so a
-scaffold that still stops at the sign-in prompt reads as "session rejected",
-not "CLI broken"). The sign-up flows stay manual: they need a browser nobody has
-signed into. The workflow header says how to create and refresh the secret.
 
 ### The videos
 

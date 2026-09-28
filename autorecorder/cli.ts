@@ -8,12 +8,11 @@ import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
 import { PAGES, SKIP_RECORDING } from './config/pages.config';
 import { PROJECT } from './config/project.config';
-import { isCi } from './core/cli/ci-guard';
 import { checkServicesHealth } from './core/diagnostics';
 import { RecordingEngine } from './core/engine';
 import { runDoctor } from './core/doctor';
 import { prewarmDemoRoutes } from './core/prewarm';
-import { parseShard, selectPages } from './core/select';
+import { selectPages } from './core/select';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -56,10 +55,9 @@ function placeDemoWithCliClips(pageId: string, filename: string): string {
 /**
  * Per-run results, next to the videos.
  *
- * Casts get a `*.report.json`; page recordings had nothing, so the CI report
- * listed every `.webm` in the folder and marked them all "Recorded" — a run
- * of one page reported five, four of them days old. This is what the report
- * reads instead.
+ * Casts get a `*.report.json`; page recordings had nothing, so the only record
+ * of a run was every `.webm` in the folder — a run of one page looked like
+ * five, four of them days old. This is what says what the run recorded.
  */
 export const RESULTS_FILE = 'RECORD_RESULTS.json';
 
@@ -125,14 +123,12 @@ Selection (default: every page, in nav order)
   --filter=<text>            pages whose id or name contains the text
   <word> [<word> ...]        same as --filter, for each word
   --limit=<n>                first n of the selection (--first=, --count=)
-  --shard=<k>/<n>            slice k of n, for matrix workers
 
 Options
   --list, -l                 print every registered page and exit
   --doctor                   validate the configuration; exits 1 on error
   --doctor --online          also probe every doc/demo URL and the selectors
   --force                    record even if the pre-flight health check fails
-  --allow-ci                 on a runner, still record pages that boot a dev server
   --help, -h                 this text
 
 Results go to videos/${RESULTS_FILE}; the process exits 1 if any page failed.
@@ -160,7 +156,6 @@ const OPTIONS = {
   doctor: { type: 'boolean', default: false },
   'verify-config': { type: 'boolean', default: false },
   online: { type: 'boolean', default: false },
-  'allow-ci': { type: 'boolean', default: false },
   page: { type: 'string' },
   pages: { type: 'string' },
   only: { type: 'string' },
@@ -168,7 +163,6 @@ const OPTIONS = {
   limit: { type: 'string' },
   first: { type: 'string' },
   count: { type: 'string' },
-  shard: { type: 'string' },
 } as const;
 
 async function main(): Promise<void> {
@@ -214,32 +208,18 @@ async function main(): Promise<void> {
 
   const limitRaw = values.limit ?? values.first ?? values.count;
   const limit = limitRaw ? Number.parseInt(String(limitRaw), 10) : undefined;
-  const shard = parseShard(values.shard ? String(values.shard) : undefined);
-  if (values.shard && !shard) {
-    console.error(`❌ --shard expects K/N, got "${values.shard}"`);
-    process.exit(1);
-  }
 
   // Pages whose source files the CLI pipeline has not produced yet are dropped
   // from an unfiltered run. Recording them would boot a dev server in a
   // directory that does not exist and report four failures for work that simply
   // has not happened. Naming one explicitly still records it — and still fails,
   // which is the right answer to "record this specific thing that is missing".
-  // On a runner, also drop any page that boots its own dev server. Those exist
-  // to record the scaffolded apps, which only exist after the local-only CLI
-  // pipeline has run — and booting one in CI would spend minutes waiting for a
-  // server in a directory that was never created.
-  const notYetProduced = PAGES.filter(
+  const missingGenerated = PAGES.filter(
     (p) => p.generated && !existsSync(join(ROOT, p.ideFile)),
   );
-  const ciExcluded =
-    isCi() && !values['allow-ci']
-      ? PAGES.filter((p) => p.devServer && !notYetProduced.includes(p))
-      : [];
-  const missingGenerated = [...notYetProduced, ...ciExcluded];
 
-  // Pages listed in SKIP_RECORDING stay registered (doctor, CI groups, the
-  // note) but are never recorded, by any selection, locally or in CI.
+  // Pages listed in SKIP_RECORDING stay registered (doctor, the note) but are
+  // never recorded, by any selection.
   const notRecorded = PAGES.filter((p) => p.id in SKIP_RECORDING);
   const recordable = PAGES.filter((p) => !(p.id in SKIP_RECORDING));
   for (const p of notRecorded) {
@@ -247,27 +227,16 @@ async function main(): Promise<void> {
   }
 
   const idList = values.pages ?? values.only;
-  const { pages: targetPages, shard: applied } = selectPages(recordable, {
+  const { pages: targetPages } = selectPages(recordable, {
     ids: idList ? String(idList).split(',').map((s) => s.trim()).filter(Boolean) : undefined,
     page: values.page ? String(values.page) : pageWord,
     filter: values.filter ? String(values.filter) : undefined,
     queries,
     limit: limit && Number.isFinite(limit) ? limit : undefined,
-    shard,
     excluded: new Set(missingGenerated.map((p) => p.id)),
   });
 
-  if (applied) {
-    console.log(
-      `\n🧩 [Matrix Sharding]: Worker Shard ${applied.index}/${applied.total} -> Recording ${targetPages.length} pages (positions ${applied.positions.join(', ')})`,
-    );
-  }
-
   if (targetPages.length === 0) {
-    if (applied) {
-      console.log(`\nℹ️ [Matrix Sharding]: No pages assigned to this worker shard. Exiting cleanly.`);
-      process.exit(0);
-    }
     if (notRecorded.length > 0 && selectPages(PAGES, {
       ids: idList ? String(idList).split(',').map((s) => s.trim()).filter(Boolean) : undefined,
       page: values.page ? String(values.page) : pageWord,
@@ -284,21 +253,13 @@ async function main(): Promise<void> {
   }
 
   if (missingGenerated.length > 0 && !targetPages.some((p) => missingGenerated.includes(p))) {
-    if (notYetProduced.length > 0) {
-      console.log(
-        `\nℹ️ Skipping ${notYetProduced.length} page(s) whose files the CLI pipeline has not produced yet:`,
-      );
-      console.log(`   ${notYetProduced.map((p) => p.id).join(', ')}`);
-      console.log(
-        `   Produce them with: npm run capture -- --scaffold && npm run capture -- --distribute`,
-      );
-    }
-    if (ciExcluded.length > 0) {
-      console.log(
-        `\nℹ️ Skipping ${ciExcluded.length} page(s) that boot their own dev server: CI does not run the CLI pipeline (pass --allow-ci to include them).`,
-      );
-      console.log(`   ${ciExcluded.map((p) => p.id).join(', ')}`);
-    }
+    console.log(
+      `\nℹ️ Skipping ${missingGenerated.length} page(s) whose files the CLI pipeline has not produced yet:`,
+    );
+    console.log(`   ${missingGenerated.map((p) => p.id).join(', ')}`);
+    console.log(
+      `   Produce them with: npm run capture -- --scaffold && npm run capture -- --distribute`,
+    );
   }
 
   // Pages that boot their own dev server do not touch this repo's frontend or

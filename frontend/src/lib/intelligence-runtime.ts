@@ -19,9 +19,9 @@ import { AgnoAgent } from "@ag-ui/agno";
 
 const AGNO_URL = process.env.AGNO_AGENT_URL ?? "http://localhost:8010/agui";
 
-// Treat empty/whitespace values as absent. A GitHub Actions `${{ secrets.X }}`
-// reference to a secret that does not exist expands to an empty string, which
-// still *defines* the variable — so a plain `??` or truthiness check on
+// Treat empty/whitespace values as absent. A `KEY=` line left empty in an env
+// file expands to an empty string, which still *defines* the variable — so a
+// plain `??` or truthiness check on
 // process.env would sail past it and hand Intelligence an empty credential.
 const firstSet = (...values: (string | undefined)[]) =>
   values.find((v) => typeof v === "string" && v.trim().length > 0)?.trim();

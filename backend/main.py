@@ -34,7 +34,7 @@ _ALLOWED_ORIGINS = [
     if o.strip()
 ]
 
-# `.strip()` so a key pasted into a CI secret with a stray newline is caught
+# `.strip()` so a key pasted into an env file with a stray newline is caught
 # here, where the message names it, rather than much later as an illegal HTTP
 # header value reported as a generic connection error.
 if not (os.getenv("OPENAI_API_KEY") or "").strip():

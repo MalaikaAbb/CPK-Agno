@@ -10,8 +10,8 @@
 | `zod` | — | **4.4.3** |
 | `agno` | — | see `backend/pyproject.toml` |
 
-6 pages drifted. Two findings here are not about the docs at all — they are
-defects in this harness that the pipeline could never have caught.
+6 pages drifted. One finding here is not about the docs at all — it is a
+defect in this harness that the pipeline could never have caught.
 
 ---
 
@@ -51,7 +51,7 @@ It did not show the feature failing — it showed the harness never asking for i
 **Page:** `/agno/human-in-the-loop/governed-actions`, added 2026-09-04
 **Route:** `/human-in-the-loop/governed-actions` (new)
 
-Found only by running the sitemap comparison by hand — see §5.
+Found only by running the sitemap comparison by hand.
 
 ### 2a. `z.record(z.unknown())` does not compile on zod 4
 
@@ -157,25 +157,6 @@ only. The drawer still gates on a license status and stays locked without one.
 Nothing reconciles these.
 
 Also newly named and never defined: `SL_ENABLED`.
-
----
-
-## 5. Tooling gap found while doing this sync — HIGH
-
-`npm run drift:sync` compares hashes of pages already in the manifest. It never
-fetches the sitemap, so a page appearing or disappearing upstream is invisible
-to it — that comparison lives solely in the `/doc-sync` server action.
-
-A clean CLI run prints **NO DOC DRIFT**, which reads as "the docs have not
-moved" when it only means "the pages we already knew about have not moved".
-`governed-actions` (§2) was invisible for exactly this reason, and so was the
-delisting in §3.
-
-Running the comparison by hand found 8 URLs under `/agno` neither tracked nor
-previously recorded: 7 `/intelligence/*` renames plus `/webmcp`.
-
-**Fixed:** the CLI script now prints its own scope on every run, and the
-manifest's `sitemap` block is rebuilt from what the sitemap actually lists.
 
 ---
 

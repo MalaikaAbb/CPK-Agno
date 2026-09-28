@@ -29,11 +29,10 @@ export default function Page() {
 
       <Callout tone="info" title="New page, first covered in this sync">
         <code>/agno/human-in-the-loop/governed-actions</code> appeared in the
-        sitemap on 2026-09-04. It was invisible to{" "}
-        <code>npm run drift:sync</code>, which only re-hashes pages already in
-        the manifest — the sitemap comparison that finds new pages lives solely
-        in the <code>/doc-sync</code> action. Found by running that comparison
-        by hand.
+        sitemap on 2026-09-04. A check that only re-hashes pages already in
+        the manifest cannot see it — the sitemap comparison that finds new
+        pages lives in the <code>/doc-sync</code> action. Found by running that
+        comparison by hand.
       </Callout>
 
       <Callout tone="warn" title="`z.record(z.unknown())` does not compile on zod 4">

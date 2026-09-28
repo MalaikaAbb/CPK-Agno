@@ -98,7 +98,7 @@ repo-root `.env`; the automation's job ends when the CLI exits.
 |---|---|
 | Node + npx on PATH | The whole flow is `npx`-driven |
 | Network | Downloads the `copilotkit` package and talks to Intelligence |
-| A signed-in CopilotKit CLI session | `create` reuses an existing session and only opens browser sign-in when there is none — and refuses outright in a shell with no terminal. This is why the flow is local-only and not CI-able. Run `npm run capture -- --login` once first |
+| A signed-in CopilotKit CLI session | `create` reuses an existing session and only opens browser sign-in when there is none — and refuses outright in a shell with no terminal. This is why the flow needs a person at the keyboard. Run `npm run capture -- --login` once first |
 | Working directory | The app folder is created *under the cwd* — this folder — named at step 4 |
 
 ---
@@ -469,7 +469,7 @@ editing the config.
   wording without warning. Log the resolved version with every run so a failure
   can be attributed to a CLI change rather than to the driver; pin an exact
   version when a run must be reproducible.
-- **CI: out of scope by design.** Step 6 needs interactive browser sign-in, and
+- **Interactive by design.** Step 6 needs interactive browser sign-in, and
   the CLI refuses to run in a shell with no terminal.
 
 ---

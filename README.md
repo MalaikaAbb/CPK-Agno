@@ -9,7 +9,7 @@ A navigable, working test harness covering every page of the CopilotKit Agno doc
 | **AG-UI packages**      | `@ag-ui/agno` 0.0.6 · `@ag-ui/client` 0.0.59                                                                                                                          |
 | **Frontend**            | Next.js 16.3.0 (App Router) · React 19.2 · TypeScript · Tailwind 4                                                                                                    |
 | **Backend**             | Python 3.12 · Agno 2.8.6 · FastAPI/AgentOS                                                                                                                            |
-| **Build status**        | No CI. Locally verified: 24 doc routes + 17 demo routes, live agent run ✅, rendered source byte-matches disk ✅. Typecheck (`npx tsc --noEmit`) passing on 1.73.3, 2026-09-23. |
+| **Build status**        | Locally verified: 24 doc routes + 17 demo routes, live agent run ✅, rendered source byte-matches disk ✅. Typecheck (`npx tsc --noEmit`) passing on 1.73.3, 2026-09-23. |
 
 ---
 

@@ -26,19 +26,13 @@ DEFAULT_MODEL = os.getenv("OPENAI_MODEL", "gpt-5.4-mini")
 # these unset meant the agent gave up on opening a socket after 5 seconds.
 #
 # That is invisible on an idle developer machine, where connecting takes about
-# 100ms. It is not invisible on a CI runner: every recorded demo on GitHub
-# Actions failed with
+# 100ms. It is not invisible on a machine that is still busy with installs, a
+# Turbopack build and a browser when the agent's first call goes out: every
+# recorded demo there failed with
 #
 #     ERROR  API connection error from OpenAI API: Connection error.
 #
 # which is how `APIConnectionError` stringifies a wrapped `ConnectTimeout`.
-#
-# The load is one runner's own, not contention between the shards — each matrix
-# job gets its own VM. That single VM runs `uv sync`, two npm installs, a
-# Playwright browser download, an apt install of ffmpeg, a Turbopack build and
-# Chromium under xvfb, and the agent's first call goes out while it is still
-# busy with the tail of that. The Node-side credential check passed in the same
-# job because it runs before any of it starts and allows itself 20 seconds.
 #
 # Connect stays separate from read: a slow connect is worth waiting for, a hung
 # one is not, and streaming replies still need a long read budget.
@@ -64,7 +58,7 @@ def _model() -> OpenAIChat:
     """
     return OpenAIChat(
         id=DEFAULT_MODEL,
-        # A key pasted into a CI secret can arrive with surrounding whitespace,
+        # A key pasted into an env file can arrive with surrounding whitespace,
         # which becomes an illegal HTTP header value rather than a clean 401.
         api_key=(os.getenv("OPENAI_API_KEY") or "").strip() or None,
         client_params={

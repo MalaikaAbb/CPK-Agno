@@ -127,7 +127,7 @@ const DEMO_PAGES: PageDefinition[] = [
     route: 'quickstart',
     generated: true,
 
-    // What the starter declares. Also the file whose absence tells the runner
+    // What the starter declares. Also the file whose absence tells the recorder
     // this manager's app has not been scaffolded and installed yet. 1-24 is the
     // scripts block plus the pinned @copilotkit/* and @ag-ui/* dependencies —
     // the versions the rest of the clip is about.
@@ -184,8 +184,8 @@ const DEMO_PAGES: PageDefinition[] = [
 /**
  * Pages that stay registered but are never filmed.
  *
- * They keep their route, their doctor entry and their CI group, so drift and
- * coverage still track them and the findings still hold. Only the camera is
+ * They keep their route and their doctor entry, so drift and coverage still
+ * track them and the findings still hold. Only the camera is
  * off. A page belongs here when a clip would show nothing the findings do not
  * already say, or would film a wall rather than the feature.
  *
@@ -217,10 +217,10 @@ export const PAGES = definePages([
     // "it worked" is not a claim you can make without them on screen.
     //
     // This used to be package.json, which defeated the point -- it declares
-    // RANGES, so the clip showed "^1.69.2" while the run it documented had
-    // installed 1.69.3. VERSIONS.md is generated after install (see
-    // ci/write-versions.mjs) and names what actually resolved. package.json
-    // stays as the first tab: the range is still what a reader would write in
+    // RANGES, so the clip showed "^1.69.2" while the install it documented had
+    // resolved 1.69.3. VERSIONS.md is generated after install (see
+    // scripts/write-versions.mjs, which `npm run doctor` runs) and names what
+    // actually resolved. package.json stays as the first tab: the range is still what a reader would write in
     // their own project, and the `overrides` block is a real constraint.
     ideFile: 'frontend/VERSIONS.md',
     startLine: 6,

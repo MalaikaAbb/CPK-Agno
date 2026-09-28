@@ -3,7 +3,10 @@
  *  ADAPT THIS FILE — 3 of 3
  * ═══════════════════════════════════════════════════════════════════════════
  *
- * One entry per doc page, in the order the doc nav lists them.
+ * One entry per doc page, in the order the project owner wants the clips
+ * numbered: Basics, Custom Look and Feel, Human in the Loop, Generative UI,
+ * App Control, Threads, Backend, then the pages that are not filmed. Position
+ * here is the NN in each filename, so moving an entry renumbers its clip.
  *
  * Entries are deliberately short. `docUrl`, `demoUrl` and the output filename
  * are derived from `project.config.ts` plus the fields below, so no entry can
@@ -16,12 +19,15 @@
  *
  * ── Scope, for this repo ───────────────────────────────────────────────────
  * `route` + `demoSuffix` is the only demo URL a page can have, and the doctor
- * errors on any that is not 200. This app's 21 doc routes include 5 that are
- * reference material with no `demo-chat` page — `/`, `/threads`,
- * `/threads/import`, `/threads/architecture`, and
- * `/generative-ui/your-components/interactive` (an upstream stub). They are
- * deliberately absent below rather than registered and broken. See the repo
- * README's autorecorder section.
+ * errors on any that is not 200. Some doc routes have no `demo-chat` page and
+ * are deliberately absent below rather than registered and broken: `/`,
+ * `/threads`, `/threads/import` and `/threads/architecture` are reference
+ * material, and `/webmcp` is tracked for drift with nothing implemented behind
+ * it (see the README's §8).
+ * `/generative-ui/your-components/interactive` also has no demo but *is*
+ * registered, as a `docOnly` take — the upstream page is a stub, so the clip
+ * shows the doc and this repo's source for it. See the repo README's
+ * autorecorder section.
  *
  * Everything here mirrors `frontend/src/lib/nav-config.ts`, which is the app's
  * single source of truth for route -> doc-page mapping. `docPath` is that
@@ -37,7 +43,167 @@
  * doctor recognises, so files carrying only that form are unguarded.)
  */
 
-import { definePages } from '../core/types';
+import { definePages, type PageDefinition } from '../core/types';
+
+/**
+ * The scaffolded app, running — video 3 of each package manager's set.
+ *
+ * The other two are the CLI creating the project and that manager installing
+ * it, both in `config/cli.config.ts`. This one is the payoff, and it is a
+ * recording of the real app rather than a re-enactment: the dev server filmed
+ * booting in the terminal is the same process that serves the page driven
+ * immediately afterwards.
+ *
+ * The order on screen is how someone would actually check a fresh scaffold:
+ *
+ *   1. the doc page that told them to run the CLI
+ *   2. `package.json` — what the starter declares
+ *   3. the lockfile — what this manager actually resolved, pinned
+ *   4. the app's own CopilotKit code, so the chat below has a source
+ *   5. `<pm> run dev` booting, in a terminal
+ *   6. the app open in a browser, asked a question, answering
+ *
+ * Steps 2 and 3 are the pair that matters. `package.json` carries RANGES, so on
+ * its own it cannot answer "which versions is this?" — and the resolved set is
+ * exactly where four package managers can differ. The lockfile is where that
+ * difference is written down, which is why this tab is a different file in each
+ * set.
+ *
+ * These four are appended LAST in `definePages`, after every doc page, so the
+ * matrix takes the highest order numbers and no existing page's filename index
+ * moves when they are added or removed.
+ *
+ * ── Ports ─────────────────────────────────────────────────────────────────
+ * 3011–3014, and neither 3000/3010 nor 3121–3124.
+ *
+ * Not 3010 (this repo's own frontend) or 3000 (other apps), and a recording that
+ * quietly used *that* would look like a pass while proving nothing about the
+ * scaffold. Not 3121–3124 either, and that is not superstition: this block
+ * ships to every framework repo, so every copy that keeps the reference's
+ * numbers picks the same ports — and a sibling repo's scaffold left running on
+ * one of them is enough for the dev server here to fail with EADDRINUSE while
+ * the browser happily records *that other framework's app*. Each repo gets its
+ * own range; this one is Agno's.
+ *
+ * ── The starter this records ──────────────────────────────────────────────
+ * Agno is a Python-agent starter. Its `dev` script is
+ *
+ *   npm run dev:infra && concurrently "npm run dev:ui" "npm run dev:agent" \
+ *     --names ui,agent --prefix-colors blue,green --kill-others
+ *
+ * so three things share one terminal: an env-var pre-check, `next dev` (Next
+ * 16, no `--turbopack` flag), and the `uv`-run Python agent. `readyPattern`
+ * therefore has to pick the UI's ready line out of interleaved output that
+ * concurrently prefixes with `[ui] ` / `[agent] `. It is matched unanchored
+ * against the terminal buffer, so the prefix sits harmlessly in front of it.
+ *
+ * `readyPattern` is UNVERIFIED against a real boot — the pipeline has not been
+ * run in this repo — and it is read off `1-cli-testing/yarn/app/package.json`
+ * plus what Next 16 prints when it binds. If a future starter changes that
+ * wording the recorder waits out the timeout and reports that the server never
+ * started, which is the right failure: it never became reachable in a way this
+ * config recognises.
+ */
+const DEMO_PAGES: PageDefinition[] = [
+  { pm: 'npm', command: 'npm', args: ['run', 'dev'], lockfile: 'package-lock.json', port: 3011 },
+  { pm: 'pnpm', command: 'pnpm', args: ['run', 'dev'], lockfile: 'pnpm-lock.yaml', port: 3012 },
+  { pm: 'yarn', command: 'yarn', args: ['run', 'dev'], lockfile: 'yarn.lock', port: 3013 },
+  // bun 1.2 writes a text `bun.lock`; older bun wrote the binary `bun.lockb`,
+  // which has nothing readable to put on screen. The doctor names this file if
+  // the installed bun produced the other one.
+  { pm: 'bun', command: 'bun', args: ['run', 'dev'], lockfile: 'bun.lock', port: 3014 },
+].map(({ pm, command, args, lockfile, port }) => {
+  const app = `1-cli-testing/${pm}/app`;
+  return {
+    id: `demo-${pm}`,
+    name: `${pm} · 3 · Scaffolded app - manifest, lockfile, dev server and a live agent`,
+    videoName: `Demo-${pm}`,
+    // Names the file as the third of this manager's set rather than by doc-nav
+    // position, so one manager's three clips sort together.
+    videoFile: `${pm}-3-Demo`,
+    docPath: 'quickstart?agent=starter',
+    // Unused for these pages — the demo URL comes from devServer — but kept
+    // meaningful so logs read sensibly.
+    route: 'quickstart',
+    generated: true,
+
+    // What the starter declares. Also the file whose absence tells the recorder
+    // this manager's app has not been scaffolded and installed yet. 1-24 is the
+    // scripts block plus the pinned @copilotkit/* and @ag-ui/* dependencies —
+    // the versions the rest of the clip is about.
+    ideFile: `${app}/package.json`,
+    startLine: 1,
+    endLine: 24,
+    extraTabs: [
+      // What it resolved to. A lockfile is long and mostly uninteresting; its
+      // head is the part that identifies the tree — format version, then the
+      // first resolved entries.
+      { filePath: `${app}/${lockfile}`, startLine: 1, endLine: 26 },
+      // The CopilotKit integration itself — the imports, the agent id the
+      // threads drawer and chat provider both address, and the top of the
+      // component behind the chat that answers a few seconds later.
+      { filePath: `${app}/src/app/page.tsx`, startLine: 1, endLine: 30 },
+    ],
+
+    // The starter's own suggestion chip, and the one prompt it can demonstrably
+    // answer end to end: the agent calls `get_weather`, and `useRenderTool` in
+    // src/app/page.tsx renders src/components/weather.tsx for it. So a correct
+    // reply is visible as a weather card, not just as text.
+    prompt: 'The install just finished. What is the weather like in San Francisco?',
+    waitAfterPromptMs: 5000,
+
+    // `readyPattern` fires on Next's bind line, which it prints before the
+    // first route is compiled. Observed 2026-09-08: pnpm reported ready at
+    // 191s and the very next page.goto still timed out at the 45s default,
+    // because Turbopack was mid first compile. The server was fine; the cap
+    // was wrong. Raise the nav ceiling rather than loosen the ready check —
+    // a ready signal that waits for a compile would hide a server that binds
+    // and then dies.
+    timeouts: { demoNavMs: 240_000 },
+
+    devServer: {
+      cwd: app,
+      command,
+      args,
+      env: { PORT: String(port), BROWSER: 'none' },
+      // Next 16 prints "- Local:  http://localhost:<port>" when it binds and
+      // "✓ Ready in <n>s" when the first compile lands; either means serving.
+      // Neither string is printed by dev:infra or by the uvicorn-hosted agent,
+      // so this cannot fire on the wrong half of the concurrently pair.
+      readyPattern: /Ready in \d|Local:\s+https?:\/\/localhost/i,
+      // A first `next dev` compiles the whole app; on a cold cache this is slow
+      // and a tighter cap would report a failure for a server that was fine.
+      readyTimeoutMs: 240_000,
+      originUrl: `http://localhost:${port}`,
+      demoPath: '/',
+      title: `${command} run dev`,
+    },
+  };
+});
+
+/**
+ * Pages that stay registered but are never filmed.
+ *
+ * They keep their route and their doctor entry, so drift and coverage still
+ * track them and the findings still hold. Only the camera is
+ * off. A page belongs here when a clip would show nothing the findings do not
+ * already say, or would film a wall rather than the feature.
+ *
+ * Intelligence and the two new upstream pages are excluded by standing
+ * instruction from the project owner, not by accident. Do not re-enable one
+ * without asking: an empty entry here is how a page silently starts recording
+ * again.
+ */
+export const SKIP_RECORDING: Record<string, string> = {
+  'intelligence-memories': 'memory is not entitled on this CopilotKit org (403 MEMORY_NOT_ENTITLED)',
+  learning: 'owner instruction: Intelligence Learning is not recorded',
+  'intelligence-learned-skills': 'owner instruction: Intelligence Learned Skills is not recorded',
+  markdown:
+    'owner instruction: not reachable from the docs sidebar, so not under test yet',
+  'jev-generative-ui':
+    'owner instruction: not reachable from the docs sidebar, so not under test yet',
+  'message-history': 'owner instruction: tracked and built 2026-09-22, not recorded yet',
+};
 
 export const PAGES = definePages([
   {
@@ -46,17 +212,27 @@ export const PAGES = definePages([
     videoName: 'Quickstart',
     docPath: 'quickstart',
     route: 'quickstart',
-    // Quickstart leads with the dependency manifest, always: a demo is only
-    // meaningful against known versions, and CopilotKit and AG-UI both move fast
-    // enough that "it worked" is not a claim you can make without them on screen.
-    // The `overrides` block is inside the range on purpose -- the @ag-ui/client
-    // pin is a real constraint, not noise.
-    ideFile: 'frontend/package.json',
-    startLine: 12,
-    endLine: 27,
-    // Then the path itself: the chat, the runtime binding, and the Python side
-    // that answers it.
+    // Quickstart leads with the versions, always: a demo is only meaningful
+    // against known ones, and CopilotKit and AG-UI both move fast enough that
+    // "it worked" is not a claim you can make without them on screen.
+    //
+    // This used to be package.json, which defeated the point -- it declares
+    // RANGES, so the clip showed "^1.69.2" while the install it documented had
+    // resolved 1.69.3. VERSIONS.md is generated after install (see
+    // scripts/write-versions.mjs, which `npm run doctor` runs) and names what
+    // actually resolved. package.json stays as the first tab: the range is still what a reader would write in
+    // their own project, and the `overrides` block is a real constraint.
+    ideFile: 'frontend/VERSIONS.md',
+    startLine: 6,
+    endLine: 25,
+    // Then the manifest, and the path itself: the chat, the runtime binding,
+    // and the Python side that answers it.
     extraTabs: [
+      {
+        filePath: 'frontend/package.json',
+        startLine: 12,
+        endLine: 27,
+      },
       {
         filePath: 'frontend/src/app/quickstart/demo-chat/page.tsx',
         startLine: 13,
@@ -73,7 +249,7 @@ export const PAGES = definePages([
         endLine: 53,
       },
     ],
-    prompt: 'Can you tell me a joke?',
+    prompt: 'Hey, are you connected? Tell me a quick fun fact about kites.',
     waitAfterPromptMs: 4000,
   },
   {
@@ -85,48 +261,39 @@ export const PAGES = definePages([
     ideFile: 'frontend/src/app/prebuilt-components/demo-chat/page.tsx',
     startLine: 58,
     endLine: 94,
-    prompt: 'What is CopilotKit?',
-    prompts: ['What is CopilotKit?'],
+    prompt: 'In two sentences, what does CopilotKit do?',
+    prompts: ['In two sentences, what does CopilotKit do?'],
     waitAfterPromptMs: 1500,
   },
   {
-    id: 'threads-drawer',
-    name: 'Rich Threads - Threads Drawer',
-    videoName: 'ThreadsDrawer',
-    docPath: 'prebuilt-components/copilot-threads-drawer',
-    route: 'threads/drawer',
-    ideFile: 'frontend/src/app/threads/drawer/demo-chat/page.tsx',
-    startLine: 19,
-    endLine: 34,
-    // Threads are licensed. Unlicensed, the drawer renders its locked view --
-    // which is the correct result, and what this recording shows. The chat
-    // beside it is not licensed and answers normally.
-    prompt: 'Give me a one-line summary of what threads are for.',
-    waitAfterPromptMs: 4000,
+    id: 'slots',
+    name: 'Custom Look and Feel - Slots',
+    videoName: 'Slots',
+    docPath: 'custom-look-and-feel/slots',
+    route: 'custom-look-and-feel/slots',
+    ideFile: 'frontend/src/app/custom-look-and-feel/slots/demo-chat/page.tsx',
+    startLine: 66,
+    endLine: 111,
+    prompt: 'Testing level one: the default slots. Say hi back.',
+    prompts: [
+      'Testing level one: the default slots. Say hi back.',
+      'Level two now, with the props override. Still with me?',
+      'And level three, the custom component. Say something short.',
+    ],
+    waitAfterPromptMs: 1500,
   },
   {
-    id: 'threads-headless',
-    name: 'Rich Threads - Headless Threads',
-    videoName: 'ThreadsHeadless',
-    docPath: 'headless-threads',
-    route: 'threads/headless',
-    ideFile: 'frontend/src/app/threads/headless/demo-chat/page.tsx',
-    startLine: 184,
-    endLine: 203,
-    prompt: 'Say hello in one short sentence.',
+    id: 'headless-ui',
+    name: 'Custom Look and Feel - Headless UI',
+    videoName: 'HeadlessUI',
+    docPath: 'custom-look-and-feel/headless-ui',
+    route: 'custom-look-and-feel/headless-ui',
+    ideFile:
+      'frontend/src/app/custom-look-and-feel/headless-ui/demo-chat/page.tsx',
+    startLine: 21,
+    endLine: 50,
+    prompt: 'How is the weather in London today?',
     waitAfterPromptMs: 4000,
-  },
-  {
-    id: 'threads-lifecycle',
-    name: 'Rich Threads - Thread & History Lifecycle',
-    videoName: 'ThreadsLifecycle',
-    docPath: 'threads-lifecycle',
-    route: 'threads/lifecycle',
-    ideFile: 'frontend/src/app/threads/lifecycle/demo-chat/page.tsx',
-    startLine: 40,
-    endLine: 67,
-    prompt: 'Remember the number 42 for me.',
-    waitAfterPromptMs: 3000,
   },
   {
     id: 'programmatic-control',
@@ -138,7 +305,7 @@ export const PAGES = definePages([
       'frontend/src/app/custom-look-and-feel/programmatic-control/demo-chat/page.tsx',
     startLine: 69,
     endLine: 85,
-    prompt: "What's the weather in Tokyo?",
+    prompt: 'Is it raining in Tokyo right now?',
     waitAfterPromptMs: 4000,
   },
   {
@@ -160,37 +327,58 @@ export const PAGES = definePages([
         endLine: 30,
       },
     ],
-    prompt: 'Hello agent! Testing inspector.',
+    prompt: 'Quick check: what is 17 times 23?',
     waitAfterPromptMs: 1500,
   },
   {
-    id: 'slots',
-    name: 'Custom Look and Feel - Slots',
-    videoName: 'Slots',
-    docPath: 'custom-look-and-feel/slots',
-    route: 'custom-look-and-feel/slots',
-    ideFile: 'frontend/src/app/custom-look-and-feel/slots/demo-chat/page.tsx',
-    startLine: 66,
-    endLine: 111,
-    prompt: 'Hello from customized slots level 1!',
-    prompts: [
-      'Hello from customized slots level 1!',
-      'Hello from slot level 2 props override!',
-      'Hello from slot level 3 custom component!',
+    id: 'human-in-the-loop-governed-actions',
+    name: 'App Control - Governed Action Approval',
+    videoName: 'GovernedActions',
+    docPath: 'human-in-the-loop/governed-actions',
+    route: 'human-in-the-loop/governed-actions',
+    // The `#region governed-action` block -- the tool registration and the
+    // card it renders, rather than the chat route that merely triggers it.
+    ideFile: 'frontend/src/components/global-frontend-tools.tsx',
+    startLine: 79,
+    endLine: 136,
+    extraTabs: [
+      {
+        filePath: 'frontend/src/components/governed-action-card.tsx',
+        startLine: 26,
+        endLine: 50,
+      },
     ],
-    waitAfterPromptMs: 1500,
+    prompt:
+      'Please send an invoice reminder to acme@example.com, but check with me before it goes out.',
+    // Two turns, because the card has two answers and only one of them was
+    // ever filmed. The first request is harmless and gets approved; the second
+    // is destructive and gets rejected, which is the half that shows the
+    // policy actually stopping something.
+    prompts: [
+      'Please send an invoice reminder to acme@example.com, but check with me before it goes out.',
+      'Now permanently delete the acme@example.com customer record, but check with me before it goes through.',
+    ],
+    waitAfterPromptMs: 6000,
   },
   {
-    id: 'headless-ui',
-    name: 'Custom Look and Feel - Headless UI',
-    videoName: 'HeadlessUI',
-    docPath: 'custom-look-and-feel/headless-ui',
-    route: 'custom-look-and-feel/headless-ui',
-    ideFile:
-      'frontend/src/app/custom-look-and-feel/headless-ui/demo-chat/page.tsx',
-    startLine: 21,
-    endLine: 50,
-    prompt: "What's the weather in London?",
+    id: 'human-in-the-loop',
+    name: 'App Control - Human in the Loop',
+    videoName: 'HumanInTheLoop',
+    docPath: 'human-in-the-loop',
+    route: 'human-in-the-loop',
+    // The `#region human-in-the-loop` block -- the interrupt itself, rather than
+    // the chat route that merely triggers it.
+    ideFile: 'frontend/src/components/global-frontend-tools.tsx',
+    startLine: 138,
+    endLine: 181,
+    extraTabs: [
+      {
+        filePath: 'frontend/src/app/human-in-the-loop/demo-chat/page.tsx',
+        startLine: 13,
+        endLine: 26,
+      },
+    ],
+    prompt: 'I am naming a restaurant. Can you give me two good options?',
     waitAfterPromptMs: 4000,
   },
   {
@@ -203,7 +391,7 @@ export const PAGES = definePages([
       'frontend/src/app/generative-ui/your-components/display-only/demo-chat/page.tsx',
     startLine: 50,
     endLine: 74,
-    prompt: 'Show the weather card for Tokyo: 77 degrees, clear',
+    prompt: 'Show me a weather card for Tokyo. It is 77 degrees and clear today.',
     waitAfterPromptMs: 4000,
   },
   {
@@ -215,7 +403,10 @@ export const PAGES = definePages([
     ideFile:
       'frontend/src/app/generative-ui/your-components/interactive/page.tsx',
     startLine: 1,
-    endLine: 16,
+    endLine: 25,
+    // Still no demo to drive: the 2026-08-30 sync added only a "Configure
+    // session storage" callout to the upstream stub, so the route mirrors that
+    // and nothing else. The clip shows the doc page and the route's source.
     docOnly: true,
     docViewDurationMs: 6000,
     prompt: 'N/A',
@@ -231,7 +422,37 @@ export const PAGES = definePages([
       'frontend/src/app/generative-ui/tool-rendering/demo-chat/page.tsx',
     startLine: 45,
     endLine: 80,
-    prompt: "What's the weather in Tokyo?",
+    prompt: 'Any rain expected in Tokyo this week?',
+    waitAfterPromptMs: 4000,
+  },
+  // -- Added 2026-09-11: three pages new upstream, identical under every
+  // framework prefix. After every existing doc page so no clip is renumbered.
+  {
+    id: 'frontend-cards',
+    name: 'Generative UI - Frontend-Driven Cards',
+    videoName: 'FrontendCards',
+    docPath: 'generative-ui/frontend-cards',
+    route: 'generative-ui/frontend-cards',
+    // Step 1: the renderer, verbatim.
+    ideFile: 'frontend/src/app/generative-ui/frontend-cards/event-card.tsx',
+    startLine: 7,
+    endLine: 27,
+    extraTabs: [
+      // Step 2: registered on the provider, props as published.
+      {
+        filePath: 'frontend/src/app/generative-ui/frontend-cards/demo-chat/page.tsx',
+        startLine: 145,
+        endLine: 166,
+      },
+      // Step 3: addMessage with role "activity", verbatim.
+      {
+        filePath: 'frontend/src/app/generative-ui/frontend-cards/deployment-watcher.tsx',
+        startLine: 12,
+        endLine: 34,
+      },
+    ],
+    prompt:
+      'Have you been shown any deployment card in this conversation? List the roles of every message you received.',
     waitAfterPromptMs: 4000,
   },
   {
@@ -247,33 +468,100 @@ export const PAGES = definePages([
     extraTabs: [
       {
         filePath: 'frontend/src/components/global-frontend-tools.tsx',
-        startLine: 20,
-        endLine: 71,
+        startLine: 29,
+        endLine: 77,
       },
     ],
-    prompt: 'Say hello to Malaika',
+    prompt: 'Can you say hello to Malaika for me?',
     waitAfterPromptMs: 4000,
   },
   {
-    id: 'human-in-the-loop',
-    name: 'App Control - Human in the Loop',
-    videoName: 'HumanInTheLoop',
-    docPath: 'human-in-the-loop',
-    route: 'human-in-the-loop',
-    // The `#region human-in-the-loop` block -- the interrupt itself, rather than
-    // the chat route that merely triggers it.
-    ideFile: 'frontend/src/components/global-frontend-tools.tsx',
-    startLine: 71,
-    endLine: 114,
+    id: 'threads-drawer',
+    name: 'Rich Threads - Threads Drawer',
+    videoName: 'ThreadsDrawer',
+    docPath: 'prebuilt-components/copilot-threads-drawer',
+    route: 'threads/drawer',
+    ideFile: 'frontend/src/app/threads/drawer/demo-chat/page.tsx',
+    startLine: 87,
+    endLine: 94,
     extraTabs: [
       {
-        filePath: 'frontend/src/app/human-in-the-loop/demo-chat/page.tsx',
-        startLine: 13,
-        endLine: 26,
+        // "Use the Drawer with a sidebar chat": the same drawer hosted by
+        // <CopilotSidebar>, one tab over on the demo.
+        filePath: 'frontend/src/app/threads/drawer/demo-chat/page.tsx',
+        startLine: 96,
+        endLine: 104,
       },
     ],
-    prompt: 'Can you show me two good options for a restaurant name?',
+    // Threads need Intelligence. Without it the drawer renders its locked view
+    // -- which is the correct result, and what this recording shows. The chat
+    // beside it needs no entitlement and answers normally.
+    prompt: 'In one line, what are threads for?',
     waitAfterPromptMs: 4000,
+  },
+  {
+    id: 'threads-headless',
+    name: 'Rich Threads - Headless Threads',
+    videoName: 'ThreadsHeadless',
+    docPath: 'headless-threads',
+    route: 'threads/headless',
+    ideFile: 'frontend/src/app/threads/headless/demo-chat/page.tsx',
+    // Shifted by the "one agent per thread" section added above the page.
+    startLine: 303,
+    endLine: 322,
+    extraTabs: [
+      {
+        // "Driving one agent per thread": the three-prop useAgent call.
+        filePath: 'frontend/src/app/threads/headless/demo-chat/page.tsx',
+        startLine: 9,
+        endLine: 35,
+      },
+    ],
+    prompt: 'Say hi in one short sentence.',
+    waitAfterPromptMs: 4000,
+    demo: {
+      // The panel mounts one `useAgent({ agentId, runtimeAgentId, threadId })`
+      // per thread. Registering two private agents against one runtime agent is
+      // the whole claim of the section, so a panel that never paints is the
+      // defect.
+      render: {
+        selector: '[data-testid="per-thread-agents"]',
+        required:
+          'The per-thread agent panel never rendered — useAgent({ agentId, runtimeAgentId, threadId }) did not mount.',
+      },
+      checks: [
+        {
+          selector: '[data-testid="thread-agent-run"]',
+          enabled: true,
+          ok: 'Thread-scoped agent is ready; runAgent() would address its own thread.',
+          message:
+            'The thread-scoped agent never became ready (isReady stayed false), so runAgent() could not address its thread.',
+        },
+      ],
+    },
+  },
+  {
+    id: 'threads-lifecycle',
+    name: 'Rich Threads - Thread & History Lifecycle',
+    videoName: 'ThreadsLifecycle',
+    docPath: 'threads-lifecycle',
+    route: 'threads/lifecycle',
+    // The page's own ThreadControls, then the readout that proves each step.
+    ideFile: 'frontend/src/app/threads/lifecycle/demo-chat/page.tsx',
+    startLine: 78,
+    endLine: 120,
+    extraTabs: [
+      {
+        filePath: 'frontend/src/app/threads/lifecycle/demo-chat/page.tsx',
+        startLine: 122,
+        endLine: 167,
+      },
+    ],
+    // Deliberately about nothing: the take is about the threadId, not the
+    // model. The old prompt asked it to "remember 42" across a thread and the
+    // clip filmed its opinion instead of anything the page says.
+    prompt: 'Say hello in one short sentence.',
+    waitAfterPromptMs: 3000,
   },
   {
     id: 'copilot-runtime',
@@ -281,9 +569,12 @@ export const PAGES = definePages([
     videoName: 'CopilotRuntime',
     docPath: 'copilot-runtime',
     route: 'backend/copilot-runtime',
+    // The three ids the demo offers and the /info readout beside them: two keys
+    // this runtime registers and one the page uses as its example but nothing
+    // here registers.
     ideFile: 'frontend/src/app/backend/copilot-runtime/demo-chat/page.tsx',
-    startLine: 24,
-    endLine: 50,
+    startLine: 34,
+    endLine: 61,
     extraTabs: [
       {
         filePath: 'frontend/src/app/api/copilotkit/[[...slug]]/route.ts',
@@ -292,10 +583,10 @@ export const PAGES = definePages([
       },
     ],
     // Two registered ids resolving to the same Agno process, one turn each.
-    prompt: 'Hello! Which agent id am I talking to?',
+    prompt: 'Hi! Which agent id am I talking to right now?',
     prompts: [
-      'Hello! Which agent id am I talking to?',
-      "What's the weather in Tokyo?",
+      'Hi! Which agent id am I talking to right now?',
+      'And what is the weather in Tokyo?',
     ],
     waitAfterPromptMs: 2000,
   },
@@ -308,8 +599,15 @@ export const PAGES = definePages([
     ideFile: 'frontend/src/app/backend/ag-ui/demo-chat/page.tsx',
     startLine: 70,
     endLine: 100,
-    prompt: "What's the weather in Tokyo?",
+    prompt: 'Any rain expected in Tokyo this week?',
     waitAfterPromptMs: 4000,
+    demo: {
+      sendTimeoutMs: 8000,
+      glideTo: [
+        { x: 450, y: 300, beatMs: 1500 },
+        { x: 450, y: 550, beatMs: 1500 },
+      ],
+    },
   },
   {
     id: 'error-debugging',
@@ -329,7 +627,174 @@ export const PAGES = definePages([
         endLine: 52,
       },
     ],
-    prompt: 'Testing the error reporting pipeline.',
+    prompt: 'Say anything. I am testing whether errors get reported.',
     waitAfterPromptMs: 4000,
   },
+  {
+    id: 'intelligence-learned-skills',
+    name: 'Intelligence - Skill delivery',
+    videoName: 'LearnedSkills',
+    docPath: 'intelligence/learned-skills',
+    route: 'intelligence/learned-skills',
+    // The page's one runnable snippet: `learnedSkills` on a BuiltInAgent,
+    // verbatim. Typechecks on runtime 1.73.3 (it did not on 1.72.0); since the
+    // 2026-09-23 sync it carries the uncommented placeholder revision.
+    ideFile: 'frontend/src/app/intelligence/learned-skills/built-in-agent.ts',
+    startLine: 41,
+    endLine: 50,
+    extraTabs: [
+      // No adapter to show for Agno, so the demo lists the two tool names the
+      // page reserves as absent rather than registered.
+      {
+        filePath: 'frontend/src/app/intelligence/learned-skills/demo-chat/page.tsx',
+        startLine: 7,
+        endLine: 32,
+      },
+    ],
+    prompt: 'List the skills you can load, then load the refund-policy skill and follow it.',
+    waitAfterPromptMs: 3000,
+  },
+  {
+    id: 'intelligence-memories',
+    name: 'Intelligence - User Memories',
+    videoName: 'Memories',
+    docPath: 'intelligence/memories',
+    route: 'intelligence/memories',
+    // The page's React component, verbatim. The 2026-09-21 sync moved its
+    // import to /v2, so the file compiles and the demo mounts it directly.
+    ideFile: 'frontend/src/app/intelligence/memories/memory-list.tsx',
+    startLine: 19,
+    endLine: 40,
+    extraTabs: [
+      // The option the page never mentions, and without which every memory
+      // route 404s at the runtime.
+      {
+        filePath: 'frontend/src/app/api/copilotkit-memory/[[...slug]]/route.ts',
+        startLine: 31,
+        endLine: 47,
+      },
+    ],
+    prompt: 'Please remember that I prefer concise status updates.',
+    waitAfterPromptMs: 3000,
+  },
+  {
+    id: 'learning',
+    name: 'Intelligence - Automatic Learning',
+    videoName: 'Learning',
+    docPath: 'learning',
+    route: 'learning',
+    // The page's runtime snippet, verbatim, and the two identifiers it leaves
+    // undefined supplied above it.
+    ideFile: 'frontend/src/lib/learning-runtime.ts',
+    startLine: 29,
+    endLine: 56,
+    extraTabs: [
+      // Where it is mounted: its own route, so the page's code cannot take
+      // down the app's main runtime.
+      {
+        filePath: 'frontend/src/app/api/copilotkit-learning/[[...slug]]/route.ts',
+        startLine: 1,
+        endLine: 23,
+      },
+    ],
+    prompt: 'Review this expense: $42 team lunch at Cafe Rio, receipt attached. Approve or flag it?',
+    // Turn 2 is the control on `default`, which the selector assigns nowhere.
+    prompts: [
+      'Review this expense: $42 team lunch at Cafe Rio, receipt attached. Approve or flag it?',
+      'Say hello in five words.',
+    ],
+    waitAfterPromptMs: 3000,
+  },
+  // -- Added 2026-09-21: two pages live upstream and tracked nowhere until this
+  // pass. Appended after every existing doc page so no clip is renumbered.
+  {
+    id: 'markdown',
+    name: 'Custom Look and Feel - Markdown Rendering',
+    videoName: 'MarkdownRendering',
+    docPath: 'custom-look-and-feel/markdown',
+    route: 'custom-look-and-feel/markdown',
+    // Level 1, the components map: the only one of the three techniques whose
+    // claims are about the props your component receives, and the reason the
+    // demo carries a probe row at all.
+    ideFile: 'frontend/src/app/custom-look-and-feel/markdown/demo-chat/page.tsx',
+    startLine: 156,
+    endLine: 183,
+    extraTabs: [
+      // Level 3, the bare component. §9 #3 says most slots reject one; this
+      // slot does not, which is the finding on the route page.
+      {
+        filePath: 'frontend/src/app/custom-look-and-feel/markdown/demo-chat/page.tsx',
+        startLine: 200,
+        endLine: 210,
+      },
+    ],
+    // Three turns, one per tab, each asking for the two tags the components map
+    // overrides. A reply with no heading and no link exercises nothing.
+    prompt:
+      "Reply in markdown with an '## Overview' heading and a link to https://docs.copilotkit.ai.",
+    prompts: [
+      "Reply in markdown with an '## Overview' heading and a link to https://docs.copilotkit.ai.",
+      "Same again, short: a '## Notes' heading and a link to https://streamdown.ai.",
+      "One more, two lines: a '## Raw' heading and a link to https://docs.copilotkit.ai/agno.",
+    ],
+    waitAfterPromptMs: 2500,
+  },
+  {
+    id: 'jev-generative-ui',
+    name: 'Cookbook - Jev: fast generative UI',
+    videoName: 'JevGenerativeUI',
+    docPath: 'cookbook/jev-generative-ui',
+    route: 'cookbook/jev-generative-ui',
+    // The half that runs: the published schemas, which are plain zod.
+    ideFile: 'frontend/src/app/cookbook/jev-generative-ui/workspaces.ts',
+    startLine: 27,
+    endLine: 44,
+    extraTabs: [
+      // The half that does not: the Jev call, verbatim, with the unresolvable
+      // vendor import acknowledged in place.
+      {
+        filePath: 'frontend/src/app/cookbook/jev-generative-ui/choose-panel.ts',
+        startLine: 28,
+        endLine: 50,
+      },
+      // The published picker, against an agent id nothing here registers.
+      {
+        filePath: 'frontend/src/app/cookbook/jev-generative-ui/demo-chat/page.tsx',
+        startLine: 148,
+        endLine: 160,
+      },
+    ],
+    // There is no chat on this demo and no agent behind it -- the take is
+    // `runJevAction` driving the prepared controls and then showing the
+    // published `send` going nowhere. Kept non-empty because `prompt` is
+    // required; the handler never reads it.
+    prompt: 'N/A - the picker drives an agent id nothing here can register.',
+    waitAfterPromptMs: 3000,
+  },
+  {
+    // Tracked 2026-09-22. Registered so coverage and the doctor see it, but in
+    // SKIP_RECORDING until the owner turns it on.
+    id: 'message-history',
+    name: 'Backend - Message History',
+    videoName: 'MessageHistory',
+    docPath: 'backend/message-history',
+    route: 'backend/message-history',
+    ideFile: 'frontend/src/app/api/copilotkit-trimmed/[[...slug]]/route.ts',
+    startLine: 18,
+    endLine: 25,
+    extraTabs: [
+      {
+        // The browser recipe, verbatim. Typechecks on 1.73.3; absent in 1.72.0.
+        filePath: 'frontend/src/app/backend/message-history/demo-chat/page.tsx',
+        startLine: 81,
+        endLine: 88,
+      },
+    ],
+    prompts: ['My name is Sam.', 'What is my name?'],
+    prompt: 'My name is Sam.',
+    waitAfterPromptMs: 4000,
+  },
+  // Last, always: these take the highest order numbers so adding or removing
+  // them never renumbers a doc page's video filename.
+  ...DEMO_PAGES,
 ]);

@@ -3,27 +3,24 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3010",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "record": "tsx ../autorecorder/cli.ts"
+    "record": "tsx ../autorecorder/cli.ts",
+    "test": "npx --yes tsx --conditions=react-server --test src/lib/*.test.ts"
   },
   "dependencies": {
     "@ag-ui/agno": "^0.0.6",
-    "@ag-ui/client": "0.0.58",
-    "@copilotkit/react-core": "^1.69.0",
-    "@copilotkit/runtime": "^1.69.0",
-    "next": "16.3.2",
+    "@ag-ui/client": "0.0.x",
+    "@copilotkit/react-core": "^1.73.3",
+    "@copilotkit/runtime": "^1.73.3",
+    "next": "16.3.3",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "server-only": "^0.0.1",
     "shiki": "^4.4.3",
     "zod": "^4.4.3"
-  },
-  "overrides": {
-    "@ag-ui/client": "0.0.58",
-    "@ag-ui/core": "0.0.57"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -31,7 +28,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^10",
-    "eslint-config-next": "16.3.2",
+    "eslint-config-next": "16.3.3",
     "tailwindcss": "^4",
     "typescript": "^7"
   }

@@ -1,40 +1,24 @@
-import {
-  CopilotRuntime,
-  CopilotKitIntelligence,
-  InMemoryAgentRunner,
-  createCopilotRuntimeHandler,
-} from "@copilotkit/runtime/v2";
-import { AgnoAgent } from "@ag-ui/agno";
+import { createCopilotRuntimeHandler } from "@copilotkit/runtime/v2";
 
-const AGNO_URL = process.env.AGNO_AGENT_URL ?? "http://localhost:8000/agui";
-const LICENSE_TOKEN = process.env.COPILOTKIT_LICENSE_TOKEN;
+import { createIntelligenceRuntime } from "@/lib/intelligence-runtime";
 
-const runtime = new CopilotRuntime({
-  // `default` is required: <CopilotThreadsDrawer> and useThreads fall back to
-  // DEFAULT_AGENT_ID ("default") when given no agentId, and threads are stored
-  // per agent id.
-  agents: {
-    default: new AgnoAgent({ url: AGNO_URL }),
-    agno_agent: new AgnoAgent({ url: AGNO_URL }),
-  },
-
-  ...(LICENSE_TOKEN
-    ? {
-        intelligence: new CopilotKitIntelligence({
-          apiKey: process.env.INTELLIGENCE_API_KEY ?? "",
-        }),
-        generateThreadNames: true,
-        identifyUser: (request: Request) => {
-          const id = request.headers.get("x-copilotkit-user-id") ?? "demo-user";
-          return { id, name: id === "demo-user" ? "Demo User" : id };
-        },
-        licenseToken: LICENSE_TOKEN,
-      }
-    : { runner: new InMemoryAgentRunner() }),
-});
+/**
+ * A dedicated runtime endpoint for the Rich Threads pages.
+ *
+ * While `/api/copilotkit` serves the standard agent features with in-memory
+ * execution, `/api/copilotkit-threads` is configured with CopilotKit
+ * Intelligence to persist and manage thread histories across sessions.
+ *
+ * The runtime itself lives in `@/lib/intelligence-runtime`, which `lib/health.ts`
+ * also reads to report whether Intelligence is configured.
+ *
+ * This mount is multi-route. The thread REST subtree — list, messages,
+ * events, state, rename, archive, delete — is dispatched only in multi-route
+ * mode, and it is what the Rich Threads pages all still publish.
+ */
 
 const handler = createCopilotRuntimeHandler({
-  runtime,
+  runtime: createIntelligenceRuntime(),
   basePath: "/api/copilotkit-threads",
 });
 

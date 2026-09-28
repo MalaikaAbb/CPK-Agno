@@ -1,5 +1,5 @@
 import { type Page } from 'playwright';
-import { humanClick, humanGlide, sleep } from '../core/overlays/cursor';
+import { beat, humanClick, humanGlide, sleep } from '../core/overlays/cursor';
 import { type PageActionHandler, type PageRecordConfig } from '../core/types';
 import { sendPrompt, waitForAgentResponseCompletion } from '../core/actions';
 
@@ -15,7 +15,7 @@ export const runProgrammaticAction: PageActionHandler = async (
       await humanGlide(page, dmBox.x + dmBox.width / 2, dmBox.y + dmBox.height / 2, 20);
       await humanClick(page);
       console.log(`   Clicked Dark Mode!`);
-      await sleep(1500);
+      await beat(1500);
     }
   }
 
@@ -27,6 +27,11 @@ export const runProgrammaticAction: PageActionHandler = async (
     submitSelector: 'button:has-text("Run agent")',
     clearFirst: true,
     timeoutMs: 12000,
+    // run() never clears the draft box -- it is a controlled input the page
+    // keeps so you can fire the same message again. The composer-emptied
+    // check would therefore never pass, and the retries would re-run the
+    // agent. The transcript wait below is the real proof the run happened.
+    expectInputToEmpty: false,
   });
 
   console.log(`   Waiting for the run to stream into the transcript...`);

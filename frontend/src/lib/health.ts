@@ -1,5 +1,7 @@
 import "server-only";
 
+import { INTELLIGENCE_CONFIGURED } from "./intelligence-runtime";
+
 /**
  * Reachability + configuration snapshot for the connection panel.
  *
@@ -14,7 +16,7 @@ export interface HealthReport {
   licenseKeySet: boolean;
 }
 
-export const AGNO_URL = process.env.AGNO_AGENT_URL ?? "http://localhost:8000/agui";
+export const AGNO_URL = process.env.AGNO_AGENT_URL ?? "http://localhost:8010/agui";
 
 export async function getHealth(): Promise<HealthReport> {
   // AgentOS serves /status alongside the /agui interface.
@@ -42,6 +44,9 @@ export async function getHealth(): Promise<HealthReport> {
   return {
     agent,
     agentUrl: AGNO_URL,
-    licenseKeySet: Boolean(process.env.NEXT_PUBLIC_COPILOTKIT_LICENSE_KEY),
+    // The entitlement is server-side configuration, so report what the Runtime
+    // actually reads (the project API key) rather than the browser-side
+    // publishable key the provider no longer takes.
+    licenseKeySet: INTELLIGENCE_CONFIGURED,
   };
 }

@@ -58,6 +58,13 @@ export interface ProjectConfig {
   demoSuffix: string;
 
   /**
+   * Project-wide overrides of the recorder's fixed waits. Optional; the
+   * defaults in `core/timeouts.ts` suit a warm Next.js dev server. Raise
+   * `demoNavMs` for a stack whose first request compiles the route.
+   */
+  timeouts?: Partial<import('../core/types').RecorderTimeouts>;
+
+  /**
    * Frontend path the browser calls to reach the agent, relative to
    * `frontendUrl` — e.g. '/api/copilotkit'.
    *
@@ -80,8 +87,8 @@ export const PROJECT: ProjectConfig = {
 
   docBaseUrl: 'https://docs.copilotkit.ai/agno',
 
-  frontendUrl: process.env.FRONTEND_URL || 'http://localhost:3000',
-  backendUrl: process.env.BACKEND_URL || 'http://localhost:8000',
+  frontendUrl: process.env.FRONTEND_URL || 'http://localhost:3010',
+  backendUrl: process.env.BACKEND_URL || 'http://localhost:8010',
   // Agno's AgentOS exposes /status, not /health. The repo README's troubleshooting
   // notes call this out: the doc's suggested /copilotkit/info does not exist here.
   backendHealthPath: '/status',

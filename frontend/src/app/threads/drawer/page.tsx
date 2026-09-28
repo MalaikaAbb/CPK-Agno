@@ -17,11 +17,42 @@ export default function Page() {
     <>
       <RouteHeader path="/threads/drawer" />
 
-      <Callout tone="premium" title="Locked without a license key">
-        The drawer renders a locked view in place of the thread list when no
-        license key is present. Seeing that locked panel is the correct
-        unlicensed outcome — it proves the component mounted and detected the
-        missing license, rather than failing to render.
+      <Callout tone="premium" title="Locked without Intelligence access">
+        The drawer renders a locked view in place of the thread list whenever
+        the Runtime reports no active entitlement. Seeing that locked panel is
+        the correct unentitled outcome: it proves the component mounted and
+        resolved its entitlement, rather than failing to render.
+      </Callout>
+
+      <Callout tone="info" title="The page stopped calling this a licensing question">
+        The 2026-09-21 sync renamed the section from{" "}
+        <strong>License</strong> to <strong>Intelligence access</strong>, and
+        the two calls to action followed: &ldquo;Get a free developer
+        account&rdquo; became, as of the 2026-09-23 sync, &ldquo;Start
+        cloud-hosted setup&rdquo; to &ldquo;create or select a project&rdquo;,
+        and the inline CTA&apos;s &ldquo;free Developer tier&rdquo; became
+        &ldquo;Connect a cloud-hosted project&rdquo;. The body is unchanged in
+        substance: a cloud-hosted project key for cloud-hosted deployments,{" "}
+        <code>COPILOTKIT_LICENSE_TOKEN</code> only for self-hosted and open
+        source. This page still never says whether the free tier survived the
+        rename. The new Plans page (<code>/agno/intelligence/plans</code>,
+        reference-only here) answers it: &ldquo;Every organization starts on{" "}
+        <strong>Developer</strong>, which is free&rdquo;. So the offer did not
+        go away, but a reader of the Drawer page has to find another page to
+        learn that.
+      </Callout>
+
+      <Callout tone="info" title="Two hosts for the same drawer">
+        The 2026-09-22 sync added &ldquo;Use the Drawer with a sidebar
+        chat&rdquo;: <code>&lt;CopilotSidebar defaultOpen&gt;</code> hosts the
+        drawer on the same terms as <code>&lt;CopilotChat&gt;</code>, because
+        it renders a <code>CopilotChat</code> inside itself and reads the same
+        configuration. The demo has a tab for each host. The snippet renders{" "}
+        <code>&lt;YourMainContent /&gt;</code> without defining it, so the demo
+        supplies a placeholder. The page also now warns that the drawer ships
+        only in <code>@copilotkit/react-core/v2</code>, and that its launcher
+        button appears on mobile viewports only; on desktop the drawer is always
+        visible, so no launcher is the intended result.
       </Callout>
 
       <Panel title="What it demonstrates">
@@ -36,8 +67,8 @@ export default function Page() {
         <div className="mt-4">
           <TryIt
             prompts={["Start a conversation, then pick another thread"]}
-            expect="With a license: selecting a row replays that conversation, and the New Conversation row resets the chat to a fresh welcome screen."
-            fail="Without a license the list area shows the locked view. A blank drawer with no locked state would mean the component failed to mount."
+            expect="With Intelligence access: selecting a row replays that conversation, and the New Conversation row resets the chat to a fresh welcome screen."
+            fail="Without it the list area shows the locked view. A blank drawer with no locked state would mean the component failed to mount."
           />
         </div>
       </Panel>

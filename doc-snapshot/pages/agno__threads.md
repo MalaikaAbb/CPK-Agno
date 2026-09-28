@@ -4,6 +4,10 @@
 
 
 
+## Overview
+
+Rich Threads are the persistence and conversation layer behind your agent's conversations. Users get rich history, continuity across devices, reconnection to active runs, and ready-made thread controls.
+
 <div
   aria-label="A support workspace using Threads Drawer to move between customer conversations while CopilotChat renders the selected case details."
   className="shell-docs-radius-surface relative mb-4 overflow-hidden border border-[var(--border)] bg-[var(--bg-surface)] shadow-[0px_16px_24px_-8px_rgba(1,5,7,0.12)] ring-1 ring-inset ring-white/70 dark:shadow-[0px_16px_32px_-10px_rgba(0,0,0,0.45)] dark:ring-white/10"
@@ -15,73 +19,82 @@
   />
 </div>
 
-<Callout type="info" title="See this in Inspector">
-  Open Inspector on localhost. Stay on **Threads** (it is the default).
-  Real threads appear when Intelligence is on. Enable Intelligence appears when it is off.
-
-  More detail: [Inspector](/agno/inspector).
-</Callout>
-
-
-## Get started
-
-Create a new CopilotKit app connected to cloud-hosted CopilotKit Intelligence. Your application and CopilotKit Runtime run locally while CopilotKit Intelligence stores and synchronizes Rich Threads.
-
 <Accordions>
-<Accordion title="Build and verify this with a coding agent">
-
-<DocsTrackedCopy surface="docs_threads_agent_prompt">
-
-```text
-Set up and verify a CopilotKit Rich Threads application with cloud-hosted
-CopilotKit Intelligence.
-
-First inspect this repository and follow its agent instructions. If this is not
-already a CLI-created CopilotKit Threads starter, run
-`npx copilotkit@latest init` and ask me to complete the interactive browser
-sign-in and CopilotKit Intelligence project selection when needed. Use the
-scaffolded local application and CopilotKit Runtime configuration.
-
-Keep the Threads Drawer that comes with the starter. Do not rebuild it or invent
-manual CopilotKit Intelligence environment configuration. Do not set up a local
-Intelligence service.
-
-Start the application and Runtime using the generated instructions. Create a
-conversation through the included Threads Drawer, reload or reopen it, and
-verify that the complete conversation returns. If browser interaction requires
-me, give me the exact step and continue after I confirm it.
-
-Finish by reporting the files changed, commands run, and the persistence check
-you completed. Stop and explain the blocker if the cloud-hosted setup cannot be
-completed; do not substitute an undocumented setup.
-```
-
-</DocsTrackedCopy>
-
-</Accordion>
+  <Accordion title="Starting fresh?">
+    Intelligence stores your conversation history and restores messages, generative UI, tool interactions, and multimodal inputs when users return.
+  </Accordion>
+  <Accordion title="Already using LangGraph or ADK persistence?">
+    Keep it. Rich Threads complement your existing setup with a consistent, interactive conversation experience for your users.
+  </Accordion>
 </Accordions>
 
-Or follow the steps yourself:
+## Start with your coding agent
 
-1. Run the interactive starter command:
+Copy this prompt into your coding agent to inspect your existing CopilotKit app and configure Rich Threads with CopilotKit Intelligence. Prefer to work through the setup yourself? Follow the manual steps below.
 
-   <DocsTrackedCopy surface="docs_threads_managed_setup">
+### Copy this prompt into your coding agent
 
-   ```bash title="Terminal"
-   npx copilotkit@latest init
-   ```
+```text
+Help me set this up in my CopilotKit app. Run this command and follow the instructions:
 
-   </DocsTrackedCopy>
+npx --yes copilotkit@latest onboard start --intent add-rich-threads
 
-2. Complete browser sign-in, then create or select a CopilotKit Intelligence project when the CLI asks.
-3. Start the generated application and Runtime with the command printed by the CLI. For the standard npm setup:
+If it requires a CopilotKit CLI session check, you have permission to run it. Never reveal credentials.
+```
 
-   ```bash title="Terminal"
-   cd <project-directory>
-   npm run dev
-   ```
+## Set up Rich Threads manually
 
-4. Use the included Threads Drawer to create a conversation. Reload the page or reopen the conversation and confirm that its complete history returns.
+Create a new CopilotKit app connected to cloud-hosted CopilotKit Intelligence. Your application and CopilotKit Runtime run locally while CopilotKit Intelligence stores and synchronizes Rich Threads. If you already have a working app, follow the [Intelligence quickstart](/agno/intelligence/quickstart#set-it-up-manually) to connect it instead.
+
+<Steps>
+  <Step>
+    ### Create your app
+
+    Run the interactive starter command:
+
+    <DocsTrackedCopy surface="docs_threads_managed_setup">
+
+    ```bash title="Terminal"
+    npx copilotkit@latest init
+    ```
+
+    </DocsTrackedCopy>
+  </Step>
+
+  <Step>
+    ### Connect CopilotKit Intelligence
+
+    Complete browser sign-in, then create or select a CopilotKit Intelligence project when the CLI asks.
+  </Step>
+
+  <Step>
+    ### Start your app and Runtime
+
+    Start the generated application and Runtime with the command printed by the CLI. For the standard npm setup:
+
+    ```bash title="Terminal"
+    cd <project-directory>
+    npm run dev
+    ```
+  </Step>
+
+  <Step>
+    ### Verify your first thread
+
+    Use the included Threads Drawer to create a conversation. Reload the page or reopen the conversation and confirm that its complete history returns.
+  </Step>
+
+  <Step>
+    ### See it in Inspector
+
+    Open Inspector on localhost. Stay on **Rich Threads** (it is the default).
+Real threads appear when Intelligence is on. Enable Intelligence appears when it is off.
+Open a real thread and use **Try from here** to copy it into a Playground scratch session. The stored thread does not change.
+
+More detail: [Inspector](/agno/inspector).
+
+  </Step>
+</Steps>
 
 Threads-capable CLI starters already include [Threads Drawer](/agno/prebuilt-components/copilot-threads-drawer). Use its guide when you are ready to customize the drawer. Choose [Headless Threads](/agno/headless-threads) later if your product needs a fully custom thread UI.
 
@@ -96,14 +109,6 @@ With Rich Threads, users can close the browser, return on another device, reopen
 Built on portable AG-UI event history, Rich Threads restore messages, generative UI, multimodal inputs, tool activity, state, and live-run continuity instead of saving only a chat transcript.
 
 Without CopilotKit Rich Threads, your team has to design the storage model, replay historical events and generative UI, persist multimodal inputs, reconnect live streams, synchronize thread lists, coordinate concurrent runs, and build lifecycle APIs before you can ship the conversation experience itself. CopilotKit Intelligence handles that infrastructure so you can focus on your agent and product UI.
-
-<OpsPlatformCTA
-  variant="inline"
-  title="Ship persistent conversations without building the backend"
-  body="CopilotKit Intelligence handles durable history, replay, realtime sync, and thread lifecycle on the free Developer tier."
-  ctaLabel="Get CopilotKit Intelligence free"
-  surface="docs_threads_overview"
-/>
 
 Rich Threads provide:
 
@@ -164,39 +169,31 @@ Both UI paths use the same Threads infrastructure. A stable `threadId` connects 
 
 ## Choose how to build the UI
 
-<div className="hidden lg:block">
+<CTACards
+  columns={2}
+  cards={[
+    {
+      iconKey: "panelLeft",
+      title: "Threads Drawer",
+      description:
+        "Ship a mobile-friendly conversation sidebar with switching, new conversations, archive, delete, and pagination already wired to your chat.",
+      href: "/prebuilt-components/copilot-threads-drawer",
+    },
+    {
+      iconKey: "code",
+      title: "Headless Threads",
+      description:
+        "Build a custom layout, workflow, permission model, or thread action UI while CopilotKit continues to handle the backend.",
+      href: "/headless-threads",
+    },
+  ]}
+/>
 
-  | If you want to... | Choose | Start here |
-  |---|---|---|
-  | Ship a mobile-friendly conversation sidebar with switching, new conversations, archive, delete, and pagination already wired to your chat | **Threads Drawer** | <DocsTrackedLink href="/agno/prebuilt-components/copilot-threads-drawer" surface="docs_threads_drawer_customization">Set up the Threads Drawer →</DocsTrackedLink> |
-  | Build a custom layout, workflow, permission model, or thread action UI while CopilotKit continues to handle the backend | **Headless Threads** | [Build a custom thread UI →](/agno/headless-threads) |
-
-</div>
-
-<div className="not-prose lg:hidden divide-y divide-fd-border overflow-hidden rounded-lg border border-fd-border">
-  <div className="p-5">
-
-  <p className="mb-2 text-lg font-semibold text-fd-foreground">Threads Drawer</p>
-
-  Ship a mobile-friendly conversation sidebar with switching, new conversations, archive, delete, and pagination already wired to your chat.
-
-  <DocsTrackedLink href="/agno/prebuilt-components/copilot-threads-drawer" surface="docs_threads_drawer_customization" className="font-medium !text-[var(--accent)] !underline !decoration-[color-mix(in_oklch,var(--accent)_40%,transparent)] underline-offset-[3px] transition-colors hover:!decoration-[var(--accent)]">Set up the Threads Drawer →</DocsTrackedLink>
-
-  </div>
-  <div className="p-5">
-
-  <p className="mb-2 text-lg font-semibold text-fd-foreground">Headless Threads</p>
-
-  Build a custom layout, workflow, permission model, or thread action UI while CopilotKit continues to handle the backend.
-
-  <a href="/agno/headless-threads" className="font-medium !text-[var(--accent)] !underline !decoration-[color-mix(in_oklch,var(--accent)_40%,transparent)] underline-offset-[3px] transition-colors hover:!decoration-[var(--accent)]">Build a custom thread UI →</a>
-
-  </div>
-</div>
+For how Intelligence and framework persistence work together, see [Threads & Persistence Architecture](/agno/intelligence/threads-explained#how-threads-work-with-framework-storage).
 
 ## Sync existing conversations
 
-Threads capture new CopilotKit conversations once your app uses CopilotKit Intelligence. If you already have persisted Google ADK or LangGraph conversations, follow <DocsTrackedLink href="/agno/threads-import" surface="docs_threads_history_sync">Import & Synchronize Thread History</DocsTrackedLink> to synchronize supported history with the same thread store. Keep the native storage and analytics you already use; future CopilotKit-mediated runs continue through native durable persistence when it remains wired while CopilotKit Intelligence records the Rich Thread experience. Users can then resume imported and new conversations through the same UI.
+Threads capture new CopilotKit conversations once your app uses CopilotKit Intelligence. If you already have persisted Google ADK or LangGraph conversations, follow <DocsTrackedLink href="/agno/threads-import" surface="docs_threads_history_sync">Import & Synchronize Thread History</DocsTrackedLink> to synchronize supported history with the same thread store. Keep the native storage and analytics you already use; future CopilotKit-mediated runs continue through native durable persistence when it remains wired while CopilotKit Intelligence records the thread. Users can then resume imported and new conversations through the same UI.
 
 CopilotKit Threads are separate from native framework session or checkpoint stores. Your backend can keep a stable mapping when the agent framework also needs its own conversation identifier.
 
@@ -206,7 +203,17 @@ CopilotKit Threads are separate from native framework session or checkpoint stor
 
 ## Next steps
 
-- **Understand the architecture:** [Threads & Persistence Architecture](/agno/premium/threads-explained) — event replay, live reconnection, synchronization, locking, and lifecycle behavior
-- **Use the hosted platform:** [Cloud-hosted CopilotKit Intelligence](/agno/premium/managed-intelligence-platform) — create and manage the project where your app stores threads and runtime credentials
-- **Plan production self-hosting:** [Self-host CopilotKit Intelligence](/agno/premium/self-hosting) — work with CopilotKit Engineering to run the Threads platform in your Kubernetes environment
-- **Look up the API:** [useThreads reference](/reference/hooks/useThreads) — parameters, lifecycle methods, pagination, and return types
+<Accordions>
+  <Accordion title="Understand the architecture">
+    [Threads & Persistence Architecture](/agno/intelligence/threads-explained) covers event replay, live reconnection, synchronization, locking, and lifecycle behavior.
+  </Accordion>
+  <Accordion title="Use the cloud-hosted deployment">
+    [Cloud-hosted CopilotKit Intelligence](/agno/intelligence/managed-intelligence-platform) is where you create the project that stores your app's threads and runtime credentials.
+  </Accordion>
+  <Accordion title="Plan production self-hosting">
+    [Self-host CopilotKit Intelligence](/agno/intelligence/self-hosting) with CopilotKit Engineering to run the Threads platform in your Kubernetes environment.
+  </Accordion>
+  <Accordion title="Look up the API">
+    The [useThreads reference](/reference/hooks/useThreads) lists parameters, lifecycle methods, pagination, and return types.
+  </Accordion>
+</Accordions>

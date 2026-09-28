@@ -39,7 +39,7 @@ export interface RouteMeta {
   statusNote?: string;
   /** Page exists in the docs but is absent from the current sidebar. */
   offNav?: boolean;
-  /** Feature requires a CopilotKit Enterprise Intelligence license. */
+  /** Feature requires a CopilotKit Intelligence license. */
   premium?: boolean;
   /**
    * This route owns a live interactive surface, which lives at
@@ -111,7 +111,7 @@ export const NAV: NavGroup[] = [
         status: "partial",
         premium: true,
         statusNote:
-          "Thread persistence is served by the Enterprise Intelligence Platform.",
+          "Thread persistence is served by CopilotKit Intelligence.",
       },
       {
         path: "/threads/drawer",
@@ -123,7 +123,7 @@ export const NAV: NavGroup[] = [
         status: "partial",
         premium: true,
         statusNote:
-          "Renders a locked view without a license key — that locked state is itself the expected result here.",
+          "Renders a locked view when the Runtime reports no Intelligence access; that locked state is itself the expected result here.",
       },
       {
         path: "/threads/headless",
@@ -144,6 +144,8 @@ export const NAV: NavGroup[] = [
         summary:
           "How a thread id flows through a run, and how threads get scoped to a signed-in user.",
         status: "partial",
+        statusNote:
+          "Mint, remount, replay, switch and the prop-controlled no-op are each driven and read back; replay comes from the runtime's InMemoryAgentRunner. The switch snippet's `existingId` is never defined. identifyUser and Intelligence scoping are not exercised.",
         premium: true,
       },
       {
@@ -160,7 +162,7 @@ export const NAV: NavGroup[] = [
       {
         path: "/threads/architecture",
         title: "Threads & Persistence Architecture",
-        docPath: "/agno/premium/threads-explained",
+        docPath: "/agno/intelligence/threads-explained",
         summary:
           "The event-replay model behind threads: durable history, live reconnect, and thread locking.",
         status: "reference",
@@ -209,6 +211,17 @@ export const NAV: NavGroup[] = [
         status: "working",
         offNav: true,
       },
+      {
+        path: "/custom-look-and-feel/markdown",
+        hasDemo: true,
+        title: "Markdown Rendering",
+        docPath: "/agno/custom-look-and-feel/markdown",
+        summary:
+          "The markdownRenderer slot three ways: a Streamdown components map, a class string, and a component replacing the renderer.",
+        status: "working",
+        statusNote:
+          "New upstream, tracked 2026-09-21 — found through the link the Slots page's markdownRenderer row gained. All three snippets are verbatim and all three typecheck, including the bare component that §9 #3 says most slots reject.",
+      },
     ],
   },
   {
@@ -242,6 +255,17 @@ export const NAV: NavGroup[] = [
           "Named tool calls rendered as custom React components, plus a catch-all renderer for everything else.",
         status: "working",
       },
+      {
+        path: "/generative-ui/frontend-cards",
+        hasDemo: true,
+        title: "Frontend-Driven Cards",
+        docPath: "/agno/generative-ui/frontend-cards",
+        summary:
+          "A card pushed into the transcript from frontend code as a `role: \"activity\"` message, which the agent never receives.",
+        status: "working",
+        statusNote:
+          "The central claim holds: with a card in the transcript the run payload carries only `user`. But a card added before the runtime connects goes to a provisional agent and is silently dropped (3/3), and step 3's component is never mounted by step 2 — see the route page.",
+      },
     ],
   },
   {
@@ -257,6 +281,15 @@ export const NAV: NavGroup[] = [
         status: "working",
       },
       {
+        path: "/human-in-the-loop/governed-actions",
+        hasDemo: true,
+        title: "Governed Action Approval",
+        docPath: "/agno/human-in-the-loop/governed-actions",
+        summary:
+          "An approval checkpoint in front of a side-effecting action, with the policy verdict and the exact arguments.",
+        status: "working",
+      },
+      {
         path: "/human-in-the-loop",
         hasDemo: true,
         title: "Human in the Loop",
@@ -265,6 +298,16 @@ export const NAV: NavGroup[] = [
           "A tool call that pauses the run until the user picks an option in the chat.",
         status: "working",
         offNav: true,
+      },
+      {
+        path: "/webmcp",
+        title: "WebMCP",
+        docPath: "/agno/webmcp",
+        summary:
+          "Publishing an existing frontend tool to document.modelContext so WebMCP-aware browser agents can discover and call it.",
+        status: "not-started",
+        statusNote:
+          "Tracked for drift only — no demo yet. The page’s own verification steps need Chrome 149+ with the WebMCP origin trial or chrome://flags/#enable-webmcp-testing, and CopilotKit no-ops wherever document.modelContext is absent, so there is nothing a headless Chromium run can show.",
       },
     ],
   },
@@ -289,6 +332,17 @@ export const NAV: NavGroup[] = [
           "A live capture of the raw AG-UI event stream flowing between the runtime and this page.",
         status: "working",
       },
+      {
+        path: "/backend/message-history",
+        hasDemo: true,
+        title: "Message history",
+        docPath: "/agno/backend/message-history",
+        summary:
+          "Trimming the transcript forwarded to the agent: the page's middleware inside a second runtime, and its messageFilter prop.",
+        status: "partial",
+        statusNote:
+          "The middleware and its check work as published. `messageFilter`, the page's recommended recipe, typechecks on the installed @copilotkit/react-core 1.73.3 (declared ^1.73.3); it was absent in 1.72.0 and the page states no minimum version. Its runtime trimming has not been observed on 1.73.3.",
+      },
     ],
   },
   {
@@ -302,6 +356,63 @@ export const NAV: NavGroup[] = [
         summary:
           "A live error log fed by the provider-level onError callback, plus the error-code reference.",
         status: "working",
+      },
+    ],
+  },
+  {
+    title: "Intelligence",
+    routes: [
+      {
+        path: "/intelligence/memories",
+        hasDemo: true,
+        premium: true,
+        title: "User Memories",
+        docPath: "/agno/intelligence/memories",
+        summary:
+          "Long-term memories per user or project, read and written from React with `useMemories`.",
+        status: "broken",
+        statusNote:
+          "The React snippet's import was corrected upstream on 2026-09-21 and now compiles. What it runs on still does not: every memory route 404s unless the runtime is built with `memory: { access }`, which the page never mentions. With it, this project gets 403 MEMORY_NOT_ENTITLED and the hook reports `isAvailable: true` over an empty list.",
+      },
+      {
+        path: "/learning",
+        hasDemo: true,
+        premium: true,
+        title: "Automatic Learning",
+        docPath: "/agno/learning",
+        summary:
+          "Routing selected Threads into a Learning container from the runtime, for Insights and reviewed Skills.",
+        status: "partial",
+        statusNote:
+          "The page's runtime snippet is mounted verbatim at `/api/copilotkit-learning`. Its example container `expense-review` does not exist here, and every run on `expense-agent` then fails silently (\"Failed to initialize thread\"); `default` answers. `agents` and `identifyUser` are undefined on the page; dashboard and CLI steps are not exercised.",
+      },
+      {
+        path: "/intelligence/learned-skills",
+        hasDemo: true,
+        premium: true,
+        title: "Skill delivery",
+        docPath: "/agno/intelligence/learned-skills",
+        summary:
+          "Delivering approved Skills to an agent through a framework-native adapter, including the new `BuiltInAgent` option.",
+        status: "broken",
+        statusNote:
+          "Agno still has no adapter row, and a BuiltInAgent would replace the Agno agent rather than deliver skills to it. The BuiltInAgent snippets typecheck on the installed `@copilotkit/runtime` 1.73.3 (declared ^1.73.3); they failed on 1.72.0 and the page states no minimum version. Both now pin the placeholder `revision: \"exact-revision-id\"`.",
+      },
+    ],
+  },
+  {
+    title: "Cookbook",
+    routes: [
+      {
+        path: "/cookbook/jev-generative-ui",
+        hasDemo: true,
+        title: "Jev: fast generative UI",
+        docPath: "/agno/cookbook/jev-generative-ui",
+        summary:
+          "A workspace picker whose prepared controls are ordinary React and zod, and whose control choice comes from a third-party decision service.",
+        status: "partial",
+        statusNote:
+          "New upstream, tracked 2026-09-21. The schemas and the prepared controls are shipped verbatim and run. The Jev half cannot: `@typesafe-ai/sdk` is not installed, it needs a key from TypeSafe, and the recipe pins CopilotKit 1.73.0 exactly (installed 1.73.3, declared ^1.73.3).",
       },
     ],
   },

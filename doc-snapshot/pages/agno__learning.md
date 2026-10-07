@@ -5,7 +5,7 @@
 
 ## Overview
 
-Automatic Learning turns patterns from real agent runs into skills you can publish. It reads completed conversations in [Rich Threads](/agno/threads), writes insights, and proposes instructions you review before you publish them.
+Automatic Learning turns patterns from real agent runs into skills you can publish. It reads completed conversations in [AG-UI Streams](/agno/threads), writes insights, and proposes instructions you review before you publish them.
 
 <div className="not-prose shell-docs-radius-surface aspect-[7/4] w-full overflow-hidden border border-[var(--border)] bg-[var(--bg-surface)] shadow-[var(--shadow-panel)]">
   <iframe
@@ -62,7 +62,7 @@ When you are done, your Runtime will send selected Threads to a Learning contain
   <Step>
     ### Connect CopilotKit Intelligence
 
-    Complete the [Intelligence quickstart](/agno/intelligence/quickstart). That page signs you in with the CLI and selects the project. Then send a message and make sure that it appears in [Rich Threads](/agno/threads). Open your project in [CopilotKit Intelligence](https://dashboard.operations.copilotkit.ai/) and make sure that Learning is available.
+    Complete the [Intelligence quickstart](/agno/intelligence/quickstart). That page signs you in with the CLI and selects the project. Then send a message and make sure that it appears in [AG-UI Streams](/agno/threads). Open your project in [CopilotKit Intelligence](https://dashboard.operations.copilotkit.ai/) and make sure that Learning is available.
 
   </Step>
 
@@ -227,6 +227,6 @@ The output contains a directory and `SKILL.md` for each published Skill. Configu
 
 - [CopilotKit Intelligence overview](/agno/intelligence/overview)
 - [Connect CopilotKit Intelligence](/agno/intelligence/quickstart)
-- [Rich Threads](/agno/threads)
-- [Threads & Persistence Architecture](/agno/intelligence/threads-explained)
+- [AG-UI Streams](/agno/threads)
+- [AG-UI Streams & Framework Threads](/agno/intelligence/threads-explained)
 - [CopilotKit CLI](/agno/cli)

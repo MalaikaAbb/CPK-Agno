@@ -265,6 +265,76 @@ export const NAV: NavGroup[] = [
         statusNote:
           "The central claim holds: with a card in the transcript the run payload carries only `user`. But a card added before the runtime connects goes to a provisional agent and is silently dropped (3/3), and step 3's component is never mounted by step 2 — see the route page.",
       },
+      {
+        path: "/generative-ui/a2ui/dynamic-schema",
+        hasDemo: true,
+        title: "A2UI · Dynamic Schema",
+        docPath: "/agno/generative-ui/a2ui/dynamic-schema",
+        summary:
+          "A catalog of branded components handed to the provider; a secondary LLM designs each surface from it per request.",
+        status: "partial",
+        statusNote:
+          "The frontend is the Code tab's, verbatim. The published Agno agent owns a `generate_a2ui` tool built on an unpublished `tools` package, so the agent here is prompt-only and the runtime takes the page's auto-inject path instead. Backend checked: the agent calls an injected `generate_a2ui`. Not yet checked in a browser.",
+      },
+      {
+        path: "/generative-ui/a2ui/fixed-schema",
+        hasDemo: true,
+        title: "A2UI · Fixed Schema",
+        docPath: "/agno/generative-ui/a2ui/fixed-schema",
+        summary:
+          "A flight card whose component tree is authored ahead of time as JSON; the agent's tool supplies only the data.",
+        status: "partial",
+        statusNote:
+          "Everything is the Code tab's, verbatim — agent, both schema JSONs, runtime route, catalog. Backend checked: `display_flight` returns the `a2ui_operations` container. Not yet checked in a browser. The page's own backend snippets are skipped for Agno, and the Book button is inert by design.",
+      },
+      {
+        path: "/generative-ui/mcp-apps",
+        title: "MCP Apps",
+        docPath: "/agno/generative-ui/mcp-apps",
+        summary:
+          "Tools served by an MCP server that carry their own UI, rendered in a sandboxed iframe in the chat.",
+        status: "not-started",
+        statusNote:
+          "The page publishes no Agno code: its only setup is a `BuiltInAgent` runtime, and it embeds no demo. Tracked for drift only.",
+      },
+      {
+        path: "/generative-ui/open-generative-ui",
+        hasDemo: true,
+        title: "Open Generative UI",
+        docPath: "/agno/generative-ui/open-generative-ui",
+        summary:
+          "The agent authors HTML, CSS and JS that streams into a sandboxed iframe — minimal, and with host functions the iframe can call.",
+        status: "partial",
+        statusNote:
+          "Runtime route and both frontends are the Code tab's, verbatim. The Agno agent they run on is never published; the one here is repo-authored, a no-tools agent. Unverified: offered a stand-in `generateSandboxedUi` outside the runtime, it answered in prose. Not yet checked in a browser.",
+      },
+    ],
+  },
+  {
+    title: "Shared State",
+    routes: [
+      {
+        path: "/shared-state/rendering-in-app",
+        hasDemo: true,
+        title: "Render state in your app",
+        docPath: "/agno/shared-state/rendering-in-app",
+        summary:
+          "`agent.state` read from a main-view canvas with useAgent, beside a sidebar chat on the same agent.",
+        status: "partial",
+        statusNote:
+          "Both snippets, verbatim, against this repo's default agent. The page has no demo and no backend code, so the canvas shows only the UI-owned initial state and what the browser writes; nothing on the agent writes `title` or `items`. Not yet checked in a browser.",
+      },
+      {
+        path: "/shared-state/agent-readonly",
+        hasDemo: true,
+        title: "Agent Read-Only Context",
+        docPath: "/agno/shared-state/agent-readonly",
+        summary:
+          "useAgentContext as a one-way UI-to-agent channel: the agent reads the values every turn and has no way to change them.",
+        status: "partial",
+        statusNote:
+          "Frontend is the Code tab's, verbatim. Its agent, `main.py`, imports an unpublished `tools` package; the one here keeps its published prompt with the tools removed. Backend checked: the agent reads all three context values back. Not yet checked in a browser.",
+      },
     ],
   },
   {
@@ -289,6 +359,17 @@ export const NAV: NavGroup[] = [
         status: "working",
       },
       {
+        path: "/human-in-the-loop/overview",
+        hasDemo: true,
+        title: "HITL Overview",
+        docPath: "/agno/human-in-the-loop/index",
+        summary:
+          "The two ways to pause a run for the user: a tool the model chooses to call, and a checkpoint the backend enforces.",
+        status: "partial",
+        statusNote:
+          "Backend checked. hitl-in-chat pauses on `book_call` and resumes with the picked slot. gen-ui-interrupt pauses on `schedule_meeting`, then fails to resume — RUN_ERROR “Frontend tool resume requires a database”: the published agent has no `db`, relying on the docs' custom route. `main.py` runs prompt-only; `generateFallbackSlots` is repo-authored.",
+      },
+      {
         path: "/human-in-the-loop",
         hasDemo: true,
         title: "Human in the Loop",
@@ -307,6 +388,22 @@ export const NAV: NavGroup[] = [
         status: "not-started",
         statusNote:
           "Tracked for drift only — no demo yet. The page’s own verification steps need Chrome 149+ with the WebMCP origin trial or chrome://flags/#enable-webmcp-testing, and CopilotKit no-ops wherever document.modelContext is absent, so there is nothing a headless Chromium run can show.",
+      },
+    ],
+  },
+  {
+    title: "Multi-Agent",
+    routes: [
+      {
+        path: "/multi-agent/subagents",
+        hasDemo: true,
+        title: "Sub-agents",
+        docPath: "/agno/multi-agent/subagents",
+        summary:
+          "A supervisor that delegates to research, writing and critique agents as tools, with a live delegation log built from shared state.",
+        status: "partial",
+        statusNote:
+          "Agent and frontend are the Code tab's, verbatim; served by the stock AG-UI router, since the published state-aware route cannot import on agno 3.x. Backend checked: research → write → critique, and `delegations` arrives in the final STATE_SNAPSHOT. It arrives only at run end — per-tool STATE_DELTA needs `jsonpatch`, which the Quickstart's install line omits — so no entry is ever seen `running`.",
       },
     ],
   },

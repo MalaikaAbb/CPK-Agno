@@ -22,6 +22,12 @@ from agno.os import AgentOS  # noqa: E402 - must follow load_dotenv
 from agno.os.interfaces.agui import AGUI  # noqa: E402
 
 from agent import build_agent  # noqa: E402
+from agents.a2ui_dynamic_agent import agent as a2ui_dynamic_agent  # noqa: E402
+from agents.a2ui_fixed_agent import agent as a2ui_fixed_agent  # noqa: E402
+from agents.interrupt_agent import agent as interrupt_agent  # noqa: E402
+from agents.main import agent as demo_main_agent  # noqa: E402
+from agents.open_gen_ui_agent import agent as open_gen_ui_agent  # noqa: E402
+from agents.subagents import agent as subagents_supervisor  # noqa: E402
 
 PORT = int(os.getenv("AGENT_PORT", "8000"))
 
@@ -45,12 +51,36 @@ if not (os.getenv("OPENAI_API_KEY") or "").strip():
 
 agent = build_agent()
 
+# The demo agents from the docs' Code tabs (backend/agents/). The docs serve
+# them from a custom `agent_server.py` (kept at backend/docs_verbatim/) whose
+# hand-written routes emit STATE_SNAPSHOT and forward HITL tool results. That
+# file cannot import on agno 3.x, and its routes are no longer needed: the
+# stock AG-UI router now does both. So each agent gets a plain `AGUI` mount at
+# the prefix the published runtime routes expect — except `/demo-main`, which
+# the docs serve at `/agui`, where this repo's own agent already lives.
+_DEMO_INTERFACES = [
+    AGUI(agent=a2ui_dynamic_agent, prefix="/declarative-gen-ui"),
+    AGUI(agent=a2ui_fixed_agent, prefix="/a2ui-fixed-schema"),
+    AGUI(agent=open_gen_ui_agent, prefix="/open-gen-ui"),
+    AGUI(agent=demo_main_agent, prefix="/demo-main"),
+    AGUI(agent=interrupt_agent, prefix="/interrupt-adapted"),
+    AGUI(agent=subagents_supervisor, prefix="/subagents"),
+]
+
 agent_os = AgentOS(
     name="CopilotKit Agno Test Harness",
-    agents=[agent],
+    agents=[
+        agent,
+        a2ui_dynamic_agent,
+        a2ui_fixed_agent,
+        open_gen_ui_agent,
+        demo_main_agent,
+        interrupt_agent,
+        subagents_supervisor,
+    ],
     # [4] AG-UI: expose the Agno agent to CopilotKit
     # [!code highlight]
-    interfaces=[AGUI(agent=agent)],
+    interfaces=[AGUI(agent=agent), *_DEMO_INTERFACES],
     cors_allowed_origins=_ALLOWED_ORIGINS,
     telemetry=False,
 )

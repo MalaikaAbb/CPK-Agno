@@ -4,6 +4,8 @@ import { CopilotKitProvider } from "@copilotkit/react-core/v2";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 
+import { rootInspectorSetting } from "@/lib/inspector";
+
 import { GlobalFrontendTools } from "./global-frontend-tools";
 import { HarnessStateProvider, useHarnessState } from "./harness-state";
 
@@ -47,6 +49,9 @@ function CopilotProviders({ children }: { children: ReactNode }) {
       runtimeUrl={RUNTIME_URL}
       // Mounts the inspector, with its core wired up, on localhost only (disabled on /ide).
       showDevConsole={isIde ? false : "auto"}
+      // Stands down on routes whose doc demo nests its own provider, so the
+      // page has exactly one Inspector — see lib/inspector.ts.
+      enableInspector={rootInspectorSetting(pathname)}
       // Feeds the live log on /troubleshooting/error-debugging: every runtime,
       // agent, and tool failure in the app lands there.
       onError={(event) => {

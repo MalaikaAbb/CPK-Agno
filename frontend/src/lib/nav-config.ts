@@ -238,13 +238,12 @@ export const NAV: NavGroup[] = [
       },
       {
         path: "/generative-ui/your-components/interactive",
+        hasDemo: true,
         title: "Your Components · Interactive",
         docPath: "/agno/generative-ui/your-components/interactive",
         summary:
           "Components the agent uses to interact with the user, rather than only to display.",
-        status: "not-started",
-        statusNote:
-          "The upstream doc page is a stub — it renders a shared-content placeholder with no body. Left intentionally empty until it has content to implement.",
+        status: "working",
       },
       {
         path: "/generative-ui/tool-rendering",

@@ -99,10 +99,11 @@ Then edit `backend/.env`:
 | `AGENT_PORT`                         | `backend/.env`        | Agno's port. Defaults to `8000` in code; set to `8010` in `backend/.env`.                                             |
 | `AGENT_CORS_ORIGINS`                 | `backend/.env`        | Origins allowed to hit the agent directly. Not needed on the normal path.    |
 | `AGNO_AGENT_URL`                     | `frontend/.env.local` | Where the runtime finds the agent. Defaults to `http://localhost:8010/agui`. |
+| `AGENT_URL`                          | `frontend/.env.local` | Agent server root for the routes copied from the docs' demo Code tabs (A2UI, Open Generative UI, Shared State, HITL overview, Sub-agents). Published default is `http://localhost:8000`, so **set it to `http://localhost:8010`** with the ports above, or those demos cannot reach the agent. |
 | `CPK_INTELLIGENCE_API_KEY`           | `frontend/.env.local` | Server-side managed-project key. Unlocks Rich Threads. Optional.             |
 | `COPILOTKIT_LICENSE_TOKEN`           | `frontend/.env.local` | Self-hosted/OSS license token only. Not issued for managed projects.         |
 
-> Next.js does not read the repo-root `.env`. Frontend variables belong in `frontend/.env.local`. The defaults are correct for a standard local run, so in practice you only need `OPENAI_API_KEY`.
+> Next.js does not read the repo-root `.env`. Frontend variables belong in `frontend/.env.local`. The defaults are correct for a standard local run except `AGENT_URL`, so in practice you need `OPENAI_API_KEY` in `backend/.env` and `AGENT_URL=http://localhost:8010` in `frontend/.env.local`.
 
 **Default ports:** frontend **3010**, backend **8010**.
 
@@ -247,7 +248,31 @@ A named renderer for `get_weather` plus a wildcard fallback. **Try:** `What's th
 
 **`/generative-ui/frontend-cards`** — ✅ **Working**, with a silent-loss finding. New upstream 2026-09-11. A card pushed into the transcript from frontend code as a `role: "activity"` message, which is stripped from every run. **Try:** click **Simulate: deployment finished**, then ask `Have you been shown any deployment card?` **Pass:** the card renders; the probe row reads `agent.messages = activity, user, assistant` and `run payload = user` (read off the request that left the browser); the agent says it saw no card. **Fail:** no card, or `activity` in the payload row. The three snippets are verbatim; step 3's `<DeploymentWatcher />` is mounted inside step 2's provider, which the page never says to do, and its `wss://example.com` socket never delivers, so the button fires the same `addMessage`. See [FINDINGS.md](FINDINGS.md) #15.
 
+The A2UI, Open Generative UI, Shared State, HITL overview and Sub-agents routes (added 2026-10-07) run the docs' demo **Code tab** code, copied byte-exact into `<route>/_demo/<demo-id>/` (the bundle's `src/app/demos/<demo-id>/`). Each demo wraps itself in its own `<CopilotKit>`, so the root provider's Inspector stands down on those routes (`lib/inspector.ts`). None has been checked in a browser yet; "backend-checked" means the AG-UI endpoint was driven directly with `curl`.
+
+**`/generative-ui/a2ui/dynamic-schema`** — ⚠️ Partial
+A catalog of eight branded components handed to the provider; a secondary LLM designs each surface from it. The published agent's own `generate_a2ui` needs an unpublished `tools` package, so the agent is the published prompt only and the runtime takes the page's auto-inject path (its `a2ui` block is commented out). **Try:** `Show me my sales dashboard for this quarter.` **Pass:** a surface of Metric tiles, a table and a chart. **Fail:** prose (tool not injected) or raw JSON (middleware not running). Backend-checked: the agent calls an injected `generate_a2ui`.
+
+**`/generative-ui/a2ui/fixed-schema`** — ⚠️ Partial
+A flight card whose component tree is a JSON file on the backend; `display_flight` supplies only the data. Everything verbatim from the Code tab. **Try:** `Find me a flight from SFO to JFK on United for $289.` **Pass:** card with SFO → JFK, a UNITED badge, Total $289 and a Book button that does nothing (published as inert). **Fail:** blank bound fields — the zod 4 symptom; this repo pins zod 3.25.76. Backend-checked: the tool returns the operations container.
+
+**`/generative-ui/mcp-apps`** — 🚧 **Tracked, not implemented.** Every code sample on the page is a `BuiltInAgent` runtime; there is no Agno code and no embedded demo.
+
+**`/generative-ui/open-generative-ui`** — ⚠️ Partial
+The agent writes HTML/CSS/JS into a sandboxed iframe; the demo route has the page's minimal and advanced (host sandbox functions) demos as tabs. Runtime route and frontends verbatim; the Agno agent is never published, so `backend/agents/open_gen_ui_agent.py` is repo-authored (no tools). **Try:** `How a neural network works`; on the Advanced tab, `Calculator (calls evaluateExpression)`. **Pass:** an iframe that builds itself live; the calculator logs `evaluateExpression` in the browser console. **Fail:** a prose answer — which is what the agent gave when offered a stand-in tool outside the runtime, so this one is unverified.
+
+### Shared State
+
+**`/shared-state/rendering-in-app`** — ⚠️ Partial
+`useAgent()` in a main-view `Canvas` beside a `CopilotSidebar`. Both snippets verbatim, on this repo's default agent; the page has no demo or backend half. **Try:** load the demo. **Pass:** "Project launch" with two items appears as soon as the agent connects. **Fail:** "Untitled" and an empty list.
+
+**`/shared-state/agent-readonly`** — ⚠️ Partial
+`useAgentContext` publishing a name, timezone and activity list to the agent, read-only. Frontend verbatim except a simplified layout and default name `Sarah` (published: `Atai`); the agent is the published `main.py` prompt without its tools (its `tools` package is unpublished). **Try:** `What do you know about me from my context?`, then change the name and ask again. **Pass:** the answer names the current values. **Fail:** the agent says it knows nothing about you. Backend-checked: all three values come back.
+
 ### App Control
+
+**`/human-in-the-loop/overview`** — ⚠️ Partial
+The HITL overview's two demos as tabs. **hitl-in-chat:** `useHumanInTheLoop` registers `book_call`; a picker renders and the pick is the tool result. **gen-ui-interrupt:** the docs' Agno stand-in for `interrupt()` — the same mechanism as `schedule_meeting`, with a repo-authored `generateFallbackSlots`. **Try:** `Please book an intro call with the sales team to discuss pricing.` on each tab. **Pass:** on hitl-in-chat, pick a slot and the agent confirms that time. **Expected failure:** on gen-ui-interrupt, the pick ends in RUN_ERROR `Frontend tool resume requires a database` — the published agent has no `db` and relied on the docs' custom server route, which cannot import on agno 3.x. Both legs backend-checked.
 
 **`/frontend-tools` — Frontend Tools**
 Three tools that run in the browser and change this page. **Try:** `Say hello to Malaika`, `Change the theme to violet`, `Bookmark the CopilotKit docs at https://docs.copilotkit.ai`. **Pass:** each panel updates the moment the call completes; the theme change follows you across every route. **Fail:** the agent claims success but nothing changes — the tool names have drifted apart.
@@ -259,6 +284,11 @@ An approval checkpoint in front of a side-effecting action, showing the policy v
 **Try:** `Can you show me two good options for a restaurant name?` **Pass:** two buttons render in the message stream and **nothing further streams until you click one**. **Fail:** two options as plain text, or the agent continues without waiting.
 
 **`/webmcp`** — 🚧 **Tracked, not implemented.** The doc adds a `webmcp` flag to a frontend tool so browser agents can discover it. Its own test procedure needs Chrome 149+ with the WebMCP origin trial (or `chrome://flags/#enable-webmcp-testing`) and Chrome's Model Context Tool Inspector; CopilotKit no-ops where `document.modelContext` is absent, so a demo here would register nothing and still look green.
+
+### Multi-Agent
+
+**`/multi-agent/subagents`** — ⚠️ Partial
+A supervisor whose tools are research, writing and critique Agno agents; a delegation log renders `delegations` from shared state. Agent and frontend verbatim. **Try:** `Write a short blog post about why cats purr.` **Pass:** three inline activity cards in order, then the log fills with three entries **at the end of the run**. **Fail:** the log stays empty after the run. It never shows a `running` entry: the stock router's per-tool state deltas need `jsonpatch` (`agno[agui]`), which the Quickstart's install line leaves out. Backend-checked: the final snapshot carries all three, `completed`.
 
 ### Backend
 
@@ -310,6 +340,14 @@ Verified 2026-08-05 against a live stack (real OpenAI key, no license key, no MC
 | `/agno/generative-ui/your-components/interactive`  | `/generative-ui/your-components/interactive`  | 🚧 Not started | Upstream doc page is still a stub; its only content is the 30 Aug session-storage callout (#12), which this route mirrors.            |
 | `/agno/generative-ui/tool-rendering`               | `/generative-ui/tool-rendering`               | ✅ Working     | Named + wildcard renderers; tool call verified over the wire.                          |
 | `/agno/generative-ui/frontend-cards`               | `/generative-ui/frontend-cards`               | ✅ Working     | New 2026-09-11. Card renders; run payload carries no `activity`. A card added before the runtime connects is silently lost — [FINDINGS.md](FINDINGS.md) #15. |
+| `/agno/generative-ui/a2ui/dynamic-schema`          | `/generative-ui/a2ui/dynamic-schema`          | ⚠️ Partial     | New 2026-10-07. Code-tab frontend verbatim; published agent needs an unpublished `tools` package, so prompt-only agent + auto-inject runtime. Backend-checked; not browser-checked. |
+| `/agno/generative-ui/a2ui/fixed-schema`            | `/generative-ui/a2ui/fixed-schema`            | ⚠️ Partial     | New 2026-10-07. All Code-tab code verbatim; page's own backend snippets are skipped for Agno. Backend-checked; not browser-checked. |
+| `/agno/generative-ui/mcp-apps`                     | `/generative-ui/mcp-apps`                     | 🚧 Not started | New 2026-10-07. Page publishes only a `BuiltInAgent` runtime — no Agno code, no demo. Tracked for drift. |
+| `/agno/generative-ui/open-generative-ui`           | `/generative-ui/open-generative-ui`           | ⚠️ Partial     | New 2026-10-07. Route + both frontends verbatim; agent unpublished, repo-authored. Unverified: answered in prose to a stand-in tool outside the runtime. |
+| `/agno/shared-state/rendering-in-app`              | `/shared-state/rendering-in-app`              | ⚠️ Partial     | New 2026-10-07. Both snippets verbatim on the default agent; page has no backend half. Not browser-checked. |
+| `/agno/shared-state/agent-readonly`                | `/shared-state/agent-readonly`                | ⚠️ Partial     | New 2026-10-07. Frontend verbatim; `main.py` prompt without its unpublished tools. Backend-checked: context read back. |
+| `/agno/human-in-the-loop/index`                    | `/human-in-the-loop/overview`                 | ⚠️ Partial     | New 2026-10-07. hitl-in-chat pauses and resumes (backend-checked). gen-ui-interrupt fails to resume: “Frontend tool resume requires a database”. |
+| `/agno/multi-agent/subagents`                      | `/multi-agent/subagents`                      | ⚠️ Partial     | New 2026-10-07. Verbatim; delegations arrive only in the end-of-run snapshot (no `jsonpatch`), so nothing is ever seen `running`. |
 | `/agno/frontend-tools`                             | `/frontend-tools`                             | ✅ Working     | Was dying at the resume with "requires a database"; fixed by configuring `db` (#12) and re-recorded clean.            |
 | `/agno/human-in-the-loop/governed-actions`         | `/human-in-the-loop/governed-actions`         | ✅ Working     | Approval card with the policy verdict. Its `z.record` call had to be translated for zod 4 — see [FINDINGS.md](FINDINGS.md) #14.            |
 | `/agno/human-in-the-loop`                          | `/human-in-the-loop`                          | ✅ Working     | **Not in the doc sidebar**; linked from Quickstart and resolves. Covered by the shared `db` (#12).            |
@@ -398,9 +436,11 @@ agno/
 │       │   ├── layout.tsx             # providers + chrome; imports v2 styles
 │       │   ├── page.tsx               # / — intro + connection check
 │       │   ├── status/page.tsx        # status overview table
-│       │   ├── api/copilotkit/[[...slug]]/route.ts # ★ CopilotRuntime + AgnoAgent binding
+│       │   ├── api/copilotkit/[[...slug]]/route.ts # ★ CopilotRuntime + AgnoAgent binding (+ doc demo agent ids)
+│       │   ├── api/copilotkit-{declarative-gen-ui,a2ui-fixed-schema,ogui}/route.ts # Code-tab runtime routes
 │       │   └── <doc route>/
 │       │       ├── page.tsx           # notes + exact source (server component)
+│       │       ├── _demo/<demo-id>/   # Code-tab demo files, byte-exact (private folder, not a route)
 │       │       └── demo-chat/page.tsx # ★ the running feature, chrome-free
 │       ├── components/
 │       │   ├── providers.tsx          # ★ CopilotKitProvider, onError → error log
@@ -415,13 +455,19 @@ agno/
 │       │   └── ui.tsx                 # Panel, Callout, CodeBlock, TryIt
 │       └── lib/
 │           ├── nav-config.ts          # ★ single source of truth: routes, docs, status
+│           ├── inspector.ts           # routes whose nested <CopilotKit> owns the Inspector
 │           ├── source.ts              # ★ server-only reader behind SourceCode
 │           └── health.ts              # server-only agent probe
 │
 └── backend/                   # Python agent — Agno AgentOS over AG-UI
     ├── pyproject.toml
-    ├── main.py                # ★ AgentOS + AGUI interface → POST /agui on :8010
+    ├── main.py                # ★ AgentOS + AGUI interfaces → POST /agui (+ demo prefixes) on :8010
     ├── agent.py               # model, instructions, tool registration
+    ├── agents/                # doc demo agents from the Code tabs, one AGUI prefix each
+    │   ├── a2ui_fixed_agent.py, a2ui_schemas/, interrupt_agent.py, subagents.py  # verbatim
+    │   ├── a2ui_dynamic_agent.py, main.py   # published prompt, unpublished tools removed
+    │   └── open_gen_ui_agent.py             # ⚠ repo-authored (module never published)
+    ├── docs_verbatim/         # published files that cannot run here — byte-exact, never imported
     └── tools/
         ├── backend_tools.py   # executed server-side (get_weather, …)
         └── frontend_tools.py  # external_execution=True — executed in the browser
@@ -496,9 +542,13 @@ single page first — before running the full suite.
 
 **Custom Look and Feel** — [Programmatic Control](https://docs.copilotkit.ai/agno/programmatic-control) · [Inspector](https://docs.copilotkit.ai/agno/inspector) · [Slots](https://docs.copilotkit.ai/agno/custom-look-and-feel/slots) † · [Headless UI](https://docs.copilotkit.ai/agno/custom-look-and-feel/headless-ui) † · [Markdown Rendering](https://docs.copilotkit.ai/agno/custom-look-and-feel/markdown)
 
-**Generative UI** — [Your Components · Display-only](https://docs.copilotkit.ai/agno/generative-ui/your-components/display-only) · [Your Components · Interactive](https://docs.copilotkit.ai/agno/generative-ui/your-components/interactive) † · [Tool Rendering](https://docs.copilotkit.ai/agno/generative-ui/tool-rendering)
+**Generative UI** — [Your Components · Display-only](https://docs.copilotkit.ai/agno/generative-ui/your-components/display-only) · [Your Components · Interactive](https://docs.copilotkit.ai/agno/generative-ui/your-components/interactive) † · [Tool Rendering](https://docs.copilotkit.ai/agno/generative-ui/tool-rendering) · [A2UI · Dynamic Schema](https://docs.copilotkit.ai/agno/generative-ui/a2ui/dynamic-schema) · [A2UI · Fixed Schema](https://docs.copilotkit.ai/agno/generative-ui/a2ui/fixed-schema) · [MCP Apps](https://docs.copilotkit.ai/agno/generative-ui/mcp-apps) ‡ · [Open Generative UI](https://docs.copilotkit.ai/agno/generative-ui/open-generative-ui)
 
-**App Control** — [Frontend Tools](https://docs.copilotkit.ai/agno/frontend-tools) · [Governed Actions](https://docs.copilotkit.ai/agno/human-in-the-loop/governed-actions) · [Human in the Loop](https://docs.copilotkit.ai/agno/human-in-the-loop) † · [WebMCP](https://docs.copilotkit.ai/agno/webmcp) ‡
+**Shared State** — [Render state in your app](https://docs.copilotkit.ai/agno/shared-state/rendering-in-app) · [Agent Read-Only Context](https://docs.copilotkit.ai/agno/shared-state/agent-readonly)
+
+**Multi-Agent** — [Sub-agents](https://docs.copilotkit.ai/agno/multi-agent/subagents)
+
+**App Control** — [Frontend Tools](https://docs.copilotkit.ai/agno/frontend-tools) · [HITL Overview](https://docs.copilotkit.ai/agno/human-in-the-loop/index) · [Governed Actions](https://docs.copilotkit.ai/agno/human-in-the-loop/governed-actions) · [Human in the Loop](https://docs.copilotkit.ai/agno/human-in-the-loop) † · [WebMCP](https://docs.copilotkit.ai/agno/webmcp) ‡
 
 **Backend** — [Copilot Runtime](https://docs.copilotkit.ai/agno/copilot-runtime) · [AG-UI](https://docs.copilotkit.ai/agno/ag-ui)
 

@@ -35,4 +35,4 @@
 </Callout>
 
 
-<SharedContent framework="agno" />
+<Interactive components={props.components} framework="agno" />

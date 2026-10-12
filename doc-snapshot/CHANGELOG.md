@@ -1,13 +1,287 @@
 # Doc drift changelog
 
-What the CopilotKit docs changed under this repo, written by whichever sync
-ran — the `/doc-sync` page or `npm run drift:sync`. Only pages that actually
-moved are recorded — a sync that finds everything unchanged writes nothing
-here at all.
+What the CopilotKit docs changed under this repo, written by each `/doc-sync`
+run. Only pages that actually moved are recorded — a sync that finds
+everything unchanged writes nothing here at all.
 
 Holds the 3 most recent dated entries. When a change lands on a fourth
 date, the oldest entry is dropped. Entries are counted, not aged, so a gap of
 weeks between changes does not expire anything.
+
+## 2026-10-07
+
+### 14:21 UTC — 8 pages, highest severity none
+
+**Info — A2UI · Dynamic Schema**
+
+`/agno/generative-ui/a2ui/dynamic-schema` · route `/generative-ui/a2ui/dynamic-schema`
+
+Now tracked for the first time.
+
+**Info — A2UI · Fixed Schema**
+
+`/agno/generative-ui/a2ui/fixed-schema` · route `/generative-ui/a2ui/fixed-schema`
+
+Now tracked for the first time.
+
+**Info — MCP Apps**
+
+`/agno/generative-ui/mcp-apps` · route `/generative-ui/mcp-apps`
+
+Now tracked for the first time.
+
+**Info — Open Generative UI**
+
+`/agno/generative-ui/open-generative-ui` · route `/generative-ui/open-generative-ui`
+
+Now tracked for the first time.
+
+**Info — HITL Overview**
+
+`/agno/human-in-the-loop/index` · route `/human-in-the-loop/overview`
+
+Now tracked for the first time.
+
+**Info — Sub-agents**
+
+`/agno/multi-agent/subagents` · route `/multi-agent/subagents`
+
+Now tracked for the first time.
+
+**Info — Agent Read-Only Context**
+
+`/agno/shared-state/agent-readonly` · route `/shared-state/agent-readonly`
+
+Now tracked for the first time.
+
+**Info — Render state in your app**
+
+`/agno/shared-state/rendering-in-app` · route `/shared-state/rendering-in-app`
+
+Now tracked for the first time.
+
+### 13:33 UTC — 14 pages, highest severity high
+
+**High — Jev: fast generative UI**
+
+`/agno/cookbook/jev-generative-ui` · route `/cookbook/jev-generative-ui` · under “Before you start” · in a `bash` block
+
+2 code lines changed.
+
+````diff
+- npm install @copilotkit/core@1.73.0 @copilotkit/react-core@1.73.0 @copilotkit/runtime@1.73.0 @ag-ui/client@0.0.59 @ag-ui/core@0.0.59 @typesafe-ai/sdk@0.6.0 rxjs@7.8.1 zod@4.6.5 @langchain/openai@1.5.13 @langchain/core@1.2.11
++ npm install @copilotkit/core@1.73.0 @copilotkit/react-core@1.73.0 @copilotkit/runtime@1.73.0 @ag-ui/client@1.0.1 @ag-ui/core@1.0.1 @typesafe-ai/sdk@0.6.0 rxjs@7.8.1 zod@4.6.5 @langchain/openai@1.5.13 @langchain/core@1.2.11
+````
+
+**High — Slots**
+
+`/agno/custom-look-and-feel/slots` · route `/custom-look-and-feel/slots` · under “Reshaping the Message List”
+
+14 code lines, 1 heading, 13 prose lines changed. The number of fenced code blocks changed.
+
+````diff
++ ## Reshaping the Message List
++ 
++ Slots change how each message renders. To change _which_ messages render — hide some, replace them, reorder them — pass `transformMessages` to the message view. It receives the whole list and returns the list to render.
++ 
++ ```tsx title="page.tsx"
++ import { useCallback } from "react";
++ import { CopilotChat, type Message } from "@copilotkit/react-core/v2";
++ 
+````
+
+**High — Inspector**
+
+`/agno/inspector` · route `/custom-look-and-feel/inspector` · under “Control when Inspector appears”
+
+4 code lines, 18 prose lines changed. The number of fenced code blocks changed.
+
+````diff
+- | Goal                                      | Action                                                                                                    |
+- | ----------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+- | Close the current view                    | Use the close control; reopen it from the Inspector button                                                |
+- | See your application without an overlay   | Use the pop-out control in the Inspector header                                                           |
+- | Hide Inspector temporarily on this domain | Choose **Hide Inspector for a day** from the launcher HUD, or **Hide Inspector for one week** in settings |
+- | Disable Inspector for the development app | Set `enableInspector` to `false`                                                                          |
++ | Goal                                       | Action                                                                                                    |
++ | ------------------------------------------ | --------------------------------------------------------------------------------------------------------- |
+````
+
+**High — User Memories**
+
+`/agno/intelligence/memories` · route `/intelligence/memories` · under “Overview”
+
+17 code lines, 2 headings, 51 prose lines changed. The number of fenced code blocks changed.
+
+````diff
+- Rich Threads remember a conversation. User Memory remembers a person. This page explains
++ AG-UI Streams remember a conversation. User Memory remembers a person. This page explains
+- conversation, read [Threads & Persistence Architecture](/agno/intelligence/threads-explained)
++ conversation, read [AG-UI Streams & Framework Threads](/agno/intelligence/threads-explained)
++ ## Limiting access per request
++ 
++ The runtime configuration in this section uses the TypeScript API. Python, Go, Ruby, and C#/.NET have different policy callbacks; see [Memory policies in other runtime languages](#memory-policies-in-other-runtime-languages).
++ 
+````
+
+**High — Overview**
+
+`/agno/threads` · route `/threads` · under “Rich Threads”
+
+2 code lines, 11 headings, 52 prose lines changed.
+
+````diff
+- # Rich Threads
++ # AG-UI Streams
+- > Build rich, persistent agent conversations that restore messages, generative UI, multimodal inputs, and live runs across sessions and devices.
++ > Let users reconnect, catch up on missed events, and resume conversations across devices with Intelligence’s AG-UI streams.
+- ## Overview
++ <span id="overview" />
+- Rich Threads are the persistence and conversation layer behind your agent's conversations. Users get rich history, continuity across devices, reconnection to active runs, and ready-made thread controls.
++ Intelligence’s AG-UI streams store and deliver the interaction to your users. Your framework threads manage the agent’s conversation and model context.
+````
+
+**High — Synchronize Thread History**
+
+`/agno/threads-import` · route `/threads/import` · under “Import & Synchronize Thread History”
+
+3 code lines, 5 headings, 36 prose lines changed. The number of fenced code blocks changed.
+
+````diff
+- # Import & Synchronize Thread History
++ # Add AG-UI Streams to Existing Threads
+- > Import historical conversations into CopilotKit Intelligence, then keep future CopilotKit runs synchronized with Rich Threads.
++ > Add Intelligence’s AG-UI streams to your existing agent conversations, with optional historical import for supported stores.
+- ## What is this?
++ <span id="what-is-this" />
+- Import brings existing conversations into CopilotKit Intelligence as Rich Threads while you keep the native storage or analytics you already use. Import supported history once, then continue running those conversations through CopilotKit so users can resume them through the same thread UI as new conversations.
++ ## Add Intelligence to your existing app
+````
+
+**Medium — Copilot Runtime**
+
+`/agno/copilot-runtime` · route `/backend/copilot-runtime` · under “Runtime languages”
+
+1 heading, 24 prose lines changed.
+
+````diff
++ ## Runtime languages
++ 
++ **TypeScript is the default and most fully featured runtime. It is the only runtime that can run without CopilotKit Intelligence.** Use it for an open-source setup, or connect it to Intelligence when you need its services.
++ 
++ Python, Go, Ruby, and C#/.NET runtimes require an Intelligence project and server-side API key. They work with both [cloud-hosted](/agno/intelligence/managed-intelligence-platform) and [self-hosted](/agno/intelligence/self-hosting) Intelligence; they do not provide an in-memory or SQLite runner.
++ 
++ | Language | Host | Without Intelligence |
++ | --- | --- | --- |
+````
+
+**Medium — Threads & Persistence Architecture**
+
+`/agno/intelligence/threads-explained` · route `/threads/architecture` · under “Threads & Persistence Architecture”
+
+3 headings, 35 prose lines changed.
+
+````diff
+- # Threads & Persistence Architecture
++ # AG-UI Streams & Framework Threads
+- > Architecture and mental model behind CopilotKit threads: how persistent conversations work, how reconnection replays history, and what to expect from thread lifecycle operations.
++ > Understand how Intelligence’s AG-UI streams deliver conversation history, catch-up, and reconnection alongside framework-managed agent context.
+- Start with the [Rich Threads overview](/agno/threads) to understand what Rich Threads provide
++ Start with the [AG-UI Streams overview](/agno/threads) to understand what AG-UI Streams provide
+- A thread is a persistent, server-side container for a multi-turn conversation between a user and an agent. Unlike ephemeral chat sessions that disappear when the page reloads, threads store the full event history (every message, tool call, and state change), so conversations can be paused, resumed, and replayed across sessions and devices.
++ Framework threads manage an agent’s conversation and model context. Intelligence’s **AG-UI streams** record and deliver the interaction to your users.
+````
+
+**Medium — Thread & History Lifecycle**
+
+`/agno/threads-lifecycle` · route `/threads/lifecycle` · under “The lifecycle at a glance”
+
+2 headings, 10 prose lines changed.
+
+````diff
+- 2. **Run.** Messages and tool calls stream under that `threadId`. If a server-side store is configured (CopilotKit Intelligence, or a persisting `AgentRunner`), they are persisted as they happen so the thread can be replayed later. A runtime with no persistence layer keeps nothing server-side. See [Threads & Persistence Architecture](/agno/intelligence/threads-explained) for the full server-side model.
++ 2. **Run.** Messages and tool calls stream under that `threadId`. If a server-side store is configured (CopilotKit Intelligence, or a persisting `AgentRunner`), they are persisted as they happen so the thread can be replayed later. A runtime with no persistence layer keeps nothing server-side. See [AG-UI Streams & Framework Threads](/agno/intelligence/threads-explained) for the full server-side model.
+- ## Scope Rich Threads to the signed-in user
++ <span id="scope-rich-threads-to-the-signed-in-user" />
++ ## Scope AG-UI Streams to the signed-in user
++ 
+- verified application user to Rich Threads.
++ verified application user to threads.
+````
+
+**Low — AG-UI**
+
+`/agno/ag-ui` · route `/backend/ag-ui` · under “How agents slot into the runtime”
+
+3 prose lines changed.
+
+````diff
++ To write the custom implementation yourself, and keep its own fields through
++ the clone in step 2, see [Write your own AG-UI agent](/agno/backend/custom-ag-ui-agent).
++ 
+````
+
+**Low — Your Components · Interactive**
+
+`/agno/generative-ui/your-components/interactive` · route `/generative-ui/your-components/interactive` · under “Interactive”
+
+2 prose lines changed.
+
+````diff
+- <SharedContent framework="agno" />
++ <Interactive components={props.components} framework="agno" />
+````
+
+**Low — Headless Threads**
+
+`/agno/headless-threads` · route `/threads/headless` · under “Headless Threads”
+
+22 prose lines changed.
+
+````diff
++ Intelligence’s AG-UI streams power the history and delivery behind this custom UI. Use `useThreads` to list and manage conversations, and pass their `threadId` to your chat.
++ 
+- CopilotKit Rich Threads enable persistent, resumable multi-turn conversations. The `useThreads` hook lists, creates, renames, archives, and deletes CopilotKit Intelligence threads with realtime synchronization via WebSocket. Threads work with any agent framework — CopilotKit Intelligence stores conversation history server-side, so users can close their browser and pick up where they left off. It does not list or mutate native LangGraph, ADK, or other framework stores unless your backend explicitly bridges those systems. Thread metadata updates (renames, archives, new threads) appear on connected clients without polling.
++ The `useThreads` hook lists, creates, renames, archives, and deletes CopilotKit Intelligence threads with realtime synchronization via WebSocket. Threads work with any agent framework — CopilotKit Intelligence stores conversation history server-side, so users can close their browser and pick up where they left off. It does not list or mutate native LangGraph, ADK, or other framework stores unless your backend explicitly bridges those systems. Thread metadata updates (renames, archives, new threads) appear on connected clients without polling.
+- [scope Rich Threads to the signed-in user](/agno/threads-lifecycle#scope-rich-threads-to-the-signed-in-user)
++ [scope AG-UI Streams to the signed-in user](/agno/threads-lifecycle#scope-rich-threads-to-the-signed-in-user)
+- <Callout type="info" title="Migrating existing history?">
+- Threads capture new CopilotKit conversations once your app is connected to
+````
+
+**Low — Automatic Learning**
+
+`/agno/learning` · route `/learning` · under “Overview”
+
+8 prose lines changed.
+
+````diff
+- Automatic Learning turns patterns from real agent runs into skills you can publish. It reads completed conversations in [Rich Threads](/agno/threads), writes insights, and proposes instructions you review before you publish them.
++ Automatic Learning turns patterns from real agent runs into skills you can publish. It reads completed conversations in [AG-UI Streams](/agno/threads), writes insights, and proposes instructions you review before you publish them.
+- Complete the [Intelligence quickstart](/agno/intelligence/quickstart). That page signs you in with the CLI and selects the project. Then send a message and make sure that it appears in [Rich Threads](/agno/threads). Open your project in [CopilotKit Intelligence](https://dashboard.operations.copilotkit.ai/) and make sure that Learning is available.
++ Complete the [Intelligence quickstart](/agno/intelligence/quickstart). That page signs you in with the CLI and selects the project. Then send a message and make sure that it appears in [AG-UI Streams](/agno/threads). Open your project in [CopilotKit Intelligence](https://dashboard.operations.copilotkit.ai/) and make sure that Learning is available.
+- - [Rich Threads](/agno/threads)
+- - [Threads & Persistence Architecture](/agno/intelligence/threads-explained)
++ - [AG-UI Streams](/agno/threads)
++ - [AG-UI Streams & Framework Threads](/agno/intelligence/threads-explained)
+````
+
+**Low — Threads Drawer**
+
+`/agno/prebuilt-components/copilot-threads-drawer` · route `/threads/drawer` · under “When should I use this?”
+
+4 prose lines changed.
+
+````diff
+- [scope Rich Threads to the signed-in user](/agno/threads-lifecycle#scope-rich-threads-to-the-signed-in-user).
++ [scope AG-UI Streams to the signed-in user](/agno/threads-lifecycle#scope-rich-threads-to-the-signed-in-user).
+- - [Rich Threads overview](/agno/threads): compare thread UI and deployment paths
++ - [AG-UI Streams overview](/agno/threads): compare thread UI and deployment paths
+````
+
+---
+
+---
 
 ## 2026-09-25
 
@@ -30,6 +304,10 @@ Code fence count changed. Hash e459e3d5 ➔ 98291e25.
 + alt="The Skills tab of a Learning container in cloud-hosted Intelligence. The Skill delivery toggle is on, and skill candidates wait for review."
   … region truncated
 ````
+
+---
+
+---
 
 ---
 
@@ -72,254 +350,6 @@ Headings / Structure changed. Hash 3d8ccd83 ➔ 73ebc660.
 + ```text
   … region truncated
 ````
-
----
-
----
-
-## 2026-09-23
-
-### 07:50 UTC — 18 pages, highest severity high · _npm run drift:sync_
-
-**Medium — /agno/custom-look-and-feel/headless-ui**
-
-`/agno/custom-look-and-feel/headless-ui` · route `/custom-look-and-feel/headless-ui` · `agno__custom-look-and-feel__headless-ui.md`
-
-Headings / Structure changed. Hash 16e83023 ➔ 36b7539d.
-
-````diff
-- # Fully Headless UI
-+ # Headless UI
-````
-
-**High — /agno/headless-threads**
-
-`/agno/headless-threads` · route `/threads/headless` · `agno__headless-threads.md`
-
-Code block content changed. Hash e4bb6605 ➔ 4d49325a.
-
-````diff
-- Your `CopilotRuntime` must be connected to CopilotKit Intelligence before the thread UI can list and resume conversations. That connection is the `intelligence` option below — a `CopilotKitIntelligence` instance. If your app came from a CLI starter, this Runtime configuration is generated for you. Otherwise, follow [Connect your runtime to Intelligence](/agno/intelligence/connect-your-runtime) for the full constructor, then return here to add the headless UI. Thread names are automatically generated by the LLM after the first message — you can disable this with `generateThreadNames: false`.
-- ```typescript title="server.ts"
-- import {
-- CopilotKitIntelligence,
-+ Your `CopilotRuntime` must be connected to CopilotKit Intelligence before the thread UI can list and resume conversations. That connection is the `intelligence` option below — a `CopilotKitIntelligence` instance. If your app came from a CLI starter, this Runtime configuration is generated for you. Otherwise, follow [Connect your runtime to Intelligence](/agno/intelligence/quickstart) for the full constructor, then return here to add the headless UI. Thread names are automatically generated by the LLM after the first message — you can disable this with `generateThreadNames: false`.
-+ ```typescript title="server.ts"
-+ import {
-+ CopilotKitIntelligence,
-  … region truncated
-````
-
-**High — /agno/inspector**
-
-`/agno/inspector` · route `/custom-look-and-feel/inspector` · `agno__inspector.md`
-
-Code block content changed. Hash 1b54d3fe ➔ d1c632b9.
-
-````diff
-- | Your goal                                      | Start here                          |
-- | ---------------------------------------------- | ----------------------------------- |
-- | Confirm that CopilotKit is connected           | **Home**, then **Agent**            |
-- | Find out why a run or tool failed              | The red launcher or error pill      |
-+ | Your goal                                      | Start here                              |
-+ | ---------------------------------------------- | --------------------------------------- |
-+ | Confirm that CopilotKit is connected           | **Home**, then **Agent**                |
-+ | Find out why a run or tool failed              | The red launcher or error pill          |
-  … region truncated
-````
-
-**Medium — /agno/intelligence/threads-explained**
-
-`/agno/intelligence/threads-explained` · route `/threads/architecture` · `agno__intelligence__threads-explained.md`
-
-Headings / Structure changed. Hash 6d1c9a5e ➔ bf622fb9.
-
-````diff
-- Start with the [Rich Threads overview](/agno/threads) to understand what Rich Threads provide
-- and choose between the prebuilt Drawer and a custom headless UI. This page
-- explains the persistence and replay architecture beneath both paths. For the
-- client-side lifecycle (minting a `threadId`, hydrating history on load, and
-+ ## Overview
-+ Start with the [Rich Threads overview](/agno/threads) to understand what Rich Threads provide
-+ and choose between the prebuilt Drawer and a custom headless UI. This page
-+ explains the persistence and replay architecture beneath both paths. For the
-  … region truncated
-````
-
-**High — /agno/prebuilt-components/copilot-threads-drawer**
-
-`/agno/prebuilt-components/copilot-threads-drawer` · route `/threads/drawer` · `agno__prebuilt-components__copilot-threads-drawer.md`
-
-Code block content changed. Hash a9ef18bd ➔ e7b18424.
-
-````diff
-- server-side). <SignupLink surface="docs_drawer">Start managed onboarding</SignupLink> to create or select a project.
-- For multi-user applications, configure the Runtime to
-- [scope Rich Threads to the signed-in user](/agno/threads-lifecycle#scope-rich-threads-to-the-signed-in-user).
-- <OpsPlatformCTA
-+ server-side). <SignupLink surface="docs_drawer">Start cloud-hosted setup</SignupLink> to create or select a project.
-+ For multi-user applications, configure the Runtime to
-+ [scope Rich Threads to the signed-in user](/agno/threads-lifecycle#scope-rich-threads-to-the-signed-in-user).
-+ <OpsPlatformCTA
-  … region truncated
-````
-
-**High — /agno/programmatic-control**
-
-`/agno/programmatic-control` · route `/custom-look-and-feel/programmatic-control` · `agno__programmatic-control.md`
-
-Code block content changed. Hash 70257e81 ➔ 09a23a34.
-
-````diff
-- title="Fully Headless UI"
-+ title="Headless UI"
-````
-
-**High — /agno/quickstart**
-
-`/agno/quickstart` · route `/quickstart` · `agno__quickstart.md`
-
-Code block content changed. Hash 0cac5777 ➔ 56f25adc.
-
-````diff
-- <SignupLink surface="docs_agno_quickstart_step1">Sign in to managed Intelligence</SignupLink>. Managed setup uses a server-side project API key and does not issue `COPILOTKIT_LICENSE_TOKEN`. You will connect the app after you create it below.
-- </Step>
-- <Step>
-- ### Choose your starting point
-+ <SignupLink surface="docs_agno_quickstart_step1">Sign in to cloud-hosted Intelligence</SignupLink>. Cloud-hosted setup uses a server-side project API key and does not issue `COPILOTKIT_LICENSE_TOKEN`. You will connect the app after you create it below.
-+ </Step>
-+ <Step>
-+ ### Choose your starting point
-  … region truncated
-````
-
-**High — /agno/threads**
-
-`/agno/threads` · route `/threads` · `agno__threads.md`
-
-Code block content changed. Hash 5cb0dbeb ➔ edbc7fbb.
-
-````diff
-- <div
-- aria-label="A support workspace using Threads Drawer to move between customer conversations while CopilotChat renders the selected case details."
-- className="shell-docs-radius-surface relative mb-4 overflow-hidden border border-[var(--border)] bg-[var(--bg-surface)] shadow-[0px_16px_24px_-8px_rgba(1,5,7,0.12)] ring-1 ring-inset ring-white/70 dark:shadow-[0px_16px_32px_-10px_rgba(0,0,0,0.45)] dark:ring-white/10"
-- >
-+ ## Overview
-+ Rich Threads are the persistence and conversation layer behind your agent's conversations. Users get rich history, continuity across devices, reconnection to active runs, and ready-made thread controls.
-+ <div
-+ aria-label="A support workspace using Threads Drawer to move between customer conversations while CopilotChat renders the selected case details."
-  … region truncated
-````
-
-**High — /agno/threads-import**
-
-`/agno/threads-import` · route `/threads/import` · `agno__threads-import.md`
-
-Code block content changed. Hash c8048d79 ➔ 8ad9e291.
-
-````diff
-- Built-in import currently supports Google ADK and LangGraph, with more sources coming soon. You can keep LangSmith, LangGraph, or ADK storage and analytics in place. For future CopilotKit-mediated runs, CopilotKit Intelligence persists the Rich Thread event history. When your agent remains connected to a durable LangGraph checkpointer or durable ADK session service with appropriate retention, those future runs continue through the native persistence path as well.
-+ Built-in import currently supports Google ADK and LangGraph, with more sources coming soon. You can keep LangSmith, LangGraph, or ADK storage and analytics in place. For future CopilotKit-mediated runs, CopilotKit Intelligence persists the thread event history. When your agent remains connected to a durable LangGraph checkpointer or durable ADK session service with appropriate retention, those future runs continue through the native persistence path as well.
-````
-
-**Low — /agno/threads-lifecycle**
-
-`/agno/threads-lifecycle` · route `/threads/lifecycle` · `agno__threads-lifecycle.md`
-
-Prose / text phrasing updated. Hash a2fa4209 ➔ bf6f2f76.
-
-````diff
-- [Connect your runtime to Intelligence](/agno/intelligence/connect-your-runtime) covers the
-+ [Connect your runtime to Intelligence](/agno/intelligence/quickstart) covers the
-````
-
-**High — /agno/intelligence/memories**
-
-`/agno/intelligence/memories` · route `/intelligence/memories` · `agno__intelligence__memories.md`
-
-Code block content changed. Hash 0c8af2f2 ➔ b4389f3c.
-
-````diff
-- Rich Threads remember a conversation. User Memories remember a person. This page explains
-- what a memory is, how recall selects them, and what has to be true of your
-- deployment before the memory surfaces exist at all.
-- If you are looking for the persistence architecture beneath a single
-+ ## Overview
-+ Rich Threads remember a conversation. User Memory remembers a person. This page explains
-+ what a memory is, how recall selects them, and what has to be true of your
-+ deployment before the memory surfaces exist at all.
-  … region truncated
-````
-
-**High — /agno/learning**
-
-`/agno/learning` · route `/learning` · `agno__learning.md`
-
-Code fence count changed. Hash 5debfb83 ➔ 3d8ccd83.
-
-````diff
-- > Turn real application use into evidence-backed Insights and reviewed, reusable Skills.
-- ## Overview
-- Automatic Learning turns patterns from real agent runs into reusable Skills. It looks at completed conversations and application interactions in [Rich Threads](/agno/threads), produces evidence-backed Insights, and proposes instructions you can review before publishing.
-- <div className="not-prose shell-docs-radius-surface aspect-[7/4] w-full overflow-hidden border border-[var(--border)] bg-[var(--bg-surface)] shadow-[var(--shadow-panel)]">
-+ > Turn real use of your app into skills you can review and publish.
-+ ## Overview
-+ Automatic Learning turns patterns from real agent runs into skills you can publish. It reads completed conversations in [Rich Threads](/agno/threads), writes insights, and proposes instructions you review before you publish them.
-+ <div className="not-prose shell-docs-radius-surface aspect-[7/4] w-full overflow-hidden border border-[var(--border)] bg-[var(--bg-surface)] shadow-[var(--shadow-panel)]">
-  … region truncated
-````
-
-**Low — /agno/backend/message-history**
-
-`/agno/backend/message-history` · route `/backend/message-history` · `agno__backend__message-history.md`
-
-Prose / text phrasing updated. Hash 04032b1b ➔ 0893019b.
-
-````diff
-- whole. `selfManagedAgents` belongs to the Enterprise Intelligence tier, so
-+ whole. `selfManagedAgents` belongs to the Enterprise plan, so
-````
-
-**High — /agno/intelligence/learned-skills**
-
-`/agno/intelligence/learned-skills` · route `/intelligence/learned-skills` · `agno__intelligence__learned-skills.md`
-
-Code fence count changed. Hash 771ee282 ➔ e459e3d5.
-
-````diff
-- # Automatic learned skill delivery
-- > Keep published Learning skills available to agents with verified snapshots, automatic refresh, and exact revision pins.
-- Learned skill delivery makes one Learning container's published skills available to an agent without another CLI download or process restart. A framework adapter adds an alphabetical catalog and two tools. The model decides when to load and follow a skill.
-- Developer instructions retain precedence. Learned skills cannot override the agent's role, safety rules, tool restrictions, or application policy.
-+ # Skill delivery
-+ > Keep published skills available to agents, with verified snapshots and exact revision pins.
-+ ## Overview
-+ Skill delivery makes one Learning container's published skills available to an agent without another CLI download or process restart. A framework adapter adds an alphabetical catalog and two tools.
-  … region truncated
-````
-
-**Low — /agno/cookbook/jev-generative-ui**
-
-`/agno/cookbook/jev-generative-ui` · route `/cookbook/jev-generative-ui` · `agno__cookbook__jev-generative-ui.md`
-
-Prose / text phrasing updated. Hash 16a3fa5a ➔ a22e3af1.
-
-````diff
-- Next, make the approved Skills available to Jev. [Automatic learned skill delivery](/agno/intelligence/learned-skills) provides a registry of published Skills. The helper below reads their `SKILL.md` contents so you can pass them into `systemOne` as guidance. This is your application’s connection to Jev; installing a model adapter alone does not make that connection.
-+ Next, make the approved Skills available to Jev. [Skill delivery](/agno/intelligence/learned-skills) provides a registry of published Skills. The helper below reads their `SKILL.md` contents so you can pass them into `systemOne` as guidance. This is your application’s connection to Jev; installing a model adapter alone does not make that connection.
-````
-
-**New — https://docs.copilotkit.ai/agno/intelligence/analytics**
-
-Listed upstream, tracked nowhere in this repo. Not snapshotted by this run.
-
-**New — https://docs.copilotkit.ai/agno/intelligence/channels**
-
-Listed upstream, tracked nowhere in this repo. Not snapshotted by this run.
-
-**New — https://docs.copilotkit.ai/agno/intelligence/plans**
-
-Listed upstream, tracked nowhere in this repo. Not snapshotted by this run.
 
 ---
 

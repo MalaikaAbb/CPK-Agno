@@ -23,6 +23,9 @@ export default function Page() {
           merged into the default, an object of props set on the default, or
           your own component replacing it outright. Slots nest, so{" "}
           <code>messageView.assistantMessage.copyButton</code> is a valid path.
+          To reshape the message list itself, pass{" "}
+          <code>transformMessages</code> or <code>groupMessages</code> to{" "}
+          <code>messageView</code>.
         </p>
 
         <div className="mt-4 overflow-x-auto">
@@ -50,9 +53,9 @@ export default function Page() {
 
         <div className="mt-4">
           <TryIt
-            prompts={["Hello there"]}
-            expect="Level 1 tints the message area and outlines the input. Level 2 focuses the input on mount. Level 3 shows a custom header, custom layout, and an accent-coloured streaming cursor."
-            fail="The chat looks identical across all three tabs — the slot props are not reaching the component."
+            prompts={["Hello there", "What's the weather in Tokyo?"]}
+            expect="Level 1 tints the message area and outlines the input. Level 2 focuses the input on mount. Level 3 shows a custom header, custom layout, and an accent-coloured streaming cursor. Level 4 filters out tool messages via transformMessages. Level 5 collapses consecutive tool steps into an expandable ToolActivity row via groupMessages."
+            fail="The chat looks identical across tabs — the slot props are not reaching the component."
           />
         </div>
       </Panel>

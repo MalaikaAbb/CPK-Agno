@@ -1,11 +1,18 @@
 "use client";
 
-import { CopilotChat } from "@copilotkit/react-core/v2";
-import { useState } from "react";
+import {
+  CopilotChat,
+  messageGroup,
+  messageRow,
+  type Message,
+  type MessageGroupWrapperProps,
+  type MessageRow,
+} from "@copilotkit/react-core/v2";
+import { useCallback, useState } from "react";
 
 import { DemoFrame } from "@/components/demo-frame";
 
-type Level = "classes" | "props" | "component";
+type Level = "classes" | "props" | "component" | "transform" | "group";
 
 const LEVELS: { id: Level; label: string; blurb: string }[] = [
   {
@@ -22,6 +29,16 @@ const LEVELS: { id: Level; label: string; blurb: string }[] = [
     id: "component",
     label: "3 · Custom component",
     blurb: "Your own component replaces the default, plus a custom layout.",
+  },
+  {
+    id: "transform",
+    label: "4 · Reshaping the Message List",
+    blurb: "Pass transformMessages to the message view to filter, replace, or reorder the message list.",
+  },
+  {
+    id: "group",
+    label: "5 · Grouping messages into one row",
+    blurb: "Pass groupMessages to collapse a run of tool calls into one expandable row.",
   },
 ];
 
@@ -45,9 +62,62 @@ const CustomMessageView: any = ({
     {isRunning && <div className="animate-pulse">Thinking...</div>}
   </div>
 );
+
+// Define wrappers at module level. One created inside groupMessages is a new
+// component on every call, so React would remount it each time.
+function ToolActivity({
+  messages,
+  children,
+  state,
+  setState,
+}: MessageGroupWrapperProps<boolean>) {
+  const open = state ?? false;
+  return (
+    <div className="rounded-lg border">
+      <button onClick={() => setState(!open)}>
+        {messages.length} tool steps {open ? "▾" : "▸"}
+      </button>
+      {open && children}
+    </div>
+  );
+}
+
+// An assistant message that also carries text stays on its own row, so the
+// text (or a card waiting on the user) is never folded into a closed group.
+const isToolStep = (m: Message) =>
+  m.role === "tool" ||
+  (m.role === "assistant" && !!m.toolCalls?.length && !m.content);
+
 export default function Page() {
   const [level, setLevel] = useState<Level>("classes");
   const active = LEVELS.find((l) => l.id === level)!;
+
+  const transformMessages = useCallback(
+    (messages: Message[]) => messages.filter((m) => m.role !== "tool"),
+    [],
+  );
+
+  const groupMessages = useCallback((messages: Message[]): MessageRow[] => {
+    const rows: MessageRow[] = [];
+    let run: Message[] = [];
+    const flush = () => {
+      if (run.length > 0) {
+        rows.push(
+          messageGroup({ key: run[0].id, messages: run, wrapper: ToolActivity }),
+        );
+      }
+      run = [];
+    };
+    for (const message of messages) {
+      if (isToolStep(message)) run.push(message);
+      else {
+        flush();
+        rows.push(messageRow(message));
+      }
+    }
+    flush();
+    return rows;
+  }, []);
 
   return (
     <DemoFrame parentPath="/custom-look-and-feel/slots" subtitle={active.blurb}>
@@ -114,6 +184,14 @@ export default function Page() {
             >
               
             </CopilotChat>
+          )}
+
+          {level === "transform" && (
+            <CopilotChat messageView={{ transformMessages }} />
+          )}
+
+          {level === "group" && (
+            <CopilotChat messageView={{ groupMessages }} />
           )}
         </div>
       </div>

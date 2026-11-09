@@ -136,7 +136,7 @@ as this guide uses it as a starting point.
         db = SqliteDb(db_file="tmp/agno.db")
 
         agent = Agent(
-            model=OpenAIChat(id="gpt-5.4"),
+            model=OpenAIChat(reasoning_effort="none", id="gpt-6-luna"),
             tools=[sayHello],
             db=db,
             description="A helpful assistant that can answer questions and provide information.",

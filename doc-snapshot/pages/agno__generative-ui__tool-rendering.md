@@ -59,7 +59,7 @@ as this guide uses it as a starting point.
         # ...
 
         agent = Agent(
-            model=OpenAIChat(id="gpt-5.4"),
+            model=OpenAIChat(reasoning_effort="none", id="gpt-6-luna"),
             tools=[get_weather], # [!code highlight]
             description="A helpful assistant that can answer questions and provide information.",
             instructions="Be helpful and friendly. Format your responses using markdown where appropriate.",

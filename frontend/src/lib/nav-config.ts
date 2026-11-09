@@ -295,7 +295,7 @@ export const NAV: NavGroup[] = [
           "Tools served by an MCP server that carry their own UI, rendered in a sandboxed iframe in the chat.",
         status: "not-started",
         statusNote:
-          "The page publishes no Agno code: its only setup is a `BuiltInAgent` runtime, and it embeds no demo. Tracked for drift only.",
+          "The runtime examples use `BuiltInAgent` and MCP middleware, but publish no Agno integration code or embedded demo. Tracked for drift only.",
       },
       {
         path: "/generative-ui/open-generative-ui",

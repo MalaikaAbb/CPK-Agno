@@ -63,7 +63,7 @@ logger = logging.getLogger(__name__)
 # Sub-agents (real Agno agents under the hood)
 # ---------------------------------------------------------------------------
 
-_SUB_MODEL_ID = "gpt-4o-mini"
+_SUB_MODEL_ID = "gpt-6-luna"
 
 
 # Each sub-agent is a full Agno `Agent(...)` with its own system prompt.
@@ -71,7 +71,7 @@ _SUB_MODEL_ID = "gpt-4o-mini"
 # only sees their final text response, which is returned via the
 # delegation tool below.
 _research_agent = Agent(
-    model=OpenAIChat(id=_SUB_MODEL_ID, timeout=120),
+    model=OpenAIChat(reasoning_effort="none", id=_SUB_MODEL_ID, timeout=120),
     description="Research sub-agent.",
     instructions=(
         "You are a research sub-agent. Given a topic, produce a concise "
@@ -80,7 +80,7 @@ _research_agent = Agent(
 )
 
 _writing_agent = Agent(
-    model=OpenAIChat(id=_SUB_MODEL_ID, timeout=120),
+    model=OpenAIChat(reasoning_effort="none", id=_SUB_MODEL_ID, timeout=120),
     description="Writing sub-agent.",
     instructions=(
         "You are a writing sub-agent. Given a brief and optional source "
@@ -90,7 +90,7 @@ _writing_agent = Agent(
 )
 
 _critique_agent = Agent(
-    model=OpenAIChat(id=_SUB_MODEL_ID, timeout=120),
+    model=OpenAIChat(reasoning_effort="none", id=_SUB_MODEL_ID, timeout=120),
     description="Critique sub-agent.",
     instructions=(
         "You are an editorial critique sub-agent. Given a draft, give "
@@ -137,7 +137,7 @@ logger = logging.getLogger(__name__)
 # Sub-agents (real Agno agents under the hood)
 # ---------------------------------------------------------------------------
 
-_SUB_MODEL_ID = "gpt-4o-mini"
+_SUB_MODEL_ID = "gpt-6-luna"
 
 
 # Each sub-agent is a full Agno `Agent(...)` with its own system prompt.
@@ -145,7 +145,7 @@ _SUB_MODEL_ID = "gpt-4o-mini"
 # only sees their final text response, which is returned via the
 # delegation tool below.
 _research_agent = Agent(
-    model=OpenAIChat(id=_SUB_MODEL_ID, timeout=120),
+    model=OpenAIChat(reasoning_effort="none", id=_SUB_MODEL_ID, timeout=120),
     description="Research sub-agent.",
     instructions=(
         "You are a research sub-agent. Given a topic, produce a concise "
@@ -154,7 +154,7 @@ _research_agent = Agent(
 )
 
 _writing_agent = Agent(
-    model=OpenAIChat(id=_SUB_MODEL_ID, timeout=120),
+    model=OpenAIChat(reasoning_effort="none", id=_SUB_MODEL_ID, timeout=120),
     description="Writing sub-agent.",
     instructions=(
         "You are a writing sub-agent. Given a brief and optional source "
@@ -164,7 +164,7 @@ _writing_agent = Agent(
 )
 
 _critique_agent = Agent(
-    model=OpenAIChat(id=_SUB_MODEL_ID, timeout=120),
+    model=OpenAIChat(reasoning_effort="none", id=_SUB_MODEL_ID, timeout=120),
     description="Critique sub-agent.",
     instructions=(
         "You are an editorial critique sub-agent. Given a draft, give "

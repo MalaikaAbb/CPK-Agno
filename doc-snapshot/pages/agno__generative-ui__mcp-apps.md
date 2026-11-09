@@ -53,8 +53,14 @@ If you're looking to add an MCP App into an existing application, let's walk thr
     ### Add the dependencies
 
     ```npm
-    npm install @copilotkit/react-core @copilotkit/runtime @ag-ui/mcp-apps-middleware
+    npm install @copilotkit/react-core @copilotkit/runtime
     ```
+
+    Use `@copilotkit/runtime` 1.76.0 or later. The runtime includes the MCP Apps
+    middleware, so the `mcpApps` option below needs no other package. Install
+    `@ag-ui/mcp-apps-middleware` only if you attach the middleware to an agent
+    yourself with `.use()`. Its current release needs `@ag-ui/client` 1.x, which
+    runtime 1.76.0 and later use.
 
   </Step>
   <Step>
@@ -80,7 +86,7 @@ If you're looking to add an MCP App into an existing application, let's walk thr
 
     // 1. Create your agent
     const agent = new BuiltInAgent({
-      model: "openai/gpt-5.4",
+      model: "openai/gpt-6-luna",
       prompt: "You are a helpful assistant.",
     });
 
@@ -123,7 +129,7 @@ If you're looking to add an MCP App into an existing application, let's walk thr
     import { MCPAppsMiddleware } from "@ag-ui/mcp-apps-middleware";
 
     const agent = new BuiltInAgent({
-      model: "openai/gpt-5.4",
+      model: "openai/gpt-6-luna",
       prompt: "You are a helpful assistant.",
     }).use(
       new MCPAppsMiddleware({
@@ -138,6 +144,12 @@ If you're looking to add an MCP App into an existing application, let's walk thr
     );
     ```
 
+    <Callout type="info" title="Using Intelligence?">
+      On a runtime connected to Intelligence, keep `mcpApps` and replace
+      `runner: new InMemoryAgentRunner()` with `intelligence` and `identifyUser`.
+      See [MCP Apps with Intelligence](/agno/generative-ui/mcp-apps#mcp-apps-with-intelligence).
+    </Callout>
+
   </Step>
   <Step>
     ### Configure environment
@@ -149,7 +161,7 @@ If you're looking to add an MCP App into an existing application, let's walk thr
     ```
 
     <Callout type="info" title="What about other models?">
-    The example is configured to use OpenAI's GPT-4o by default, but you can modify the BuiltInAgent to use any language model supported by CopilotKit.
+    The example is configured to use OpenAI's GPT-6 Luna by default, but you can modify the BuiltInAgent to use any language model supported by CopilotKit.
     </Callout>
 
   </Step>

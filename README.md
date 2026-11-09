@@ -95,7 +95,7 @@ Then edit `backend/.env`:
 | Variable                             | Where                 | What it does                                                                 |
 | ------------------------------------ | --------------------- | ---------------------------------------------------------------------------- |
 | `OPENAI_API_KEY`                     | `backend/.env`        | **Required.** The model key. The backend refuses to start without it.        |
-| `OPENAI_MODEL`                       | `backend/.env`        | Model id. Defaults to `gpt-6-luna`; reasoning effort is `none`.              |
+| `OPENAI_MODEL`                       | `backend/.env`        | Model id. Defaults to `gpt-6-luna`, matching the Frontend Tools page.         |
 | `AGENT_PORT`                         | `backend/.env`        | Agno's port. Defaults to `8000` in code; set to `8010` in `backend/.env`.                                             |
 | `AGENT_CORS_ORIGINS`                 | `backend/.env`        | Origins allowed to hit the agent directly. Not needed on the normal path.    |
 | `AGNO_AGENT_URL`                     | `frontend/.env.local` | Where the runtime finds the agent. Defaults to `http://localhost:8010/agui`. |
@@ -210,7 +210,7 @@ The minimum viable path: provider, runtime route, one chat. **Try:** `Can you te
 
 **`/threads` — Overview.** Reference: what threads persist and why it's an event log, not a transcript.
 
-**`/threads/drawer` — Threads Drawer.** `CopilotThreadsDrawer` beside a chat in a shared `CopilotChatConfigurationProvider`. **Pass (licensed):** selecting a row replays that conversation with no state written by you. **Pass (unlicensed):** a _locked panel_ — that's the correct result, and proves the component mounted and detected the missing license. **Fail:** a blank area with no locked state.
+**`/threads/drawer` — Threads Drawer.** `CopilotThreadsDrawer` beside either `CopilotChat` or `CopilotSidebar`, plus a header button that calls `startNewThread()` through the shared `CopilotChatConfigurationProvider`; both hosts select the registered `agno_agent`. A third tab demonstrates the documented controlled `threadId`, `onThreadSelect`, and `onNewThread` callbacks. **Try:** press the header's “New conversation” button, then try the `Controlled threadId` tab. **Pass (licensed):** it starts a fresh conversation, and selecting a row replays that conversation; in controlled mode the app updates the thread id from either Drawer callback. **Pass (unlicensed):** a _locked panel_ — that's the correct result, and proves the component mounted and detected the missing license. **Fail:** a blank area with no locked state.
 
 **`/threads/headless` — Headless Threads.** A thread list built by hand on `useThreads`, including **rename**, which the prebuilt drawer doesn't expose. **Pass (licensed):** threads list, and rename/archive/delete take effect. **Pass (unlicensed):** an empty list with an explanatory note.
 
@@ -228,8 +228,8 @@ Drives the agent with no chat component. **Try:** type a message, press Run. **P
 **`/custom-look-and-feel/inspector`**
 The debugging overlay, mounted by the provider (never by hand — see [FINDINGS.md](FINDINGS.md)). **Try:** send a message, open the inspector docked at the window edge. **Pass:** the event list fills, and Frontend Tools lists all four browser tools with schemas. **Fail:** no inspector at all — it is force-disabled in production builds, so confirm you're on `npm run dev`. If it appears but says _"CopilotKit core not attached"_, something is rendering `<CopilotKitInspector />` without a `core` prop.
 
-**`/custom-look-and-feel/slots`** _(page live but absent from the doc sidebar)_
-Three override levels against one chat. **Pass:** level 1 tints the message area; level 2 auto-focuses the input; level 3 shows a custom header, custom layout, and a custom streaming cursor. **Fail:** all three tabs look identical.
+**`/custom-look-and-feel/slots`**
+Three override levels against one chat, with a reference to the documented `workSummary` and `assistantMessage.toolCallsView.group` slots. **Pass:** level 1 tints the message area; level 2 auto-focuses the input; level 3 shows a custom header, custom layout, and a custom streaming cursor. **Fail:** all three tabs look identical. The grouped-tool-call example is partial because its published helper exports are missing from the installed package; see [FINDINGS.md](FINDINGS.md) #40.
 
 **`/custom-look-and-feel/headless-ui`** _(live but absent from the sidebar)_
 A chat with zero CopilotKit chrome. **Try:** `What's the weather in London?` **Pass:** messages stream into hand-written bubbles and tool calls still render through the registry. **Fail:** Send does nothing.
@@ -326,14 +326,14 @@ Verified 2026-08-05 against a live stack (real OpenAI key, no license key, no MC
 | `/agno/quickstart`                                 | `/quickstart`                                 | ✅ Working     | Last verified end-to-end with gpt-4o; the backend now defaults to the doc's gpt-6-luna. |
 | `/agno/prebuilt-components`                        | `/prebuilt-components`                        | ✅ Working     | All three components. Doc page itself is a component stub (142 bytes of raw markdown). |
 | `/agno/threads`                                    | `/threads`                                    | ⚠️ Partial     | Premium.                                                                               |
-| `/agno/prebuilt-components/copilot-threads-drawer` | `/threads/drawer`                             | ⚠️ Partial     | Premium; renders the locked view, which is the expected unlicensed result.             |
+| `/agno/prebuilt-components/copilot-threads-drawer` | `/threads/drawer`                             | ⚠️ Partial     | Premium; renders the locked view without Intelligence access. Custom and controlled new-conversation flows plus shared `agno_agent` selection are implemented. |
 | `/agno/headless-threads`                           | `/threads/headless`                           | ⚠️ Partial     | Premium; `useThreads` returns empty. UI incl. rename fully implemented.                |
 | `/agno/threads-lifecycle`                          | `/threads/lifecycle`                          | ⚠️ Partial     | Mint, remount, replay, switch, pin all observed; `existingId` undefined — [FINDINGS.md](FINDINGS.md) #28.      |
 | `/agno/threads-import`                             | `/threads/import`                             | 📖 Reference   | Premium; Agno is not a documented import source.                                       |
 | `/agno/intelligence/threads-explained`             | `/threads/architecture`                       | 📖 Reference   | Premium.                                                                               |
 | `/agno/programmatic-control`                       | `/custom-look-and-feel/programmatic-control`  | ✅ Working     | run/stop/state/messages.                                                               |
 | `/agno/inspector`                                  | `/custom-look-and-feel/inspector`             | ✅ Working     | Dev-only by design.                                                                    |
-| `/agno/custom-look-and-feel/slots`                 | `/custom-look-and-feel/slots`                 | ✅ Working     | **Not in the doc sidebar**, but the page resolves (HTTP 200).                          |
+| `/agno/custom-look-and-feel/slots`                 | `/custom-look-and-feel/slots`                 | ⚠️ Partial     | The page documents `workSummary` and grouped tool calls; installed package lacks exports used by the published grouping example — [FINDINGS.md](FINDINGS.md) #40. |
 | `/agno/custom-look-and-feel/headless-ui`           | `/custom-look-and-feel/headless-ui`           | ✅ Working     | **Not in the doc sidebar**; resolves.                                                  |
 | `/agno/custom-look-and-feel/markdown`              | `/custom-look-and-feel/markdown`              | ✅ Working     | New upstream, tracked 2026-09-21. All three snippets verbatim and all three typecheck; the bare-component slot that [FINDINGS.md](FINDINGS.md) #3 rules out elsewhere is accepted here — [FINDINGS.md](FINDINGS.md) #26. |
 | `/agno/generative-ui/your-components/display-only` | `/generative-ui/your-components/display-only` | ✅ Working     | `useComponent`; needs no backend declaration. Same resume failure as frontend-tools until `db` was configured (#12); re-recorded clean.            |
@@ -540,7 +540,7 @@ single page first — before running the full suite.
 
 **Rich Threads** — [Overview](https://docs.copilotkit.ai/agno/threads) · [Threads Drawer](https://docs.copilotkit.ai/agno/prebuilt-components/copilot-threads-drawer) · [Headless Threads](https://docs.copilotkit.ai/agno/headless-threads) · [Thread & History Lifecycle](https://docs.copilotkit.ai/agno/threads-lifecycle) · [Synchronize Thread History](https://docs.copilotkit.ai/agno/threads-import) · [Threads & Persistence Architecture](https://docs.copilotkit.ai/agno/intelligence/threads-explained)
 
-**Custom Look and Feel** — [Programmatic Control](https://docs.copilotkit.ai/agno/programmatic-control) · [Inspector](https://docs.copilotkit.ai/agno/inspector) · [Slots](https://docs.copilotkit.ai/agno/custom-look-and-feel/slots) † · [Headless UI](https://docs.copilotkit.ai/agno/custom-look-and-feel/headless-ui) † · [Markdown Rendering](https://docs.copilotkit.ai/agno/custom-look-and-feel/markdown)
+**Custom Look and Feel** — [Programmatic Control](https://docs.copilotkit.ai/agno/programmatic-control) · [Inspector](https://docs.copilotkit.ai/agno/inspector) · [Slots](https://docs.copilotkit.ai/agno/custom-look-and-feel/slots) · [Headless UI](https://docs.copilotkit.ai/agno/custom-look-and-feel/headless-ui) † · [Markdown Rendering](https://docs.copilotkit.ai/agno/custom-look-and-feel/markdown)
 
 **Generative UI** — [Your Components · Display-only](https://docs.copilotkit.ai/agno/generative-ui/your-components/display-only) · [Your Components · Interactive](https://docs.copilotkit.ai/agno/generative-ui/your-components/interactive) † · [Tool Rendering](https://docs.copilotkit.ai/agno/generative-ui/tool-rendering) · [A2UI · Dynamic Schema](https://docs.copilotkit.ai/agno/generative-ui/a2ui/dynamic-schema) · [A2UI · Fixed Schema](https://docs.copilotkit.ai/agno/generative-ui/a2ui/fixed-schema) · [MCP Apps](https://docs.copilotkit.ai/agno/generative-ui/mcp-apps) ‡ · [Open Generative UI](https://docs.copilotkit.ai/agno/generative-ui/open-generative-ui)
 

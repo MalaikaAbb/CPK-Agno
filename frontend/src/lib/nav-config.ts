@@ -119,7 +119,7 @@ export const NAV: NavGroup[] = [
         title: "Threads Drawer",
         docPath: "/agno/prebuilt-components/copilot-threads-drawer",
         summary:
-          "The drop-in CopilotThreadsDrawer wired to a chat through a shared configuration provider.",
+          "The drop-in CopilotThreadsDrawer wired to a chat through shared configuration, with custom and controlled new-conversation flows plus agent selection.",
         status: "partial",
         premium: true,
         statusNote:
@@ -197,9 +197,10 @@ export const NAV: NavGroup[] = [
         title: "Slots",
         docPath: "/agno/custom-look-and-feel/slots",
         summary:
-          "Replacing chat sub-components at three levels: class strings, prop overrides, and whole components.",
-        status: "working",
-        offNav: true,
+          "Replacing chat sub-components at three levels, with reference coverage for message work summaries and grouped tool calls.",
+        status: "partial",
+        statusNote:
+          "The published grouped-tool-call example uses messageGroup/messageRow APIs that the installed package does not export; see README §9 / FINDINGS.md #40.",
       },
       {
         path: "/custom-look-and-feel/headless-ui",

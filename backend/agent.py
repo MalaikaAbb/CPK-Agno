@@ -15,8 +15,8 @@ from openai import Timeout
 
 from tools import ALL_TOOLS
 
-# The Agno quickstart configures GPT-6 Luna with reasoning disabled.
-# Override with OPENAI_MODEL to use another model supported by Agno.
+# The Frontend Tools page publishes this model configuration. Override the
+# model id with OPENAI_MODEL when testing against another available model.
 DEFAULT_MODEL = os.getenv("OPENAI_MODEL", "gpt-6-luna")
 
 # The OpenAI SDK ships a 5-second *connect* timeout

@@ -1,6 +1,6 @@
 import { RouteHeader } from "@/components/route-header";
 import { SourceCode } from "@/components/source-code";
-import { Callout, Panel, TryIt } from "@/components/ui";
+import { Panel, TryIt } from "@/components/ui";
 
 const ROOT_SLOTS: [string, string][] = [
   ["messageView", "The message list container."],
@@ -60,16 +60,28 @@ export default function Page() {
         </div>
       </Panel>
 
-      <Callout tone="warn" title="The one change this sync made points somewhere this section cannot follow">
-        The whole 2026-09-21 diff for this page is one table cell: the{" "}
-        <code>markdownRenderer</code> row gained &ldquo;See [Markdown
-        Rendering](/agno/custom-look-and-feel/markdown)&rdquo;. That page is live
-        upstream and is tracked nowhere in this repo: it has no snapshot, no
-        route and no recorder entry, and <code>/doc-sync</code> reports it as a new
-        upstream page. The slot itself is unchanged and is still demonstrated
-        below, so nothing here breaks; the link just leads out of the tested
-        set.
-      </Callout>
+      <Panel title="Additional documented message slots">
+        <ul className="list-disc space-y-2 pl-5 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+          <li>
+            <code>messageView.workSummary</code> customizes the working or
+            elapsed-time line shown when <code>toolCallDisplay</code> is{" "}
+            <code>"turn"</code>.
+          </li>
+          <li>
+            <code>messageView.assistantMessage.toolCallsView.group</code>{" "}
+            customizes the summary for consecutive tool calls. See{" "}
+            <a
+              className="text-[var(--accent)] underline"
+              href="https://docs.copilotkit.ai/reference/components/CopilotChatToolCallGroup"
+              target="_blank"
+              rel="noreferrer"
+            >
+              CopilotChatToolCallGroup
+            </a>
+            .
+          </li>
+        </ul>
+      </Panel>
 
       <Panel title="Source">
         <SourceCode file="frontend/src/app/custom-look-and-feel/slots/demo-chat/page.tsx" />

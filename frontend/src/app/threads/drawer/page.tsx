@@ -3,7 +3,10 @@ import { SourceCode } from "@/components/source-code";
 import { Callout, Panel, TryIt } from "@/components/ui";
 
 const PROPS: [string, string][] = [
-  ["agentId", "Whose threads to list. Defaults to the chat configuration's agent."],
+  [
+    "agentId",
+    'Whose threads to list. Defaults to the chat configuration\'s agent, then CopilotKitProvider\'s agentId, then "default".',
+  ],
   ["label", 'Accessible name for the drawer region. Defaults to "Threads".'],
   ["recentLabel", 'Heading above the list. Defaults to "Recent Conversations".'],
   ["onThreadSelect", "Take over selection instead of letting the drawer drive the chat."],
@@ -63,11 +66,16 @@ export default function Page() {
           integration. A hand-rolled sidebar would have you track the active{" "}
           <code>threadId</code> yourself and thread selection handlers between
           the list and the chat; here the shared configuration holds that state.
+          The header button also starts a fresh conversation through that same
+          configuration, and the provider selects the registered{" "}
+          <code>agno_agent</code> for both hosts. A third mode gives the
+          provider a controlled <code>threadId</code> and wires the Drawer&apos;s
+          selection callbacks to app state.
         </p>
         <div className="mt-4">
           <TryIt
             prompts={["Start a conversation, then pick another thread"]}
-            expect="With Intelligence access: selecting a row replays that conversation, and the New Conversation row resets the chat to a fresh welcome screen."
+            expect="With Intelligence access: selecting a row replays that conversation, and either the drawer row or the header button starts a fresh conversation. The Controlled threadId tab uses app state for both drawer callbacks and the header button."
             fail="Without it the list area shows the locked view. A blank drawer with no locked state would mean the component failed to mount."
           />
         </div>

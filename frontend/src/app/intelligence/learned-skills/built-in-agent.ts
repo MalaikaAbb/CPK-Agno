@@ -40,7 +40,7 @@ import { stepCountIs, streamText } from "ai";
 
 // [1] learned-skills: learnedSkills on BuiltInAgent
 const agent = new BuiltInAgent({
-  model: "openai/gpt-4o",
+  model: "openai/gpt-6-luna",
   prompt: "Follow the application's support policy.",
   learnedSkills: {
     // Set these here, or omit them to use environment variables (linked above).
@@ -61,7 +61,7 @@ const factoryAgent = new BuiltInAgent({
   },
   factory: ({ input, abortSignal, learnedSkills }) =>
     streamText({
-      model: openai("gpt-4o"),
+      model: openai("gpt-6-luna"),
       system: [
         "Follow the application's support policy.",
         learnedSkills.catalog,

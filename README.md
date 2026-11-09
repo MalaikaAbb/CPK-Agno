@@ -38,7 +38,7 @@ Next.js 16 App Router  ·  localhost:3010
 Agno AgentOS  ·  localhost:8010        ← Python / FastAPI
   │  AgentOS(agents=[agent], interfaces=[AGUI(agent=agent)])
   ▼
-OpenAI  (gpt-4o by default)
+OpenAI  (gpt-6-luna by default; reasoning disabled)
 ```
 
 Three points worth noting:
@@ -95,7 +95,7 @@ Then edit `backend/.env`:
 | Variable                             | Where                 | What it does                                                                 |
 | ------------------------------------ | --------------------- | ---------------------------------------------------------------------------- |
 | `OPENAI_API_KEY`                     | `backend/.env`        | **Required.** The model key. The backend refuses to start without it.        |
-| `OPENAI_MODEL`                       | `backend/.env`        | Model id. Defaults to `gpt-4o`.                                              |
+| `OPENAI_MODEL`                       | `backend/.env`        | Model id. Defaults to `gpt-6-luna`; reasoning effort is `none`.              |
 | `AGENT_PORT`                         | `backend/.env`        | Agno's port. Defaults to `8000` in code; set to `8010` in `backend/.env`.                                             |
 | `AGENT_CORS_ORIGINS`                 | `backend/.env`        | Origins allowed to hit the agent directly. Not needed on the normal path.    |
 | `AGNO_AGENT_URL`                     | `frontend/.env.local` | Where the runtime finds the agent. Defaults to `http://localhost:8010/agui`. |
@@ -323,7 +323,7 @@ Verified 2026-08-05 against a live stack (real OpenAI key, no license key, no MC
 | Doc page                                           | Route                                         | Status         | Notes                                                                                  |
 | -------------------------------------------------- | --------------------------------------------- | -------------- | -------------------------------------------------------------------------------------- |
 | `/agno`                                            | `/`                                           | ✅ Working     | Server-side agent probe.                                                               |
-| `/agno/quickstart`                                 | `/quickstart`                                 | ✅ Working     | Verified end-to-end: streamed reply from gpt-4o.                                       |
+| `/agno/quickstart`                                 | `/quickstart`                                 | ✅ Working     | Last verified end-to-end with gpt-4o; the backend now defaults to the doc's gpt-6-luna. |
 | `/agno/prebuilt-components`                        | `/prebuilt-components`                        | ✅ Working     | All three components. Doc page itself is a component stub (142 bytes of raw markdown). |
 | `/agno/threads`                                    | `/threads`                                    | ⚠️ Partial     | Premium.                                                                               |
 | `/agno/prebuilt-components/copilot-threads-drawer` | `/threads/drawer`                             | ⚠️ Partial     | Premium; renders the locked view, which is the expected unlicensed result.             |

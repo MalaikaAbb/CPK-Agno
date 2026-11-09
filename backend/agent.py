@@ -58,6 +58,7 @@ def _model() -> OpenAIChat:
     return OpenAIChat(
         reasoning_effort="none",
         id=DEFAULT_MODEL,
+        reasoning_effort="none",
         # A key pasted into an env file can arrive with surrounding whitespace,
         # which becomes an illegal HTTP header value rather than a clean 401.
         api_key=(os.getenv("OPENAI_API_KEY") or "").strip() or None,

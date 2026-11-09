@@ -288,7 +288,7 @@ An approval checkpoint in front of a side-effecting action, showing the policy v
 ### Multi-Agent
 
 **`/multi-agent/subagents`** — ⚠️ Partial
-A supervisor whose tools are research, writing and critique Agno agents; a delegation log renders `delegations` from shared state. Agent and frontend verbatim. **Try:** `Write a short blog post about why cats purr.` **Pass:** three inline activity cards in order, then the log fills with three entries **at the end of the run**. **Fail:** the log stays empty after the run. It never shows a `running` entry: the stock router's per-tool state deltas need `jsonpatch` (`agno[agui]`), which the Quickstart's install line leaves out. Backend-checked: the final snapshot carries all three, `completed`.
+A supervisor whose tools are research, writing and critique Agno agents; all four use the current Code tab's `gpt-6-luna` model configuration. A delegation log renders `delegations` from shared state. Agent and frontend verbatim. **Try:** `Write a short blog post about why cats purr.` **Pass:** three inline activity cards in order, then the log fills with three entries **at the end of the run**. **Fail:** the log stays empty after the run. It never shows a `running` entry: the stock router's per-tool state deltas need `jsonpatch` (`agno[agui]`), which the Quickstart's install line leaves out. Backend-checked: the final snapshot carries all three, `completed`.
 
 ### Backend
 
@@ -347,7 +347,7 @@ Verified 2026-08-05 against a live stack (real OpenAI key, no license key, no MC
 | `/agno/shared-state/rendering-in-app`              | `/shared-state/rendering-in-app`              | ⚠️ Partial     | New 2026-10-07. Both snippets verbatim on the default agent; page has no backend half. Not browser-checked. |
 | `/agno/shared-state/agent-readonly`                | `/shared-state/agent-readonly`                | ⚠️ Partial     | New 2026-10-07. Frontend verbatim; `main.py` prompt without its unpublished tools. Backend-checked: context read back. |
 | `/agno/human-in-the-loop/index`                    | `/human-in-the-loop/overview`                 | ⚠️ Partial     | New 2026-10-07. hitl-in-chat pauses and resumes (backend-checked). gen-ui-interrupt fails to resume: “Frontend tool resume requires a database”. |
-| `/agno/multi-agent/subagents`                      | `/multi-agent/subagents`                      | ⚠️ Partial     | New 2026-10-07. Verbatim; delegations arrive only in the end-of-run snapshot (no `jsonpatch`), so nothing is ever seen `running`. |
+| `/agno/multi-agent/subagents`                      | `/multi-agent/subagents`                      | ⚠️ Partial     | Model config synced to the current Code tab. Delegations still arrive only in the end-of-run snapshot (no `jsonpatch`), so nothing is ever seen `running`. |
 | `/agno/frontend-tools`                             | `/frontend-tools`                             | ✅ Working     | Was dying at the resume with "requires a database"; fixed by configuring `db` (#12) and re-recorded clean.            |
 | `/agno/human-in-the-loop/governed-actions`         | `/human-in-the-loop/governed-actions`         | ✅ Working     | Approval card with the policy verdict. Its `z.record` call had to be translated for zod 4 — see [FINDINGS.md](FINDINGS.md) #14.            |
 | `/agno/human-in-the-loop`                          | `/human-in-the-loop`                          | ✅ Working     | **Not in the doc sidebar**; linked from Quickstart and resolves. Covered by the shared `db` (#12).            |

@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "docsRoot": "https://docs.copilotkit.ai/agno",
-  "syncedAt": "2026-10-07T14:21:13.124Z",
+  "syncedAt": "2026-11-09T10:47:29.999Z",
   "pages": {
     "/agno": {
       "file": "agno.md",
@@ -14,7 +14,7 @@
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:13 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/ag-ui": {
       "file": "agno__ag-ui.md",
@@ -26,7 +26,7 @@
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:13 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/backend/message-history": {
       "file": "agno__backend__message-history.md",
@@ -38,31 +38,31 @@
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:13 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/cookbook/jev-generative-ui": {
       "file": "agno__cookbook__jev-generative-ui.md",
-      "sha256": "b549564384492bca7e8e0ab953307e47dff9bd2bd050668009c349512670fa82",
-      "bytes": 21866,
-      "lines": 428,
+      "sha256": "fb3027c4a504cf930f850836317fa5d139ed6d06285eda12f145c22461d4de41",
+      "bytes": 21999,
+      "lines": 432,
       "routes": [
         "/cookbook/jev-generative-ui"
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:13 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/copilot-runtime": {
       "file": "agno__copilot-runtime.md",
-      "sha256": "74cd3725337a845320102bf1ca0bbe07f61806d5d71383baaf9e5de3410992dc",
-      "bytes": 11715,
+      "sha256": "cb9dec841040c530a47e23417e1573392c706066ab8d49ca8fa8af95d64d3f7d",
+      "bytes": 11727,
       "lines": 285,
       "routes": [
         "/backend/copilot-runtime"
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:13 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/custom-look-and-feel/headless-ui": {
       "file": "agno__custom-look-and-feel__headless-ui.md",
@@ -74,7 +74,7 @@
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:13 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/custom-look-and-feel/markdown": {
       "file": "agno__custom-look-and-feel__markdown.md",
@@ -86,43 +86,43 @@
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:14 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/custom-look-and-feel/slots": {
       "file": "agno__custom-look-and-feel__slots.md",
-      "sha256": "6325f4e03b1670ecaf27f2d2633f6c0e2be81845ce040aaaa68e0964e6c01696",
-      "bytes": 12315,
-      "lines": 343,
+      "sha256": "6159e2b216206346030f70369311e255feb7e721f9673793404be85cc2d34f10",
+      "bytes": 16227,
+      "lines": 425,
       "routes": [
         "/custom-look-and-feel/slots"
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:14 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/frontend-tools": {
       "file": "agno__frontend-tools.md",
-      "sha256": "cb510d67243b3bec589f5c9296f2dbacbbfcc21b73fe163d7749abc859d14aef",
-      "bytes": 5502,
+      "sha256": "85e109d8ad329b1315f6fafb81a187d74c24881c5111e14fc79c74fc33da3f8e",
+      "bytes": 5530,
       "lines": 157,
       "routes": [
         "/frontend-tools"
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:14 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/generative-ui/a2ui/dynamic-schema": {
       "file": "agno__generative-ui__a2ui__dynamic-schema.md",
-      "sha256": "2c20560a3bfa3e3e36d07f174944a4494a0c6ee4bc221290f7d69b7b2a8605af",
-      "bytes": 21442,
+      "sha256": "d9aadbe8d9a83e8bf647792bf394c400705d41be428e97ec9496b68c042df282",
+      "bytes": 21471,
       "lines": 600,
       "routes": [
         "/generative-ui/a2ui/dynamic-schema"
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:14 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/generative-ui/a2ui/fixed-schema": {
       "file": "agno__generative-ui__a2ui__fixed-schema.md",
@@ -134,7 +134,7 @@
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:14 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/generative-ui/frontend-cards": {
       "file": "agno__generative-ui__frontend-cards.md",
@@ -146,43 +146,43 @@
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:14 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/generative-ui/mcp-apps": {
       "file": "agno__generative-ui__mcp-apps.md",
-      "sha256": "628cab5bc7c21a7b1b19a8d2403790f29b056a249fd3c84a01c0307fee1a8c5f",
-      "bytes": 8046,
-      "lines": 302,
+      "sha256": "1d7d3fe078bdfd31ab4611330a5bfa3b0a4d4bebea895acc98ce881f5c8b4488",
+      "bytes": 8705,
+      "lines": 314,
       "routes": [
         "/generative-ui/mcp-apps"
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:14 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/generative-ui/open-generative-ui": {
       "file": "agno__generative-ui__open-generative-ui.md",
-      "sha256": "448da45a978dff85500f1d61dbc60c76cfa3eb18d194d132340e24053427e636",
-      "bytes": 10238,
-      "lines": 272,
+      "sha256": "c04527052363a93056aa4b14beec1d4352d52c1c4c7c3eb74258880dd1130d3d",
+      "bytes": 11490,
+      "lines": 294,
       "routes": [
         "/generative-ui/open-generative-ui"
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:14 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/generative-ui/tool-rendering": {
       "file": "agno__generative-ui__tool-rendering.md",
-      "sha256": "b6d26ce3832a5c45e69ac4b68f48d5106449725686a964ef27b100685c860849",
-      "bytes": 5083,
+      "sha256": "66e06d15959c55a7f4a15fc798704e042b7eb529305e749597901923d8570a27",
+      "bytes": 5111,
       "lines": 160,
       "routes": [
         "/generative-ui/tool-rendering"
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:14 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/generative-ui/your-components/display-only": {
       "file": "agno__generative-ui__your-components__display-only.md",
@@ -194,7 +194,7 @@
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:14 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/generative-ui/your-components/interactive": {
       "file": "agno__generative-ui__your-components__interactive.md",
@@ -206,7 +206,7 @@
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:14 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/headless-threads": {
       "file": "agno__headless-threads.md",
@@ -218,19 +218,19 @@
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:14 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/human-in-the-loop": {
       "file": "agno__human-in-the-loop.md",
-      "sha256": "03a1eba28538e800dd42a9ec0337c29c8974045c063603a2c2aed77054685b3f",
-      "bytes": 5581,
+      "sha256": "17bb0b5b278eede3c5ddcc4798710193630abb1487c8260e1096dbeca74ea1b4",
+      "bytes": 5609,
       "lines": 163,
       "routes": [
         "/human-in-the-loop"
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:14 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/human-in-the-loop/governed-actions": {
       "file": "agno__human-in-the-loop__governed-actions.md",
@@ -242,7 +242,7 @@
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:14 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/human-in-the-loop/index": {
       "file": "agno__human-in-the-loop__index.md",
@@ -254,79 +254,79 @@
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:14 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/inspector": {
       "file": "agno__inspector.md",
-      "sha256": "6d7b1ea933871d8d5d43c7d971ae9018cad79165b546e97fee89fcc4499a3849",
-      "bytes": 10254,
+      "sha256": "968e34cd2a188ce7033e8ea46b72ac7e34a46cfdd4086c7f3f14cf83ba973b75",
+      "bytes": 10260,
       "lines": 200,
       "routes": [
         "/custom-look-and-feel/inspector"
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:14 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/intelligence/learned-skills": {
       "file": "agno__intelligence__learned-skills.md",
-      "sha256": "98291e253d7642a913c91c7d9ef8afdef61c28ff1afe01a257931cfa1fedcc9b",
-      "bytes": 31575,
+      "sha256": "92b972b150df2c2cf6ec820933b9d20107c0ef344b0cd13f620f1d61ca55710c",
+      "bytes": 31590,
       "lines": 580,
       "routes": [
         "/intelligence/learned-skills"
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:14 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/intelligence/memories": {
       "file": "agno__intelligence__memories.md",
-      "sha256": "69e2868ac855964a2a45fa61df4556bf926704ba21302f6bf743c504ba93022d",
-      "bytes": 18526,
-      "lines": 441,
+      "sha256": "063e3e29572eb98fde58a43d6557d2c5bea3bd5fbaf595a2d6169c33d8b7e746",
+      "bytes": 18528,
+      "lines": 443,
       "routes": [
         "/intelligence/memories"
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:15 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/intelligence/threads-explained": {
       "file": "agno__intelligence__threads-explained.md",
-      "sha256": "2c52409f2e5ea1fdff375f89dadf53116dd884ee240420ce8eed48a01ffe0d84",
-      "bytes": 11547,
+      "sha256": "8c80efaf1d24395b91fc69ac5b66b684bd2b6ec582e535c668b1d610e35a3e48",
+      "bytes": 11404,
       "lines": 162,
       "routes": [
         "/threads/architecture"
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:15 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/learning": {
       "file": "agno__learning.md",
-      "sha256": "76d7a7994b43cbbc184db5b4eb7b8a30fdc640d2a77e5db4d1af9e06ff002c77",
-      "bytes": 14032,
-      "lines": 233,
+      "sha256": "e8bf356cf7104aea1efa4f298021e248a2b19e3ae98d316daadbee59accf1f41",
+      "bytes": 21205,
+      "lines": 365,
       "routes": [
         "/learning"
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:15 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/multi-agent/subagents": {
       "file": "agno__multi-agent__subagents.md",
-      "sha256": "6be3051d0a76b860b0f75e9260585555c6283a9b255dd1ba10715b56149af6b3",
-      "bytes": 17208,
+      "sha256": "de5d46573727acd22d91bb7e10e22e90582303f7ce76d731089ef30de781f004",
+      "bytes": 17356,
       "lines": 508,
       "routes": [
         "/multi-agent/subagents"
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:15 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/prebuilt-components": {
       "file": "agno__prebuilt-components.md",
@@ -338,43 +338,43 @@
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:15 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/prebuilt-components/copilot-threads-drawer": {
       "file": "agno__prebuilt-components__copilot-threads-drawer.md",
-      "sha256": "6f0ec4749c638963a58e04e7710b7827f92e61913209ac1366be385a136502d0",
-      "bytes": 9060,
-      "lines": 210,
+      "sha256": "44ccdd674bcfb48e713148d57aa9fcc977dd94c1f8363a25d58b278ac7ce7635",
+      "bytes": 13612,
+      "lines": 336,
       "routes": [
         "/threads/drawer"
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:15 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/programmatic-control": {
       "file": "agno__programmatic-control.md",
-      "sha256": "09a23a34001187546e71aa94f4dc3d06f6b6b097d143af477130141edbb9d4ae",
-      "bytes": 13339,
+      "sha256": "b93e107373f88efced8025217c09ce17e00cb2cb4a7e937b1998e46d801094a0",
+      "bytes": 13583,
       "lines": 475,
       "routes": [
         "/custom-look-and-feel/programmatic-control"
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:15 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/quickstart": {
       "file": "agno__quickstart.md",
-      "sha256": "56f25adc0a548f92cc9f62f65694dbf59a1f37cfa0df2f25bab4e7509a9e87dd",
-      "bytes": 15620,
+      "sha256": "01a916a5a5b1bd20cdcb303046af021481e46961d623965011ad85a10380708e",
+      "bytes": 15656,
       "lines": 441,
       "routes": [
         "/quickstart"
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:15 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/shared-state/agent-readonly": {
       "file": "agno__shared-state__agent-readonly.md",
@@ -386,7 +386,7 @@
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:15 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/shared-state/rendering-in-app": {
       "file": "agno__shared-state__rendering-in-app.md",
@@ -398,43 +398,43 @@
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:15 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/threads": {
       "file": "agno__threads.md",
-      "sha256": "5b1d956efba6e018607313332acbe5c33fc1c808855c8aba8bd9e0c916bf85e2",
-      "bytes": 11196,
-      "lines": 223,
+      "sha256": "f3ccd6fe74c76f2c3f9ad247a4adec1053bb923e5d0c87d6f36aa801e1713d6c",
+      "bytes": 11834,
+      "lines": 217,
       "routes": [
         "/threads"
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:15 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/threads-import": {
       "file": "agno__threads-import.md",
-      "sha256": "8183043613384c741104c801ddda98a330bf674088002f5746c24ae9ed7d52c0",
-      "bytes": 8168,
-      "lines": 154,
+      "sha256": "0ae0a5cfe739d36523bf2b648f99dd133a1b6bc2c07c4cf8bccf67d94ba0dcc1",
+      "bytes": 8902,
+      "lines": 161,
       "routes": [
         "/threads/import"
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:15 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/threads-lifecycle": {
       "file": "agno__threads-lifecycle.md",
-      "sha256": "eaeb6855c9ab3e70a4b456ab3aa0bd45702bfb2d91fcf128699154c056905be2",
-      "bytes": 15756,
-      "lines": 259,
+      "sha256": "ff0afc2e7d2dc3699d3ce96e60cc6fe9065e60ee4a2829fbcfd6c2fe16951e1f",
+      "bytes": 16053,
+      "lines": 263,
       "routes": [
         "/threads/lifecycle"
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:15 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/troubleshooting/error-debugging": {
       "file": "agno__troubleshooting__error-debugging.md",
@@ -446,7 +446,7 @@
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:16 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     },
     "/agno/webmcp": {
       "file": "agno__webmcp.md",
@@ -458,13 +458,14 @@
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 07 Oct 2026 14:21:15 GMT"
+      "date": "Mon, 09 Nov 2026 10:47:30 GMT"
     }
   },
   "sitemap": {
-    "fetchedAt": "2026-10-07T14:21:13.124Z",
-    "urlsUnderRoot": 151,
+    "fetchedAt": "2026-11-09T10:47:29.999Z",
+    "urlsUnderRoot": 169,
     "knownUnmapped": [
+      "https://docs.copilotkit.ai/agno/AG-UI-Streams",
       "https://docs.copilotkit.ai/agno/agent-config",
       "https://docs.copilotkit.ai/agno/agent-spec",
       "https://docs.copilotkit.ai/agno/agent-spec/human-in-the-loop",
@@ -488,6 +489,7 @@
       "https://docs.copilotkit.ai/agno/build-with-agents",
       "https://docs.copilotkit.ai/agno/built-in-agent",
       "https://docs.copilotkit.ai/agno/cli",
+      "https://docs.copilotkit.ai/agno/community-frameworks",
       "https://docs.copilotkit.ai/agno/concepts/architecture",
       "https://docs.copilotkit.ai/agno/concepts/generative-ui-overview",
       "https://docs.copilotkit.ai/agno/concepts/oss-vs-enterprise",
@@ -497,6 +499,7 @@
       "https://docs.copilotkit.ai/agno/contributing/docs-contributions",
       "https://docs.copilotkit.ai/agno/cookbook",
       "https://docs.copilotkit.ai/agno/cookbook/angular-adk-agentic-app",
+      "https://docs.copilotkit.ai/agno/cookbook/antigravity-repo-doctor",
       "https://docs.copilotkit.ai/agno/cookbook/arcade",
       "https://docs.copilotkit.ai/agno/cookbook/claude-managed-agents",
       "https://docs.copilotkit.ai/agno/cookbook/daytona",
@@ -515,6 +518,15 @@
       "https://docs.copilotkit.ai/agno/generative-ui/a2ui",
       "https://docs.copilotkit.ai/agno/generative-ui/a2ui/dynamic-schema",
       "https://docs.copilotkit.ai/agno/generative-ui/a2ui/fixed-schema",
+      "https://docs.copilotkit.ai/agno/generative-ui/components",
+      "https://docs.copilotkit.ai/agno/generative-ui/components/catalogs",
+      "https://docs.copilotkit.ai/agno/generative-ui/components/from-a2ui",
+      "https://docs.copilotkit.ai/agno/generative-ui/components/markdown-mode",
+      "https://docs.copilotkit.ai/agno/generative-ui/components/standard-catalog",
+      "https://docs.copilotkit.ai/agno/generative-ui/components/state-and-actions",
+      "https://docs.copilotkit.ai/agno/generative-ui/components/surfaces",
+      "https://docs.copilotkit.ai/agno/generative-ui/components/theming",
+      "https://docs.copilotkit.ai/agno/generative-ui/components/transports",
       "https://docs.copilotkit.ai/agno/generative-ui/display",
       "https://docs.copilotkit.ai/agno/generative-ui/hashbrown",
       "https://docs.copilotkit.ai/agno/generative-ui/interactive",
@@ -529,6 +541,9 @@
       "https://docs.copilotkit.ai/agno/human-in-the-loop/headless",
       "https://docs.copilotkit.ai/agno/human-in-the-loop/useInterrupt",
       "https://docs.copilotkit.ai/agno/intelligence/analytics",
+      "https://docs.copilotkit.ai/agno/intelligence/bring-your-own-thread-system",
+      "https://docs.copilotkit.ai/agno/intelligence/capture-interactions",
+      "https://docs.copilotkit.ai/agno/intelligence/captured-data",
       "https://docs.copilotkit.ai/agno/intelligence/channels",
       "https://docs.copilotkit.ai/agno/intelligence/headless-ui",
       "https://docs.copilotkit.ai/agno/intelligence/intelligence-platform",
@@ -540,6 +555,10 @@
       "https://docs.copilotkit.ai/agno/intelligence/self-hosting-ecs",
       "https://docs.copilotkit.ai/agno/intelligence/self-hosting-local",
       "https://docs.copilotkit.ai/agno/intelligence/self-hosting-observability",
+      "https://docs.copilotkit.ai/agno/intelligence/standalone-collector",
+      "https://docs.copilotkit.ai/agno/intelligence/trajectories",
+      "https://docs.copilotkit.ai/agno/intelligence/trajectories-quickstart",
+      "https://docs.copilotkit.ai/agno/intelligence/trajectories-reference",
       "https://docs.copilotkit.ai/agno/migrate/1.10.X",
       "https://docs.copilotkit.ai/agno/migrate/1.8.2",
       "https://docs.copilotkit.ai/agno/migrate/ag-ui-1.0",

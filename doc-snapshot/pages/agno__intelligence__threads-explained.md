@@ -9,7 +9,7 @@
 
 ## Overview
 
-Start with the [AG-UI Streams overview](/agno/threads) to understand what AG-UI Streams provide
+Start with the [AG-UI Streams overview](/agno/AG-UI-Streams) to understand what AG-UI Streams provide
 and choose between the prebuilt Drawer and a custom headless UI. This page
 explains the persistence and replay architecture beneath both paths. For the
 client-side lifecycle (minting a `threadId`, hydrating history on load, and
@@ -33,11 +33,11 @@ Model-context compaction and user-visible history serve different purposes. Inte
 
 Starting fresh? CopilotKit Intelligence provides conversation persistence: it stores interaction events so users can reopen rich conversations across sessions and devices, reconnect to active runs, and manage their threads.
 
-Already using framework persistence? Keep it configured. [LangGraph threads](https://docs.langchain.com/oss/python/langgraph/persistence) retain graph state and checkpoints; [Google ADK sessions](https://google.github.io/adk-docs/sessions/session/) retain conversation events and state. Intelligence adds the event history and synchronization used to restore the user's interactive conversation. Replaying that history is distinct from resuming framework execution from a checkpoint; framework-specific execution recovery remains with the framework.
+Keep your existing thread system when you connect Intelligence. As conversations run through your connected CopilotKit runtime, Intelligence automatically records its own copy of the supported AG-UI interaction history. Your framework continues managing the original conversation and agent state. Keep your [durable LangGraph checkpointer or deployment](https://docs.langchain.com/oss/python/langgraph/persistence) configured. For ADK, keep your [durable session service](https://google.github.io/adk-docs/sessions/session/) configured. Replaying recorded AG-UI history does not resume framework execution from a checkpoint. Your framework still handles that recovery.
 
-For runs through CopilotKit, Intelligence records the thread history while the agent continues using its configured durable LangGraph checkpointer, LangGraph deployment, or ADK agent with a durable session service. Keep a stable mapping between the CopilotKit `threadId` and the native thread or session identifier so subsequent runs use the same conversation in both systems.
+Keep the same thread ID, or a stable mapping to the native thread or session ID, when you continue a conversation. [Bring your own thread system](/agno/intelligence/bring-your-own-thread-system) explains what Intelligence records and shows an existing LangGraph app example.
 
-[Import supported LangGraph, ADK, or Mastra history](/agno/threads-import) to make existing conversations available through Intelligence’s AG-UI streams. Importing is a one-time adoption step, not a general replication link between databases. Frontend rename, archive, and delete operations change only the Intelligence thread; they do not mutate native framework records.
+Historical import is optional. It copies supported history and does not create a general replication link between databases. Intelligence rename, archive, and delete actions affect only its own records.
 
 ## Key concepts
 
@@ -155,7 +155,7 @@ The trade-off is that replay is more complex than loading a message array. The p
 ## Next steps
 
 - **Client lifecycle:** [Thread & History Lifecycle](/agno/threads-lifecycle) — how a `threadId` is minted, hydrated, and switched on the client
-- **Overview:** [AG-UI Streams](/agno/threads) — understand the feature and choose an implementation path
+- **Overview:** [AG-UI Streams](/agno/AG-UI-Streams) — understand the feature and choose an implementation path
 - **Step-by-step guide:** [Headless Threads](/agno/headless-threads) — build a custom thread-management UI
 
 - **API reference:** [useThreads](/reference/hooks/useThreads) — parameters, return values, types

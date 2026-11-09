@@ -197,9 +197,10 @@ export const NAV: NavGroup[] = [
         title: "Slots",
         docPath: "/agno/custom-look-and-feel/slots",
         summary:
-          "Replacing chat sub-components at three levels: class strings, prop overrides, and whole components.",
-        status: "working",
-        offNav: true,
+          "Replacing chat sub-components at three levels, with reference coverage for message work summaries and grouped tool calls.",
+        status: "partial",
+        statusNote:
+          "The published grouped-tool-call example uses messageGroup/messageRow APIs that the installed package does not export; see README §9 / FINDINGS.md #40.",
       },
       {
         path: "/custom-look-and-feel/headless-ui",

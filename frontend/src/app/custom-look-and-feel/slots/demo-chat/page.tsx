@@ -2,10 +2,14 @@
 
 import {
   CopilotChat,
+  // @ts-expect-error The published Slots example imports this helper, but the installed package does not export it.
   messageGroup,
+  // @ts-expect-error The published Slots example imports this helper, but the installed package does not export it.
   messageRow,
   type Message,
+  // @ts-expect-error The published Slots example imports this type, but the installed package does not export it.
   type MessageGroupWrapperProps,
+  // @ts-expect-error The published Slots example imports this type, but the installed package does not export it.
   type MessageRow,
 } from "@copilotkit/react-core/v2";
 import { useCallback, useState } from "react";
@@ -191,6 +195,7 @@ export default function Page() {
           )}
 
           {level === "group" && (
+            // @ts-expect-error The published Slots example passes groupMessages, which the installed messageView type does not declare.
             <CopilotChat messageView={{ groupMessages }} />
           )}
         </div>

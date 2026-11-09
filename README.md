@@ -216,7 +216,7 @@ The minimum viable path: provider, runtime route, one chat. **Try:** `Can you te
 
 **`/threads/lifecycle` — Thread & History Lifecycle.** One button per lifecycle claim on the page, with the chat's resolved state read back from its `CopilotChatConfigurationProvider`, so the readouts are the chat's own. **Try:** send a message, press "Remount chat", then "Open conversation", "New chat", "Pin a threadId prop" and "New chat" again. **Pass:** the remount gives a new id and an empty chat; "Open conversation" returns to the first id with its messages replayed from the runtime's `InMemoryAgentRunner`; with the id pinned, "New chat" changes nothing and the amber line shows the `Ignoring startNewThread()` warning; the pinned id survives a remount. **Fail:** the re-opened thread shows 0 messages (nothing replayed). The ledger lists every id the chat has been on. See [FINDINGS.md](FINDINGS.md) #28.
 
-**`/threads/import` — Synchronize Thread History.** Reference. Import targets ADK and LangGraph history; Agno isn't a documented source.
+**`/threads/import` — Synchronize Thread History.** Reference. The guide covers ADK, LangGraph, Mastra, and AWS Strands history, with a LangGraph user ID mapping example; Agno isn't a documented source.
 
 **`/threads/architecture` — Persistence Architecture.** Reference: replay, reconnection, auto-naming, locks.
 
@@ -331,7 +331,7 @@ Verified 2026-08-05 against a live stack (real OpenAI key, no license key, no MC
 | `/agno/prebuilt-components/copilot-threads-drawer` | `/threads/drawer`                             | ⚠️ Partial     | Premium; renders the locked view, which is the expected unlicensed result.             |
 | `/agno/headless-threads`                           | `/threads/headless`                           | ⚠️ Partial     | Premium; `useThreads` returns empty. UI incl. rename fully implemented.                |
 | `/agno/threads-lifecycle`                          | `/threads/lifecycle`                          | ⚠️ Partial     | Mint, remount, replay, switch, pin all observed; `existingId` undefined — [FINDINGS.md](FINDINGS.md) #28.      |
-| `/agno/threads-import`                             | `/threads/import`                             | 📖 Reference   | Premium; Agno is not a documented import source.                                       |
+| `/agno/threads-import`                             | `/threads/import`                             | 📖 Reference   | Premium; supports ADK, LangGraph, Mastra, and AWS Strands; Agno is not a documented import source. |
 | `/agno/intelligence/threads-explained`             | `/threads/architecture`                       | 📖 Reference   | Premium.                                                                               |
 | `/agno/programmatic-control`                       | `/custom-look-and-feel/programmatic-control`  | ✅ Working     | run/stop/state/messages.                                                               |
 | `/agno/inspector`                                  | `/custom-look-and-feel/inspector`             | ✅ Working     | Dev-only by design.                                                                    |

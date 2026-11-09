@@ -153,7 +153,7 @@ export const NAV: NavGroup[] = [
         title: "Synchronize Thread History",
         docPath: "/agno/threads-import",
         summary:
-          "Importing existing ADK or LangGraph conversations into the same thread store.",
+          "Importing ADK, LangGraph, Mastra, or AWS Strands history into Intelligence.",
         status: "reference",
         premium: true,
         statusNote:

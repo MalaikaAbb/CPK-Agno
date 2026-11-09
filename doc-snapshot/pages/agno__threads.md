@@ -1,14 +1,14 @@
 # AG-UI Streams
 
-> Let users reconnect, catch up on missed events, and resume conversations across devices with Intelligence’s AG-UI streams.
+> Complement any existing thread system with AG-UI Streams. Add the full spectrum of generative UI, multimodal inputs and file uploads, plus reconnection and catch-up after network interruptions and across tabs and devices.
 
 
 
 <span id="overview" />
 
-Intelligence’s AG-UI streams store and deliver the interaction to your users. Your framework threads manage the agent’s conversation and model context.
+CopilotKit Intelligence’s AG-UI Streams complement your existing thread system, whether you use LangGraph, Google ADK, Mastra, or a custom backend. Your framework keeps managing the conversation and agent state while Intelligence records the interactions delivered through CopilotKit.
 
-Use Threads Drawer for a ready-made conversation list, or build your own with `useThreads`. Pass the selected `threadId` to your chat to load its history and receive new events.
+That includes messages, thinking traces, tool calls, generative UI, uploaded files (such as images, PDFs, and Excel files), and application state. You can also use CopilotKit Intelligence as your standalone thread store.
 
 <div
   aria-label="A support workspace using Threads Drawer to move between customer conversations while CopilotChat renders the selected case details."
@@ -25,10 +25,38 @@ Use Threads Drawer for a ready-made conversation list, or build your own with `u
   <Accordion title="Starting fresh?">
     Intelligence stores your conversation history and restores messages, generative UI, tool interactions, and multimodal inputs when users return.
   </Accordion>
-  <Accordion title="Already using LangGraph or ADK persistence?">
-    Keep it. Your framework stores agent context and execution state; Intelligence adds AG-UI event history, reconnection, and delivery to your users.
+  <Accordion title="Already have your own threading system?">
+    Keep it. Intelligence records its own copy of your supported AG-UI interactions while your framework manages the original conversation and agent state. [Read more](/agno/intelligence/bring-your-own-thread-system).
   </Accordion>
 </Accordions>
+
+<span id="sync-existing-conversations" />
+
+## Add AG-UI Streams to existing threads
+
+Already have threads in LangGraph, Google ADK, Mastra, or a custom backend and want them to work with CopilotKit? Keep your existing storage. Your framework manages the agent’s conversation, model context, and execution state; Intelligence adds the event history and delivery needed to restore the interactive conversation for your users.
+
+Connect your existing CopilotKit app through the [Intelligence quickstart](/agno/intelligence/quickstart) to add AG-UI delivery to future runs while your framework continues managing agent context and persistence. To include earlier conversations too, follow <DocsTrackedLink href="/agno/threads-import" surface="docs_threads_history_sync">Add AG-UI Streams to Existing Threads</DocsTrackedLink> for the optional historical steps supported for ADK, LangGraph, and Mastra. Import is a one-time adoption step, not ongoing replication between databases.
+
+CopilotKit Threads are separate from native framework session or checkpoint stores. Your backend can keep a stable mapping when the agent framework also needs its own conversation identifier.
+
+
+
+
+
+<span id="why-use-copilotkit-rich-threads" />
+
+## Why use CopilotKit AG-UI Streams?
+
+Intelligence’s AG-UI streams add delivery capabilities around your existing agent and framework threads:
+
+- **Reconnect and catch up.** Reopen a conversation to replay recorded events and reconnect to an active run.
+- **Continue in the background.** An agent run can continue after the browser disconnects while your Runtime and agent remain running. This is not execution recovery after a server failure.
+- **Deliver across devices.** Users can reopen the same conversation on another device. Intelligence synchronizes thread metadata for connected clients; your application supplies a stable user identity.
+- **Separate user history from model context.** Intelligence records the AG-UI events delivered through it. Your framework’s model-context compaction and Intelligence’s event replay serve different purposes.
+- **Restore the interactive conversation.** Replay includes supported messages, generative UI, tool interactions, state, and multimodal inputs.
+
+These are capabilities of CopilotKit Intelligence, not guarantees provided by the AG-UI protocol alone. Reopening or switching back to a conversation triggers replay and reconnection; see [connection behavior](/agno/intelligence/threads-explained#websocket-disconnection).
 
 ## Start with your coding agent
 
@@ -106,20 +134,6 @@ Threads-capable CLI starters already include [Threads Drawer](/agno/prebuilt-com
 
 Production self-hosting keeps AG-UI Streams, durable event history, identity, storage, and operations inside your network, giving your organization control over data residency, security, and infrastructure. CopilotKit Engineering helps your team deploy CopilotKit Intelligence in your Kubernetes environment. <DocsTrackedLink href="https://copilotkit.ai/talk-to-an-engineer" surface="docs_threads_self_hosting_contact">Book time with a CopilotKit engineer</DocsTrackedLink> to get started.
 
-<span id="why-use-copilotkit-rich-threads" />
-
-## Why use CopilotKit AG-UI Streams?
-
-Intelligence’s AG-UI streams add delivery capabilities around your existing agent and framework threads:
-
-- **Reconnect and catch up.** Reopen a conversation to replay recorded events and reconnect to an active run.
-- **Continue in the background.** An agent run can continue after the browser disconnects while your Runtime and agent remain running. This is not execution recovery after a server failure.
-- **Deliver across devices.** Users can reopen the same conversation on another device. Intelligence synchronizes thread metadata for connected clients; your application supplies a stable user identity.
-- **Separate user history from model context.** Intelligence records the AG-UI events delivered through it. Your framework’s model-context compaction and Intelligence’s event replay serve different purposes.
-- **Restore the interactive conversation.** Replay includes supported messages, generative UI, tool interactions, state, and multimodal inputs.
-
-These are capabilities of CopilotKit Intelligence, not guarantees provided by the AG-UI protocol alone. Reopening or switching back to a conversation triggers replay and reconnection; see [connection behavior](/agno/intelligence/threads-explained#websocket-disconnection).
-
 <span id="how-threads-work" />
 
 ## How AG-UI Streams work
@@ -170,6 +184,8 @@ Both UI paths use Intelligence’s AG-UI streams. A stable `threadId` connects t
 
 ## Choose how to build the UI
 
+Use Threads Drawer for a ready-made conversation list, or build your own with `useThreads`. Pass the selected `threadId` to your chat to load its history and receive new events.
+
 <CTACards
   columns={2}
   cards={[
@@ -192,31 +208,9 @@ Both UI paths use Intelligence’s AG-UI streams. A stable `threadId` connects t
 
 For how Intelligence and framework persistence work together, see [AG-UI Streams & Framework Threads](/agno/intelligence/threads-explained#how-threads-work-with-framework-storage).
 
-<span id="sync-existing-conversations" />
-
-## Add AG-UI Streams to existing threads
-
-Connect your existing CopilotKit app through the [Intelligence quickstart](/agno/intelligence/quickstart) to add AG-UI delivery to future runs while your framework continues managing agent context and persistence. To include earlier conversations too, follow <DocsTrackedLink href="/agno/threads-import" surface="docs_threads_history_sync">Add AG-UI Streams to Existing Threads</DocsTrackedLink> for the optional historical steps supported for ADK and LangGraph.
-
-CopilotKit Threads are separate from native framework session or checkpoint stores. Your backend can keep a stable mapping when the agent framework also needs its own conversation identifier.
-
-
-
-
-
 ## Next steps
 
-<Accordions>
-  <Accordion title="Understand the architecture">
-    [AG-UI Streams & Framework Threads](/agno/intelligence/threads-explained) covers event replay, live reconnection, synchronization, locking, and lifecycle behavior.
-  </Accordion>
-  <Accordion title="Use the cloud-hosted deployment">
-    [Cloud-hosted CopilotKit Intelligence](/agno/intelligence/managed-intelligence-platform) is where you create the project that stores your app's threads and runtime credentials.
-  </Accordion>
-  <Accordion title="Plan production self-hosting">
-    [Self-host CopilotKit Intelligence](/agno/intelligence/self-hosting) with CopilotKit Engineering to run the Threads platform in your Kubernetes environment.
-  </Accordion>
-  <Accordion title="Look up the API">
-    The [useThreads reference](/reference/hooks/useThreads) lists parameters, lifecycle methods, pagination, and return types.
-  </Accordion>
-</Accordions>
+- [AG-UI Streams & Framework Threads](/agno/intelligence/threads-explained) — event replay, live reconnection, synchronization, locking, and lifecycle behavior.
+- [Cloud-hosted CopilotKit Intelligence](/agno/intelligence/managed-intelligence-platform) — create the project that stores your app's threads and runtime credentials.
+- [Self-host CopilotKit Intelligence](/agno/intelligence/self-hosting) — run the Threads platform in your Kubernetes environment with CopilotKit Engineering.
+- [useThreads reference](/reference/hooks/useThreads) — parameters, lifecycle methods, pagination, and return types.

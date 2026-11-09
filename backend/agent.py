@@ -15,8 +15,8 @@ from openai import Timeout
 
 from tools import ALL_TOOLS
 
-# The Frontend Tools page publishes this model configuration. Override the
-# model id with OPENAI_MODEL when testing against another available model.
+# The Human in the Loop page configures OpenAIChat with this model and
+# reasoning effort. Override the id with OPENAI_MODEL when testing another one.
 DEFAULT_MODEL = os.getenv("OPENAI_MODEL", "gpt-6-luna")
 
 # The OpenAI SDK ships a 5-second *connect* timeout
@@ -56,6 +56,7 @@ def _model() -> OpenAIChat:
     reach a client that no longer speaks that type.
     """
     return OpenAIChat(
+        reasoning_effort="none",
         id=DEFAULT_MODEL,
         reasoning_effort="none",
         # A key pasted into an env file can arrive with surrounding whitespace,

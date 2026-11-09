@@ -95,7 +95,7 @@ Then edit `backend/.env`:
 | Variable                             | Where                 | What it does                                                                 |
 | ------------------------------------ | --------------------- | ---------------------------------------------------------------------------- |
 | `OPENAI_API_KEY`                     | `backend/.env`        | **Required.** The model key. The backend refuses to start without it.        |
-| `OPENAI_MODEL`                       | `backend/.env`        | Model id. Defaults to `gpt-4o`.                                              |
+| `OPENAI_MODEL`                       | `backend/.env`        | Model id. Defaults to `gpt-6-luna`, matching the Frontend Tools page.         |
 | `AGENT_PORT`                         | `backend/.env`        | Agno's port. Defaults to `8000` in code; set to `8010` in `backend/.env`.                                             |
 | `AGENT_CORS_ORIGINS`                 | `backend/.env`        | Origins allowed to hit the agent directly. Not needed on the normal path.    |
 | `AGNO_AGENT_URL`                     | `frontend/.env.local` | Where the runtime finds the agent. Defaults to `http://localhost:8010/agui`. |

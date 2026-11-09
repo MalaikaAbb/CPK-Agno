@@ -51,7 +51,7 @@ SYSTEM_PROMPT = (
 
 
 agent = Agent(
-    model=OpenAIChat(id="gpt-5-mini", timeout=120),
+    model=OpenAIChat(reasoning_effort="none", id="gpt-6-luna", timeout=120),
     # Published: tools=[generate_a2ui] — removed, see the module docstring.
     tool_call_limit=4,
     description=SYSTEM_PROMPT,

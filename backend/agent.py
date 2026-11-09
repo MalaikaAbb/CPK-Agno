@@ -15,10 +15,9 @@ from openai import Timeout
 
 from tools import ALL_TOOLS
 
-# The Agno quickstart prints `gpt-5.4`. That id is not available on every
-# account, so the default here is a model anyone with an OpenAI key can call.
-# Override with OPENAI_MODEL to test against whatever the docs currently show.
-DEFAULT_MODEL = os.getenv("OPENAI_MODEL", "gpt-5.4-mini")
+# The Human in the Loop page configures OpenAIChat with this model and
+# reasoning effort. Override the id with OPENAI_MODEL when testing another one.
+DEFAULT_MODEL = os.getenv("OPENAI_MODEL", "gpt-6-luna")
 
 # The OpenAI SDK ships a 5-second *connect* timeout
 # (`openai._constants.DEFAULT_TIMEOUT` is `Timeout(timeout=600, connect=5.0)`),
@@ -57,6 +56,7 @@ def _model() -> OpenAIChat:
     reach a client that no longer speaks that type.
     """
     return OpenAIChat(
+        reasoning_effort="none",
         id=DEFAULT_MODEL,
         # A key pasted into an env file can arrive with surrounding whitespace,
         # which becomes an illegal HTTP header value rather than a clean 401.

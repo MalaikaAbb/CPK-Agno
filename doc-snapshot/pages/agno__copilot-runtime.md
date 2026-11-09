@@ -180,7 +180,7 @@ When you register multiple agents with the runtime, it handles discovery and rou
 
 ### CopilotKit Intelligence
 
-Features like [threads](/agno/threads) and the [inspector](/agno/inspector) are provided through the runtime and CopilotKit Intelligence. These give you conversation persistence and debugging capabilities out of the box.
+Features like [threads](/agno/AG-UI-Streams) and the [inspector](/agno/inspector) are provided through the runtime and CopilotKit Intelligence. These give you conversation persistence and debugging capabilities out of the box.
 
 ## Built-in Middleware
 
@@ -270,7 +270,7 @@ There are important things to understand before going this route:
 
 1. **Authentication is your responsibility.** When you use the Copilot Runtime, safe defaults are put in place so that your agent endpoints are not exposed to unauthenticated access. When you connect directly, it is entirely up to you to secure your agent endpoint and manage authentication.
 
-2. **Many ecosystem features won't work.** The AG-UI protocol supports a middleware layer designed to run on the backend. Many features in the CopilotKit ecosystem depend on this server-side middleware. Without the runtime, these features — including [threads](/agno/threads) and other capabilities — will not be available.
+2. **Many ecosystem features won't work.** The AG-UI protocol supports a middleware layer designed to run on the backend. Many features in the CopilotKit ecosystem depend on this server-side middleware. Without the runtime, these features — including [threads](/agno/AG-UI-Streams) and other capabilities — will not be available.
 
 ### Comparison
 

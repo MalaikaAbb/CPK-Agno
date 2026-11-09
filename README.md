@@ -38,7 +38,7 @@ Next.js 16 App Router  ·  localhost:3010
 Agno AgentOS  ·  localhost:8010        ← Python / FastAPI
   │  AgentOS(agents=[agent], interfaces=[AGUI(agent=agent)])
   ▼
-OpenAI  (gpt-4o by default)
+OpenAI  (gpt-6-luna by default; reasoning disabled)
 ```
 
 Three points worth noting:
@@ -256,7 +256,7 @@ A catalog of eight branded components handed to the provider; a secondary LLM de
 **`/generative-ui/a2ui/fixed-schema`** — ⚠️ Partial
 A flight card whose component tree is a JSON file on the backend; `display_flight` supplies only the data. Everything verbatim from the Code tab. **Try:** `Find me a flight from SFO to JFK on United for $289.` **Pass:** card with SFO → JFK, a UNITED badge, Total $289 and a Book button that does nothing (published as inert). **Fail:** blank bound fields — the zod 4 symptom; this repo pins zod 3.25.76. Backend-checked: the tool returns the operations container.
 
-**`/generative-ui/mcp-apps`** — 🚧 **Tracked, not implemented.** Every code sample on the page is a `BuiltInAgent` runtime; there is no Agno code and no embedded demo.
+**`/generative-ui/mcp-apps`** — 🚧 **Tracked, not implemented.** The runtime examples use `BuiltInAgent` and show both built-in and optional middleware setup, but the page publishes no Agno integration code or embedded demo.
 
 **`/generative-ui/open-generative-ui`** — ⚠️ Partial
 The agent writes HTML/CSS/JS into a sandboxed iframe; the demo route has the page's minimal and advanced (host sandbox functions) demos as tabs. Runtime route and frontends verbatim; the Agno agent is never published, so `backend/agents/open_gen_ui_agent.py` is repo-authored (no tools). **Try:** `How a neural network works`; on the Advanced tab, `Calculator (calls evaluateExpression)`. **Pass:** an iframe that builds itself live; the calculator logs `evaluateExpression` in the browser console. **Fail:** a prose answer — which is what the agent gave when offered a stand-in tool outside the runtime, so this one is unverified.
@@ -288,7 +288,7 @@ An approval checkpoint in front of a side-effecting action, showing the policy v
 ### Multi-Agent
 
 **`/multi-agent/subagents`** — ⚠️ Partial
-A supervisor whose tools are research, writing and critique Agno agents; a delegation log renders `delegations` from shared state. Agent and frontend verbatim. **Try:** `Write a short blog post about why cats purr.` **Pass:** three inline activity cards in order, then the log fills with three entries **at the end of the run**. **Fail:** the log stays empty after the run. It never shows a `running` entry: the stock router's per-tool state deltas need `jsonpatch` (`agno[agui]`), which the Quickstart's install line leaves out. Backend-checked: the final snapshot carries all three, `completed`.
+A supervisor whose tools are research, writing and critique Agno agents; all four use the current Code tab's `gpt-6-luna` model configuration. A delegation log renders `delegations` from shared state. Agent and frontend verbatim. **Try:** `Write a short blog post about why cats purr.` **Pass:** three inline activity cards in order, then the log fills with three entries **at the end of the run**. **Fail:** the log stays empty after the run. It never shows a `running` entry: the stock router's per-tool state deltas need `jsonpatch` (`agno[agui]`), which the Quickstart's install line leaves out. Backend-checked: the final snapshot carries all three, `completed`.
 
 ### Backend
 
@@ -323,7 +323,7 @@ Verified 2026-08-05 against a live stack (real OpenAI key, no license key, no MC
 | Doc page                                           | Route                                         | Status         | Notes                                                                                  |
 | -------------------------------------------------- | --------------------------------------------- | -------------- | -------------------------------------------------------------------------------------- |
 | `/agno`                                            | `/`                                           | ✅ Working     | Server-side agent probe.                                                               |
-| `/agno/quickstart`                                 | `/quickstart`                                 | ✅ Working     | Verified end-to-end: streamed reply from gpt-4o.                                       |
+| `/agno/quickstart`                                 | `/quickstart`                                 | ✅ Working     | Last verified end-to-end with gpt-4o; the backend now defaults to the doc's gpt-6-luna. |
 | `/agno/prebuilt-components`                        | `/prebuilt-components`                        | ✅ Working     | All three components. Doc page itself is a component stub (142 bytes of raw markdown). |
 | `/agno/threads`                                    | `/threads`                                    | ⚠️ Partial     | Premium.                                                                               |
 | `/agno/prebuilt-components/copilot-threads-drawer` | `/threads/drawer`                             | ⚠️ Partial     | Premium; renders the locked view without Intelligence access. Custom and controlled new-conversation flows plus shared `agno_agent` selection are implemented. |
@@ -342,12 +342,12 @@ Verified 2026-08-05 against a live stack (real OpenAI key, no license key, no MC
 | `/agno/generative-ui/frontend-cards`               | `/generative-ui/frontend-cards`               | ✅ Working     | New 2026-09-11. Card renders; run payload carries no `activity`. A card added before the runtime connects is silently lost — [FINDINGS.md](FINDINGS.md) #15. |
 | `/agno/generative-ui/a2ui/dynamic-schema`          | `/generative-ui/a2ui/dynamic-schema`          | ⚠️ Partial     | New 2026-10-07. Code-tab frontend verbatim; published agent needs an unpublished `tools` package, so prompt-only agent + auto-inject runtime. Backend-checked; not browser-checked. |
 | `/agno/generative-ui/a2ui/fixed-schema`            | `/generative-ui/a2ui/fixed-schema`            | ⚠️ Partial     | New 2026-10-07. All Code-tab code verbatim; page's own backend snippets are skipped for Agno. Backend-checked; not browser-checked. |
-| `/agno/generative-ui/mcp-apps`                     | `/generative-ui/mcp-apps`                     | 🚧 Not started | New 2026-10-07. Page publishes only a `BuiltInAgent` runtime — no Agno code, no demo. Tracked for drift. |
+| `/agno/generative-ui/mcp-apps`                     | `/generative-ui/mcp-apps`                     | 🚧 Not started | New 2026-10-07. Runtime examples use `BuiltInAgent` with built-in or optional MCP middleware; no Agno integration code or embedded demo. Tracked for drift. |
 | `/agno/generative-ui/open-generative-ui`           | `/generative-ui/open-generative-ui`           | ⚠️ Partial     | New 2026-10-07. Route + both frontends verbatim; agent unpublished, repo-authored. Unverified: answered in prose to a stand-in tool outside the runtime. |
 | `/agno/shared-state/rendering-in-app`              | `/shared-state/rendering-in-app`              | ⚠️ Partial     | New 2026-10-07. Both snippets verbatim on the default agent; page has no backend half. Not browser-checked. |
 | `/agno/shared-state/agent-readonly`                | `/shared-state/agent-readonly`                | ⚠️ Partial     | New 2026-10-07. Frontend verbatim; `main.py` prompt without its unpublished tools. Backend-checked: context read back. |
 | `/agno/human-in-the-loop/index`                    | `/human-in-the-loop/overview`                 | ⚠️ Partial     | New 2026-10-07. hitl-in-chat pauses and resumes (backend-checked). gen-ui-interrupt fails to resume: “Frontend tool resume requires a database”. |
-| `/agno/multi-agent/subagents`                      | `/multi-agent/subagents`                      | ⚠️ Partial     | New 2026-10-07. Verbatim; delegations arrive only in the end-of-run snapshot (no `jsonpatch`), so nothing is ever seen `running`. |
+| `/agno/multi-agent/subagents`                      | `/multi-agent/subagents`                      | ⚠️ Partial     | Model config synced to the current Code tab. Delegations still arrive only in the end-of-run snapshot (no `jsonpatch`), so nothing is ever seen `running`. |
 | `/agno/frontend-tools`                             | `/frontend-tools`                             | ✅ Working     | Was dying at the resume with "requires a database"; fixed by configuring `db` (#12) and re-recorded clean.            |
 | `/agno/human-in-the-loop/governed-actions`         | `/human-in-the-loop/governed-actions`         | ✅ Working     | Approval card with the policy verdict. Its `z.record` call had to be translated for zod 4 — see [FINDINGS.md](FINDINGS.md) #14.            |
 | `/agno/human-in-the-loop`                          | `/human-in-the-loop`                          | ✅ Working     | **Not in the doc sidebar**; linked from Quickstart and resolves. Covered by the shared `db` (#12).            |

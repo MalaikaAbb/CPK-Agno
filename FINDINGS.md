@@ -40,7 +40,6 @@ Stack: `@copilotkit/react-core`/`runtime` 1.73.3, `@ag-ui/agno` 0.0.6, `@ag-ui/c
 - #29 Threads Drawer: `<YourMainContent />` is undefined (a placeholder).
 - #27 Jev: needs a paid `TYPESAFE_API_KEY`, and nothing on the page uses Agno.
 - #37 `/agno/intelligence/connect-your-runtime` returns 404 with no redirect.
-- #4 Quickstart: the code uses `gpt-5.4`, but the callout says "GPT-4o".
 - #5 Quickstart says to install `@ag-ui/client`, but Migrate to V2 says it's re-exported.
 - #8 `/agno/prebuilt-components.md` has no readable source.
 - #11 Three pages return 200 but are missing from the nav.

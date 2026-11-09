@@ -3,7 +3,8 @@ import { Callout, CodeBlock, Panel } from "@/components/ui";
 
 const DRY_RUN = `# Preview what would be imported — no writes.
 npx copilotkit@latest import --source adk --dry-run
-npx copilotkit@latest import --source langgraph --dry-run`;
+npx copilotkit@latest import --source langgraph --user-source metadata.user_id --dry-run
+npx copilotkit@latest import --source mastra --dry-run`;
 
 export default function Page() {
   return (
@@ -12,24 +13,41 @@ export default function Page() {
 
       <Callout tone="premium" title="Not runnable from this repo">
         Import moves existing conversations into a licensed Enterprise
-        Intelligence project. There is no such project here, and the documented
-        sources are Google ADK and LangGraph — neither of which this Agno repo
-        has history in. Running it would have nothing to read and nowhere to
-        write, so this route documents the operation rather than performing it.
+        Intelligence project. No destination project or supported source store
+        is configured here. The guide covers Google ADK, LangGraph, Mastra, and
+        AWS Strands; Agno is not a documented import source. This route
+        documents the operation rather than performing it.
       </Callout>
 
       <Panel title="What import is for">
         <p className="text-sm leading-relaxed text-slate-700 dark:text-slate-300">
           Threads only start capturing conversations once an app is connected to
           the platform. Anything that happened before that — or in a framework&apos;s
-          own session store — is invisible to the thread list. Import backfills
-          that history into the same store so users can resume old and new
-          conversations through one UI.
+          own session store — is invisible to the thread list. Import copies
+          supported history into Intelligence so users can reopen old and new
+          conversations through one UI. It does not recover past execution or
+          keep the source database replicated.
         </p>
         <p className="mt-3 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
-          Native storage stays where it is. Import copies history into the thread
-          store for the Rich Threads experience; runs that were already going
-          through native durable persistence continue to do so.
+          Your agent framework remains responsible for execution state and
+          durable persistence. Keep its native store configured and retain a
+          stable mapping between Intelligence thread IDs and native conversation
+          IDs so future runs continue the same conversation.
+        </p>
+      </Panel>
+
+      <Panel title="Keep identity mappings stable">
+        <p className="text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+          Map each source agent key to the same <code>agentId</code> used by
+          later runtime traffic. The imported application user ID must match
+          the ID returned by the runtime&apos;s <code>identifyUser</code>. The
+          LangGraph dry run above uses <code>metadata.user_id</code> as its
+          source user ID.
+        </p>
+        <p className="mt-3 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+          After importing, reopen a conversation as its assigned application
+          user, then send a message to confirm the native framework continues
+          the same conversation with its existing thread ID mapping.
         </p>
       </Panel>
 
@@ -67,12 +85,17 @@ export default function Page() {
           </li>
           <li>
             Select or create a project with{" "}
-            <code>npx copilotkit@latest project select</code>. This writes{" "}
-            <code>.copilotkit/project.json</code> and the Intelligence env vars.
+            <code>npx copilotkit@latest project select</code>. For a
+            CLI-created app, it updates the generated <code>.env</code>. The
+            importer does not load <code>.env</code> or
+            <code>.copilotkit/project.json</code> automatically, so export the
+            destination URL and project key in the shell or pass
+            <code>--api-url</code> and <code>--api-key</code>.
           </li>
           <li>
             Point <code>--source</code> at a framework you actually have history
-            in. Agno is not currently a documented import source.
+            in: Google ADK, LangGraph, Mastra, or AWS Strands. Agno is not
+            currently a documented import source.
           </li>
         </ol>
       </Panel>

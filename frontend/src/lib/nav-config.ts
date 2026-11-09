@@ -153,7 +153,7 @@ export const NAV: NavGroup[] = [
         title: "Synchronize Thread History",
         docPath: "/agno/threads-import",
         summary:
-          "Importing existing ADK or LangGraph conversations into the same thread store.",
+          "Importing ADK, LangGraph, Mastra, or AWS Strands history into Intelligence.",
         status: "reference",
         premium: true,
         statusNote:
@@ -481,7 +481,7 @@ export const NAV: NavGroup[] = [
           "Routing selected Threads into a Learning container from the runtime, for Insights and reviewed Skills.",
         status: "partial",
         statusNote:
-          "The page's runtime snippet is mounted verbatim at `/api/copilotkit-learning`. Its example container `expense-review` does not exist here, and every run on `expense-agent` then fails silently (\"Failed to initialize thread\"); `default` answers. `agents` and `identifyUser` are undefined on the page; dashboard and CLI steps are not exercised.",
+          "This route exercises Thread assignment only. The updated page's browser Trajectory assignment and experimental Learning management APIs are not exercised. Its example container `expense-review` does not exist here, so the assigned chat fails while `default` answers; dashboard and CLI workflows are not exercised.",
       },
       {
         path: "/intelligence/learned-skills",

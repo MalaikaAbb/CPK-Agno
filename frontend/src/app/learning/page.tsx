@@ -30,11 +30,11 @@ export default function Page() {
         <p className="text-sm leading-relaxed text-slate-700 dark:text-slate-300">
           Learning groups Threads from one kind of work into a container,
           analyzes completed runs into Insights, and proposes Skills you review
-          and publish. The only code the page asks for is one runtime callback,{" "}
-          <code>getLearningContainerId</code>, that decides which container a
-          new Thread joins. This route mounts that runtime verbatim at{" "}
-          <code>/api/copilotkit-learning</code> and runs one agent it assigns and
-          one it does not.
+          and publish. The route mounts the page&apos;s Thread assignment
+          callback at <code>/api/copilotkit-learning</code> and runs one agent
+          it assigns and one it does not. The updated page also documents
+          browser Trajectory assignment and experimental server-side Learning
+          management; this route does not exercise those APIs.
         </p>
         <div className="mt-4">
           <TryIt
@@ -145,6 +145,23 @@ export default function Page() {
         <pre className="mt-3 overflow-x-auto rounded bg-slate-900 p-3 text-xs text-slate-100">
           {DOWNLOAD}
         </pre>
+      </Callout>
+
+      <Callout tone="warn" title="New Trajectory assignment is not exercised here">
+        The page now shows <code>getTrajectoryLearningContainerIds</code> for
+        assigning captured browser activity to Learning Spaces. This demo only
+        sends agent Threads through <code>getLearningContainerId</code>; it
+        does not capture browser Trajectories or assign them to a Space. The
+        callback also requires an existing Space and a backend that accepts
+        Trajectory inputs.
+      </Callout>
+
+      <Callout tone="warn" title="Learning management APIs are not exercised here">
+        The page now documents experimental server methods for listing
+        containers and runs, starting a run, reviewing Skills, and reading
+        evidence. This route has no authorized management or review handler, so
+        those methods are not called. The documentation notes that they require
+        a deployment with the Learning management API.
       </Callout>
 
       <Panel title="Source">

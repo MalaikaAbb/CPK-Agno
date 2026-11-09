@@ -15,10 +15,9 @@ from openai import Timeout
 
 from tools import ALL_TOOLS
 
-# Tool Rendering publishes `gpt-6-luna` with reasoning disabled. Keep
-# OPENAI_MODEL as an operator override for accounts that need a different id.
-MODEL_OVERRIDE = os.getenv("OPENAI_MODEL")
-DEFAULT_MODEL = MODEL_OVERRIDE or "gpt-6-luna"
+# The Agno quickstart configures GPT-6 Luna with reasoning disabled.
+# Override with OPENAI_MODEL to use another model supported by Agno.
+DEFAULT_MODEL = os.getenv("OPENAI_MODEL", "gpt-6-luna")
 
 # The OpenAI SDK ships a 5-second *connect* timeout
 # (`openai._constants.DEFAULT_TIMEOUT` is `Timeout(timeout=600, connect=5.0)`),
@@ -58,7 +57,7 @@ def _model() -> OpenAIChat:
     """
     return OpenAIChat(
         id=DEFAULT_MODEL,
-        **({"reasoning_effort": "none"} if MODEL_OVERRIDE is None else {}),
+        reasoning_effort="none",
         # A key pasted into an env file can arrive with surrounding whitespace,
         # which becomes an illegal HTTP header value rather than a clean 401.
         api_key=(os.getenv("OPENAI_API_KEY") or "").strip() or None,

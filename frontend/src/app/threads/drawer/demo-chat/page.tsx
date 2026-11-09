@@ -5,6 +5,7 @@ import {
   CopilotChatConfigurationProvider,
   CopilotSidebar,
   CopilotThreadsDrawer,
+  useCopilotChatConfiguration,
 } from "@copilotkit/react-core/v2";
 import { useState } from "react";
 
@@ -27,7 +28,25 @@ import { DemoFrame } from "@/components/demo-frame";
  * lives under this app's demo bar rather than filling the viewport.
  */
 
-type Host = "chat" | "sidebar";
+type Host = "chat" | "sidebar" | "controlled";
+
+// Repo-authored choice: both ids are registered by the threads runtime, and
+// `agno_agent` makes the shared provider's agent selection visible in this demo.
+const AGENT_ID = "agno_agent";
+
+function NewConversationButton() {
+  const configuration = useCopilotChatConfiguration();
+
+  return (
+    <button
+      type="button"
+      onClick={() => configuration?.startNewThread()}
+      className="rounded-md border border-slate-300 px-3 py-1.5 text-sm font-medium dark:border-slate-600"
+    >
+      New conversation
+    </button>
+  );
+}
 
 const HOSTS: { id: Host; label: string; blurb: string }[] = [
   {
@@ -39,6 +58,11 @@ const HOSTS: { id: Host; label: string; blurb: string }[] = [
     id: "sidebar",
     label: "CopilotSidebar",
     blurb: "Use the Drawer with a sidebar chat",
+  },
+  {
+    id: "controlled",
+    label: "Controlled threadId",
+    blurb: "App-owned thread state with the Drawer callbacks",
   },
 ];
 
@@ -52,6 +76,34 @@ function YourMainContent() {
       Main content. The sidebar chat on the right shares the drawer&apos;s chat
       configuration.
     </div>
+  );
+}
+
+function ControlledChat() {
+  const [threadId, setThreadId] = useState(() => crypto.randomUUID());
+  const startNew = () => setThreadId(crypto.randomUUID());
+
+  return (
+    <CopilotChatConfigurationProvider threadId={threadId}>
+      <div className="flex h-full">
+        <CopilotThreadsDrawer
+          onThreadSelect={(id) => setThreadId(id)}
+          onNewThread={startNew}
+        />
+        <main className="flex min-w-0 flex-1 flex-col">
+          <header className="shrink-0 border-b border-slate-200 p-3 dark:border-slate-800">
+            <button
+              type="button"
+              onClick={startNew}
+              className="rounded-md border border-slate-300 px-3 py-1.5 text-sm font-medium dark:border-slate-600"
+            >
+              New conversation
+            </button>
+          </header>
+          <CopilotChat />
+        </main>
+      </div>
+    </CopilotChatConfigurationProvider>
   );
 }
 
@@ -84,24 +136,32 @@ export default function Page() {
             configuration instead of inheriting the previous one's state. */}
         <div className="min-h-0 flex-1" key={host}>
           {host === "chat" ? (
-            <CopilotChatConfigurationProvider>
+            <CopilotChatConfigurationProvider agentId={AGENT_ID}>
               <div className="flex h-full">
                 <CopilotThreadsDrawer />
-                <div className="min-w-0 flex-1">
+                <div className="flex min-w-0 flex-1 flex-col">
+                  <header className="shrink-0 border-b border-slate-200 p-3 dark:border-slate-800">
+                    <NewConversationButton />
+                  </header>
                   <CopilotChat />
                 </div>
               </div>
             </CopilotChatConfigurationProvider>
-          ) : (
-            <CopilotChatConfigurationProvider>
+          ) : host === "sidebar" ? (
+            <CopilotChatConfigurationProvider agentId={AGENT_ID}>
               <div style={{ display: "flex", height: "100%" }}>
                 <CopilotThreadsDrawer />
                 <main style={{ flex: 1 }}>
+                  <header className="border-b border-slate-200 p-3 dark:border-slate-800">
+                    <NewConversationButton />
+                  </header>
                   <YourMainContent />
                   <CopilotSidebar defaultOpen={true} />
                 </main>
               </div>
             </CopilotChatConfigurationProvider>
+          ) : (
+            <ControlledChat />
           )}
         </div>
       </div>

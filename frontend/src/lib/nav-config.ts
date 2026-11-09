@@ -119,7 +119,7 @@ export const NAV: NavGroup[] = [
         title: "Threads Drawer",
         docPath: "/agno/prebuilt-components/copilot-threads-drawer",
         summary:
-          "The drop-in CopilotThreadsDrawer wired to a chat through a shared configuration provider.",
+          "The drop-in CopilotThreadsDrawer wired to a chat through shared configuration, with custom and controlled new-conversation flows plus agent selection.",
         status: "partial",
         premium: true,
         statusNote:

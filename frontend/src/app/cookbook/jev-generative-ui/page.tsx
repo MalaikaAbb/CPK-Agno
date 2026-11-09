@@ -290,12 +290,12 @@ export default function Page() {
         Skills — none of which this project has (§9 #17, #19, #24).
       </Callout>
 
-      <Callout tone="info" title="Two smaller things, both recorded rather than acted on">
-        The env block sets <code>OPENAI_MODEL=gpt-5.4</code> and{" "}
-        <code>explain</code> defaults to <code>&quot;gpt-5.4&quot;</code>, the
-        same model id §9 #4 records from the Quickstart and the same one this
-        repo overrides to <code>gpt-4o</code>. And the runtime file here is
-        titled with the catch-all path and exports four handlers, agreeing with
+      <Callout tone="info" title="One implementation detail the page leaves implicit">
+        The optional explanation call now defaults to{" "}
+        <code>gpt-6-luna</code> and sets{" "}
+        <code>reasoning_effort: &quot;none&quot;</code> only for that model. The
+        runtime file here is titled with the catch-all path and exports four
+        handlers, agreeing with
         Quickstart, Copilot Runtime and Thread &amp; History Lifecycle and
         disagreeing with the landing page&apos;s two-export{" "}
         <code>app/api/copilotkit/route.ts</code> — §9 #18, now four pages to

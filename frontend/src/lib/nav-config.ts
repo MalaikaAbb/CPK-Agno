@@ -240,6 +240,17 @@ export const NAV: NavGroup[] = [
           "Everything is published code, verbatim: Code-tab frontend, dedicated runtime route and byoc_json_render agent; catalog.ts from the page (zod4 import). Typecheck only — not run against the backend or in a browser.",
       },
       {
+        path: "/generative-ui/hashbrown",
+        hasDemo: true,
+        title: "Declarative · Hashbrown",
+        docPath: "/agno/generative-ui/hashbrown",
+        summary:
+          "A Hashbrown UI kit shared through a provider; the agent's { ui: [...] } envelope streams through useJsonParser and renders piece by piece.",
+        status: "partial",
+        statusNote:
+          "Everything is published code, verbatim: Code-tab frontend (page/chat/renderer match the page), dedicated runtime route and byoc_hashbrown agent. Hashbrown pinned to the showcase's 0.5.0-beta.4 (the page names no version). Typecheck only — not run against the backend or in a browser.",
+      },
+      {
         path: "/generative-ui/your-components/display-only",
         hasDemo: true,
         title: "Your Components · Display-only",

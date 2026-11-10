@@ -24,6 +24,7 @@ from agno.os.interfaces.agui import AGUI  # noqa: E402
 from agent import build_agent  # noqa: E402
 from agents.a2ui_dynamic_agent import agent as a2ui_dynamic_agent  # noqa: E402
 from agents.a2ui_fixed_agent import agent as a2ui_fixed_agent  # noqa: E402
+from agents.byoc_hashbrown_agent import agent as byoc_hashbrown_agent  # noqa: E402
 from agents.byoc_json_render_agent import agent as byoc_json_render_agent  # noqa: E402
 from agents.interrupt_agent import agent as interrupt_agent  # noqa: E402
 from agents.main import agent as demo_main_agent  # noqa: E402
@@ -64,6 +65,8 @@ _DEMO_INTERFACES = [
     AGUI(agent=a2ui_fixed_agent, prefix="/a2ui-fixed-schema"),
     # /generative-ui/json-render: the Code tab's agent, at its published prefix.
     AGUI(agent=byoc_json_render_agent, prefix="/byoc-json-render"),
+    # /generative-ui/hashbrown: the Code tab's agent, at its published prefix.
+    AGUI(agent=byoc_hashbrown_agent, prefix="/byoc-hashbrown"),
     AGUI(agent=open_gen_ui_agent, prefix="/open-gen-ui"),
     AGUI(agent=demo_main_agent, prefix="/demo-main"),
     AGUI(agent=interrupt_agent, prefix="/interrupt-adapted"),
@@ -77,6 +80,7 @@ agent_os = AgentOS(
         a2ui_dynamic_agent,
         a2ui_fixed_agent,
         byoc_json_render_agent,
+        byoc_hashbrown_agent,
         open_gen_ui_agent,
         demo_main_agent,
         interrupt_agent,

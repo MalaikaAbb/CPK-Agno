@@ -229,6 +229,17 @@ export const NAV: NavGroup[] = [
     title: "Generative UI",
     routes: [
       {
+        path: "/generative-ui/json-render",
+        hasDemo: true,
+        title: "Declarative · JSON Render",
+        docPath: "/agno/generative-ui/json-render",
+        summary:
+          "The agent replies with a { root, elements } JSON spec that a custom assistant-message slot renders through a @json-render/react component registry.",
+        status: "partial",
+        statusNote:
+          "Everything is published code, verbatim: Code-tab frontend, dedicated runtime route and byoc_json_render agent; catalog.ts from the page (zod4 import). Typecheck only — not run against the backend or in a browser.",
+      },
+      {
         path: "/generative-ui/your-components/display-only",
         hasDemo: true,
         title: "Your Components · Display-only",

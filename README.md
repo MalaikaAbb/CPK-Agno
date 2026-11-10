@@ -238,6 +238,9 @@ A chat with zero CopilotKit chrome. **Try:** `What's the weather in London?` **P
 
 ### Generative UI
 
+**`/generative-ui/tool-based`** — ⚠️ Partial
+Controlled generative UI: `useComponent` registers bar- and pie-chart components, and the Agno agent declares an empty `@tool(external_execution=True)` stub plus a `SqliteDb` so the paused run can resume. Code-tab frontend verbatim; `backend/agents/chart_agent.py` is the page's two snippets, verbatim, mounted at `/gen-ui-tool-based`. Gaps: `SYSTEM_PROMPT` is undefined on the page (borrowed from ms-agent-framework-py), no backend stub for `render_pie_chart`, and the published model id is `gpt-6-luna`. **Try:** `Show me a bar chart of quarterly sales for Q1, Q2, Q3, Q4.` **Pass:** a bar chart renders inline and the run ends with a short reply. **Fail:** a text/table answer, or a model or resume RUN_ERROR.
+
 **`/generative-ui/your-components/display-only`**
 Registering a React component as a tool the agent can render — `useComponent`, no handler, no interaction. **Try:** `Show the weather card for Tokyo: 77 degrees, clear`. **Pass:** a bordered weather card renders inline in the chat with the agent's values. **Fail:** a plain-text answer with no card — the tool wasn't called.
 
@@ -338,6 +341,7 @@ Verified 2026-08-05 against a live stack (real OpenAI key, no license key, no MC
 | `/agno/custom-look-and-feel/slots`                 | `/custom-look-and-feel/slots`                 | ⚠️ Partial     | The page documents `workSummary` and grouped tool calls; installed package lacks exports used by the published grouping example — [FINDINGS.md](FINDINGS.md) #40. |
 | `/agno/custom-look-and-feel/headless-ui`           | `/custom-look-and-feel/headless-ui`           | ✅ Working     | **Not in the doc sidebar**; resolves.                                                  |
 | `/agno/custom-look-and-feel/markdown`              | `/custom-look-and-feel/markdown`              | ✅ Working     | New upstream, tracked 2026-09-21. All three snippets verbatim and all three typecheck; the bare-component slot that [FINDINGS.md](FINDINGS.md) #3 rules out elsewhere is accepted here — [FINDINGS.md](FINDINGS.md) #26. |
+| `/agno/generative-ui/tool-based`                   | `/generative-ui/tool-based`                   | ⚠️ Partial     | New 2026-11-10. Code-tab frontend + page backend verbatim; `SYSTEM_PROMPT` borrowed (ms-agent-framework-py); no pie-chart stub; model `gpt-6-luna`. Typecheck only. |
 | `/agno/generative-ui/your-components/display-only` | `/generative-ui/your-components/display-only` | ✅ Working     | `useComponent`; needs no backend declaration. Same resume failure as frontend-tools until `db` was configured (#12); re-recorded clean.            |
 | `/agno/generative-ui/your-components/interactive`  | `/generative-ui/your-components/interactive`  | 🚧 Not started | Upstream doc page is still a stub; its only content is the 30 Aug session-storage callout (#12), which this route mirrors.            |
 | `/agno/generative-ui/tool-rendering`               | `/generative-ui/tool-rendering`               | ✅ Working     | Named + wildcard renderers; tool call verified over the wire.                          |
@@ -545,7 +549,7 @@ single page first — before running the full suite.
 
 **Custom Look and Feel** — [Programmatic Control](https://docs.copilotkit.ai/agno/programmatic-control) · [Inspector](https://docs.copilotkit.ai/agno/inspector) · [Slots](https://docs.copilotkit.ai/agno/custom-look-and-feel/slots) · [Headless UI](https://docs.copilotkit.ai/agno/custom-look-and-feel/headless-ui) † · [Markdown Rendering](https://docs.copilotkit.ai/agno/custom-look-and-feel/markdown)
 
-**Generative UI** — [Your Components · Display-only](https://docs.copilotkit.ai/agno/generative-ui/your-components/display-only) · [Your Components · Interactive](https://docs.copilotkit.ai/agno/generative-ui/your-components/interactive) † · [Tool Rendering](https://docs.copilotkit.ai/agno/generative-ui/tool-rendering) · [A2UI · Dynamic Schema](https://docs.copilotkit.ai/agno/generative-ui/a2ui/dynamic-schema) · [A2UI · Fixed Schema](https://docs.copilotkit.ai/agno/generative-ui/a2ui/fixed-schema) · [MCP Apps](https://docs.copilotkit.ai/agno/generative-ui/mcp-apps) ‡ · [Open Generative UI](https://docs.copilotkit.ai/agno/generative-ui/open-generative-ui)
+**Generative UI** — [Components as Tools](https://docs.copilotkit.ai/agno/generative-ui/tool-based) · [Your Components · Display-only](https://docs.copilotkit.ai/agno/generative-ui/your-components/display-only) · [Your Components · Interactive](https://docs.copilotkit.ai/agno/generative-ui/your-components/interactive) † · [Tool Rendering](https://docs.copilotkit.ai/agno/generative-ui/tool-rendering) · [A2UI · Dynamic Schema](https://docs.copilotkit.ai/agno/generative-ui/a2ui/dynamic-schema) · [A2UI · Fixed Schema](https://docs.copilotkit.ai/agno/generative-ui/a2ui/fixed-schema) · [MCP Apps](https://docs.copilotkit.ai/agno/generative-ui/mcp-apps) ‡ · [Open Generative UI](https://docs.copilotkit.ai/agno/generative-ui/open-generative-ui)
 
 **Shared State** — [Render state in your app](https://docs.copilotkit.ai/agno/shared-state/rendering-in-app) · [Agent Read-Only Context](https://docs.copilotkit.ai/agno/shared-state/agent-readonly)
 

@@ -229,6 +229,17 @@ export const NAV: NavGroup[] = [
     title: "Generative UI",
     routes: [
       {
+        path: "/generative-ui/tool-based",
+        hasDemo: true,
+        title: "Controlled · Components as Tools",
+        docPath: "/agno/generative-ui/tool-based",
+        summary:
+          "Chart components registered with useComponent and mirrored by empty external-execution stubs on the Agno agent, so the agent can draw them in the chat.",
+        status: "partial",
+        statusNote:
+          "Frontend is the Code tab's, verbatim; backend is the page's chart_agent.py, verbatim. The page never defines SYSTEM_PROMPT (borrowed from ms-agent-framework-py), declares no backend stub for the pie chart it registers, and uses model id gpt-6-luna. Typecheck only — not run against the backend or in a browser.",
+      },
+      {
         path: "/generative-ui/your-components/display-only",
         hasDemo: true,
         title: "Your Components · Display-only",

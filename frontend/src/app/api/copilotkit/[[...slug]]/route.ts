@@ -32,6 +32,8 @@ const DOC_DEMO_AGENTS = {
   "hitl-in-chat": new HttpAgent({ url: `${AGENT_URL}/demo-main/agui` }),
   "gen-ui-interrupt": new HttpAgent({ url: `${AGENT_URL}/interrupt-adapted/agui` }),
   subagents: new HttpAgent({ url: `${AGENT_URL}/subagents/agui` }),
+  // /shared-state: the docs route this id to their state-aware /shared-state-rw.
+  "shared-state-read-write": new HttpAgent({ url: `${AGENT_URL}/shared-state-rw/agui` }),
 };
 
 // Two ids, one backend. `default` is what every prebuilt component picks up with

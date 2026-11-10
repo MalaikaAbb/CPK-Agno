@@ -315,6 +315,17 @@ export const NAV: NavGroup[] = [
     title: "Shared State",
     routes: [
       {
+        path: "/shared-state",
+        hasDemo: true,
+        title: "Shared State",
+        docPath: "/agno/shared-state",
+        summary:
+          "Two-way agent state: useAgent reads the agent's notes, agent.setState writes the user's preferences back for the next turn.",
+        status: "partial",
+        statusNote:
+          "The page has no demo and skips its Agno backend setup; its snippets are cut from the shared-state-read-write demo, which is mounted whole from the Agno showcase with its agent. Notes reach the UI only in the run's closing STATE_SNAPSHOT (no jsonpatch, no custom router). Typecheck only — not run against the backend or in a browser.",
+      },
+      {
         path: "/shared-state/rendering-in-app",
         hasDemo: true,
         title: "Render state in your app",

@@ -263,6 +263,9 @@ The agent writes HTML/CSS/JS into a sandboxed iframe; the demo route has the pag
 
 ### Shared State
 
+**`/shared-state`** — ⚠️ Partial
+The shared-state overview (Interactivity › Shared state): `useAgent` with `OnStateChanged` reads `agent.state.notes`, and `agent.setState({ preferences, notes })` writes back. The page has no demo, and its Agno backend setup is skipped, but its snippets are cut from the showcase's `shared-state-read-write` demo. That demo is mounted verbatim with `backend/agents/shared_state_read_write.py` at `/shared-state-rw`. **Try:** `Remember that I prefer short answers and I'm learning Spanish.`, then change the tone in the preferences card and ask again. **Pass:** notes appear in the Agent Scratch pad when the run ends, and the next answer follows the edited preferences. **Fail:** an empty notes card, or preferences ignored. The notes arrive only in the closing `STATE_SNAPSHOT` (no `jsonpatch`, no custom router).
+
 **`/shared-state/rendering-in-app`** — ⚠️ Partial
 `useAgent()` in a main-view `Canvas` beside a `CopilotSidebar`. Both snippets verbatim, on this repo's default agent; the page has no demo or backend half. **Try:** load the demo. **Pass:** "Project launch" with two items appears as soon as the agent connects. **Fail:** "Untitled" and an empty list.
 
@@ -346,6 +349,7 @@ Verified 2026-08-05 against a live stack (real OpenAI key, no license key, no MC
 | `/agno/generative-ui/a2ui/fixed-schema`            | `/generative-ui/a2ui/fixed-schema`            | ⚠️ Partial     | New 2026-10-07. All Code-tab code verbatim; page's own backend snippets are skipped for Agno. Backend-checked; not browser-checked. |
 | `/agno/generative-ui/mcp-apps`                     | `/generative-ui/mcp-apps`                     | 🚧 Not started | New 2026-10-07. Runtime examples use `BuiltInAgent` with built-in or optional MCP middleware; no Agno integration code or embedded demo. Tracked for drift. |
 | `/agno/generative-ui/open-generative-ui`           | `/generative-ui/open-generative-ui`           | ⚠️ Partial     | New 2026-10-07. Route + both frontends verbatim; agent unpublished, repo-authored. Unverified: answered in prose to a stand-in tool outside the runtime. |
+| `/agno/shared-state`                               | `/shared-state`                               | ⚠️ Partial     | New 2026-11-10. No demo on the page; showcase `shared-state-read-write` demo + agent verbatim. Notes via closing `STATE_SNAPSHOT` only. Typecheck only. |
 | `/agno/shared-state/rendering-in-app`              | `/shared-state/rendering-in-app`              | ⚠️ Partial     | New 2026-10-07. Both snippets verbatim on the default agent; page has no backend half. Not browser-checked. |
 | `/agno/shared-state/agent-readonly`                | `/shared-state/agent-readonly`                | ⚠️ Partial     | New 2026-10-07. Frontend verbatim; `main.py` prompt without its unpublished tools. Backend-checked: context read back. |
 | `/agno/human-in-the-loop/index`                    | `/human-in-the-loop/overview`                 | ⚠️ Partial     | New 2026-10-07. hitl-in-chat pauses and resumes (backend-checked). gen-ui-interrupt fails to resume: “Frontend tool resume requires a database”. |
@@ -547,7 +551,7 @@ single page first — before running the full suite.
 
 **Generative UI** — [Your Components · Display-only](https://docs.copilotkit.ai/agno/generative-ui/your-components/display-only) · [Your Components · Interactive](https://docs.copilotkit.ai/agno/generative-ui/your-components/interactive) † · [Tool Rendering](https://docs.copilotkit.ai/agno/generative-ui/tool-rendering) · [A2UI · Dynamic Schema](https://docs.copilotkit.ai/agno/generative-ui/a2ui/dynamic-schema) · [A2UI · Fixed Schema](https://docs.copilotkit.ai/agno/generative-ui/a2ui/fixed-schema) · [MCP Apps](https://docs.copilotkit.ai/agno/generative-ui/mcp-apps) ‡ · [Open Generative UI](https://docs.copilotkit.ai/agno/generative-ui/open-generative-ui)
 
-**Shared State** — [Render state in your app](https://docs.copilotkit.ai/agno/shared-state/rendering-in-app) · [Agent Read-Only Context](https://docs.copilotkit.ai/agno/shared-state/agent-readonly)
+**Shared State** — [Shared State](https://docs.copilotkit.ai/agno/shared-state) · [State Streaming](https://docs.copilotkit.ai/agno/shared-state/streaming) · [Render state in your app](https://docs.copilotkit.ai/agno/shared-state/rendering-in-app) · [Agent Read-Only Context](https://docs.copilotkit.ai/agno/shared-state/agent-readonly)
 
 **Multi-Agent** — [Sub-agents](https://docs.copilotkit.ai/agno/multi-agent/subagents)
 

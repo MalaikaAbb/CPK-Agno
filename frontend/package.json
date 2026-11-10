@@ -13,16 +13,19 @@
   "dependencies": {
     "@ag-ui/agno": "^0.0.6",
     "@ag-ui/client": "1.0.2",
-    "@copilotkit/a2ui-renderer": "1.77.0",
-    "@copilotkit/react-core": "^1.77.0",
-    "@copilotkit/runtime": "^1.77.0",
+    "@copilotkit/a2ui-renderer": "1.85.0",
+    "@copilotkit/react-core": "^1.85.0",
+    "@copilotkit/runtime": "^1.85.0",
     "@radix-ui/react-separator": "^1.1.16",
+    "@valibot/to-json-schema": "^1.8.0",
+    "maplibre-gl": "^5.24.0",
     "next": "16.3.3",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "recharts": "^3.10.1",
     "server-only": "^0.0.1",
     "shiki": "^4.4.3",
+    "valibot": "^1.5.0",
     "zod": "3.25.76"
   },
   "devDependencies": {

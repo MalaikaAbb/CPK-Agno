@@ -261,6 +261,37 @@ A flight card whose component tree is a JSON file on the backend; `display_fligh
 **`/generative-ui/open-generative-ui`** — ⚠️ Partial
 The agent writes HTML/CSS/JS into a sandboxed iframe; the demo route has the page's minimal and advanced (host sandbox functions) demos as tabs. Runtime route and frontends verbatim; the Agno agent is never published, so `backend/agents/open_gen_ui_agent.py` is repo-authored (no tools). **Try:** `How a neural network works`; on the Advanced tab, `Calculator (calls evaluateExpression)`. **Pass:** an iframe that builds itself live; the calculator logs `evaluateExpression` in the browser console. **Fail:** a prose answer — which is what the agent gave when offered a stand-in tool outside the runtime, so this one is unverified.
 
+### Generative UI › Components and surfaces
+
+All nine routes are new as of 2026-11-10 and were ported from the CPK-LangGraph-TS harness (the agno pages are byte-identical to the langgraph-typescript ones). They need `@copilotkit/*` 1.85 (`/v2/generative-ui` doesn't exist in 1.77), so this repo was bumped. Every demo talks to `/api/copilotkit-genui` (or `/api/copilotkit-genui-transports`) → the repo-authored Agno `genui` agent in `backend/agents/genui_agent.py`. That agent has no tools: Agno's stock AG-UI router forwards the run's `render_ui` tool and catalog guide. Typecheck only; none of them has been run in a browser.
+
+**`/generative-ui/components`** — ⚠️ Partial
+`standardUI` on the provider; the runtime adds `render_ui` and the agent streams real components. Served by the Agno `genui` agent (the page's runtime is a TanStack `BuiltInAgent`). **Try:** "Compare the Starter, Team, and Enterprise plans in a table", then "add a column for support". **Pass:** a table streams in and the follow-up edits it in place. **Fail:** plain markdown → `render_ui` never reached the model.
+
+**`/generative-ui/components/surfaces`** — ⚠️ Partial
+`GenerativeUISurface` page targets the chat fills, limits, scrolls to and replaces; every Components route talks to the `genui` agent through `/api/copilotkit-genui`. **Try:** "Show me cheap running shoes in the featured row." then "Show the featured products again.". **Pass:** the page's own row is replaced by a ProductGrid, and the second prompt brings the row back. **Fail:** the grid lands in the chat, so the target's description never reached the agent.
+
+**`/generative-ui/components/catalogs`** — ⚠️ Partial
+`createGenerativeUI` catalogs: typed props, zod and Valibot, `extends`, `parameterOrder`, `exportA2UICatalog`. **Try:** "Show me three running shoes as product cards.". **Pass:** ProductCards with a name, price and image each (model-invented values); the Export tab lists `component, title, children, color`. **Fail:** standard components such as Table appear on `shopUI`.
+
+**`/generative-ui/components/standard-catalog`** — ⚠️ Partial
+`standardUI` as is, extended, with `omit`, and with a `Card` override. **Try:** "Show the Eiffel Tower and the Louvre on a map.". **Pass:** a MapLibre map on `standardUI`, and no map on the omit variant. **Fail:** a plain list on `standardUI`, so `maplibre-gl` did not load.
+
+**`/generative-ui/components/state-and-actions`** — ⚠️ Partial
+`bind` from app state, functions on click, events sent to the agent, writable props. **Try:** Add p1 twice, then "Show product cards for p1 Trail Runner and p2 City Sneaker.". **Pass:** "In cart: 2" and "In cart: 0" from app state; Add to cart updates the Cart panel with no chat message. **Fail:** a chat message on click, so the event did not match `addToCart`.
+
+**`/generative-ui/components/theming`** — ⚠️ Partial
+`theme` variables, a typed theme file, dark overrides, map styles, `.a2ui-surface` CSS. **Try:** "Show a card with a primary button, a slider, and a bar chart of three months.". **Pass:** amber `#d97706` accent on the button and slider. **Fail:** the default accent on the Provider theme variant. The Map variant's basemap is blank by design (the page's URLs are placeholders).
+
+**`/generative-ui/components/transports`** — ⚠️ Partial
+The `render_ui` tool transport vs `a2ui` fences in markdown, with `generativeUI: true` and `agentIds`. **Try:** "Compare the Starter, Team, and Enterprise plans in a table.". **Pass:** a table component (tool), a table inside the reply (markdown), and plain text when chatting as `default` under `agentIds: ["shop"]`. **Fail:** UI as `default`, so `agentIds` was ignored.
+
+**`/generative-ui/components/markdown-mode`** — ⚠️ Partial
+The agent writes A2UI operations in `a2ui` code blocks in its reply. **Try:** "Give me a seat-count slider that shows the monthly price at $29 per seat.". **Pass:** prose with a live slider card in the middle. **Fail:** raw JSON in a code block. The `sendContext: false` variant shows no UI by design.
+
+**`/generative-ui/components/from-a2ui`** — ⚠️ Partial
+The A2UI 1.0 "After" catalog (`Airport`, `Arrow`) on the new engine. **Try:** "Show a flight card from SFO (San Francisco) to JFK (New York) with a Book button.". **Pass:** two Airport components with an Arrow and a Button. **Fail:** a rejection naming a v0.9 shape.
+
 ### Shared State
 
 **`/shared-state/rendering-in-app`** — ⚠️ Partial
@@ -338,6 +369,15 @@ Verified 2026-08-05 against a live stack (real OpenAI key, no license key, no MC
 | `/agno/custom-look-and-feel/slots`                 | `/custom-look-and-feel/slots`                 | ⚠️ Partial     | The page documents `workSummary` and grouped tool calls; installed package lacks exports used by the published grouping example — [FINDINGS.md](FINDINGS.md) #40. |
 | `/agno/custom-look-and-feel/headless-ui`           | `/custom-look-and-feel/headless-ui`           | ✅ Working     | **Not in the doc sidebar**; resolves.                                                  |
 | `/agno/custom-look-and-feel/markdown`              | `/custom-look-and-feel/markdown`              | ✅ Working     | New upstream, tracked 2026-09-21. All three snippets verbatim and all three typecheck; the bare-component slot that [FINDINGS.md](FINDINGS.md) #3 rules out elsewhere is accepted here — [FINDINGS.md](FINDINGS.md) #26. |
+| `/agno/generative-ui/components` | `/generative-ui/components` | ⚠️ Partial | New 2026-11-10. Page runtime is a TanStack `BuiltInAgent` (shown, not run); served by a repo-authored Agno `genui` agent at `/genui`. Needs @copilotkit 1.85 (bumped here). Typecheck only. |
+| `/agno/generative-ui/components/surfaces` | `/generative-ui/components/surfaces` | ⚠️ Partial | New 2026-11-10. Ported from CPK-LangGraph-TS; Product/ProductRow scaffolding; no products tool, so the model invents products. Typecheck only. |
+| `/agno/generative-ui/components/catalogs` | `/generative-ui/components/catalogs` | ⚠️ Partial | New 2026-11-10. Ported from CPK-LangGraph-TS; Hero/Panel/cartUI scaffolding; `valibot` added for the schema-library sample. Typecheck only. |
+| `/agno/generative-ui/components/standard-catalog` | `/generative-ui/components/standard-catalog` | ⚠️ Partial | New 2026-11-10. Ported from CPK-LangGraph-TS; ProductCard/productSchema scaffolding; `maplibre-gl` added as the page says. Typecheck only. |
+| `/agno/generative-ui/components/state-and-actions` | `/generative-ui/components/state-and-actions` | ⚠️ Partial | New 2026-11-10. Ported from CPK-LangGraph-TS; cart scaffolding around the fragment snippets. Typecheck only. |
+| `/agno/generative-ui/components/theming` | `/generative-ui/components/theming` | ⚠️ Partial | New 2026-11-10. Ported from CPK-LangGraph-TS; the page's placeholder mapStyle URLs draw no basemap. Typecheck only. |
+| `/agno/generative-ui/components/transports` | `/generative-ui/components/transports` | ⚠️ Partial | New 2026-11-10. Ported from CPK-LangGraph-TS; the runtime's undefined `agent` is the Agno `genui` agent, plus an identical `shop` agent. Typecheck only. |
+| `/agno/generative-ui/components/markdown-mode` | `/generative-ui/components/markdown-mode` | ⚠️ Partial | New 2026-11-10. Ported from CPK-LangGraph-TS; `sendContext: false` renders no UI (its only backend is Python reading `forwarded_props`, which the stock Agno router doesn't pass on). Typecheck only. |
+| `/agno/generative-ui/components/from-a2ui` | `/generative-ui/components/from-a2ui` | ⚠️ Partial | New 2026-11-10. Ported from CPK-LangGraph-TS; Airport/Arrow scaffolding. Typecheck only. |
 | `/agno/generative-ui/your-components/display-only` | `/generative-ui/your-components/display-only` | ✅ Working     | `useComponent`; needs no backend declaration. Same resume failure as frontend-tools until `db` was configured (#12); re-recorded clean.            |
 | `/agno/generative-ui/your-components/interactive`  | `/generative-ui/your-components/interactive`  | 🚧 Not started | Upstream doc page is still a stub; its only content is the 30 Aug session-storage callout (#12), which this route mirrors.            |
 | `/agno/generative-ui/tool-rendering`               | `/generative-ui/tool-rendering`               | ✅ Working     | Named + wildcard renderers; tool call verified over the wire.                          |
@@ -546,6 +586,8 @@ single page first — before running the full suite.
 **Custom Look and Feel** — [Programmatic Control](https://docs.copilotkit.ai/agno/programmatic-control) · [Inspector](https://docs.copilotkit.ai/agno/inspector) · [Slots](https://docs.copilotkit.ai/agno/custom-look-and-feel/slots) · [Headless UI](https://docs.copilotkit.ai/agno/custom-look-and-feel/headless-ui) † · [Markdown Rendering](https://docs.copilotkit.ai/agno/custom-look-and-feel/markdown)
 
 **Generative UI** — [Your Components · Display-only](https://docs.copilotkit.ai/agno/generative-ui/your-components/display-only) · [Your Components · Interactive](https://docs.copilotkit.ai/agno/generative-ui/your-components/interactive) † · [Tool Rendering](https://docs.copilotkit.ai/agno/generative-ui/tool-rendering) · [A2UI · Dynamic Schema](https://docs.copilotkit.ai/agno/generative-ui/a2ui/dynamic-schema) · [A2UI · Fixed Schema](https://docs.copilotkit.ai/agno/generative-ui/a2ui/fixed-schema) · [MCP Apps](https://docs.copilotkit.ai/agno/generative-ui/mcp-apps) ‡ · [Open Generative UI](https://docs.copilotkit.ai/agno/generative-ui/open-generative-ui)
+
+**Generative UI › Components and surfaces** — [Components and surfaces](https://docs.copilotkit.ai/agno/generative-ui/components) · [Surfaces](https://docs.copilotkit.ai/agno/generative-ui/components/surfaces) · [Catalogs](https://docs.copilotkit.ai/agno/generative-ui/components/catalogs) · [Standard catalog](https://docs.copilotkit.ai/agno/generative-ui/components/standard-catalog) · [State and actions](https://docs.copilotkit.ai/agno/generative-ui/components/state-and-actions) · [Theming](https://docs.copilotkit.ai/agno/generative-ui/components/theming) · [Transports](https://docs.copilotkit.ai/agno/generative-ui/components/transports) · [Markdown mode](https://docs.copilotkit.ai/agno/generative-ui/components/markdown-mode) · [Adopt from A2UI](https://docs.copilotkit.ai/agno/generative-ui/components/from-a2ui)
 
 **Shared State** — [Render state in your app](https://docs.copilotkit.ai/agno/shared-state/rendering-in-app) · [Agent Read-Only Context](https://docs.copilotkit.ai/agno/shared-state/agent-readonly)
 

@@ -169,6 +169,7 @@ function useSalesDashboardKit() {
         description: "A sales deal card showing pipeline stage and value",
         props: {
           title: s.string("Deal title"),
+          // @ts-expect-error verbatim doc code: on @hashbrownai/react 0.5.0-beta.4, s.enumeration's tuple order does not match DealCard's inferred union order (TS2322). Recorded in README.
           stage: s.enumeration("Pipeline stage", [
             "prospect",
             "qualified",

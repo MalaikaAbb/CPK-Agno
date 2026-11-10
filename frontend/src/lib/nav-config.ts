@@ -240,6 +240,17 @@ export const NAV: NavGroup[] = [
           "Frontend is the Code tab's, verbatim; backend is the page's chart_agent.py, verbatim. The page never defines SYSTEM_PROMPT (borrowed from ms-agent-framework-py), declares no backend stub for the pie chart it registers, and uses model id gpt-6-luna. Typecheck only — not run against the backend or in a browser.",
       },
       {
+        path: "/generative-ui/state-rendering",
+        hasDemo: true,
+        title: "Controlled · State Rendering",
+        docPath: "/agno/generative-ui/state-rendering",
+        summary:
+          "A document panel rendered from agent.state.document via useAgent, meant to fill token by token as the agent writes it.",
+        status: "partial",
+        statusNote:
+          "Frontend is the Code tab's, verbatim. The page publishes no Agno backend (setup and middleware skipped for agno), so the write_document agent is borrowed from the ms-agent-python showcase. Agno's stock router emits state only after the tool runs, so the document arrives whole, not per token. Typecheck only — not run against the backend or in a browser.",
+      },
+      {
         path: "/generative-ui/your-components/display-only",
         hasDemo: true,
         title: "Your Components · Display-only",

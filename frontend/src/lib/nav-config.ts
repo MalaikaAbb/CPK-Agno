@@ -326,6 +326,17 @@ export const NAV: NavGroup[] = [
           "The page has no demo and skips its Agno backend setup; its snippets are cut from the shared-state-read-write demo, which is mounted whole from the Agno showcase with its agent. Notes reach the UI only in the run's closing STATE_SNAPSHOT (no jsonpatch, no custom router). Typecheck only — not run against the backend or in a browser.",
       },
       {
+        path: "/shared-state/streaming",
+        hasDemo: true,
+        title: "State Streaming",
+        docPath: "/agno/shared-state/streaming",
+        summary:
+          "A tool argument mapped into a state key so a document panel can follow the agent's writing through useAgent.",
+        status: "partial",
+        statusNote:
+          "Frontend is the Code tab's, verbatim. The page's whole backend half is skipped for Agno, so the write_document agent is borrowed from the ms-agent-python showcase. Agno's stock router can't stream a tool argument into state, so the document arrives whole after the tool. Typecheck only — not run against the backend or in a browser.",
+      },
+      {
         path: "/shared-state/rendering-in-app",
         hasDemo: true,
         title: "Render state in your app",

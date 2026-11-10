@@ -34,6 +34,9 @@ const DOC_DEMO_AGENTS = {
   subagents: new HttpAgent({ url: `${AGENT_URL}/subagents/agui` }),
   // /shared-state: the docs route this id to their state-aware /shared-state-rw.
   "shared-state-read-write": new HttpAgent({ url: `${AGENT_URL}/shared-state-rw/agui` }),
+  // /shared-state/streaming: no Agno agent is published for this demo;
+  // the one behind this prefix is borrowed (backend/agents/state_streaming_agent.py).
+  "shared-state-streaming": new HttpAgent({ url: `${AGENT_URL}/shared-state-streaming/agui` }),
 };
 
 // Two ids, one backend. `default` is what every prebuilt component picks up with

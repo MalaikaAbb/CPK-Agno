@@ -24,6 +24,8 @@ export const NESTED_PROVIDER_ROUTES: readonly string[] = [
   "/shared-state/agent-readonly/demo-chat",
   "/human-in-the-loop/overview/demo-chat",
   "/multi-agent/subagents/demo-chat",
+  "/human-in-the-loop/use-interrupt/demo-chat",
+  "/human-in-the-loop/headless/demo-chat",
 ];
 
 /** `enableInspector` for the app-wide provider: off where a nested one owns it. */

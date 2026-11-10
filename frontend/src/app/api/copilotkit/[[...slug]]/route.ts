@@ -31,6 +31,8 @@ const DOC_DEMO_AGENTS = {
   "readonly-state-agent-context": new HttpAgent({ url: `${AGENT_URL}/demo-main/agui` }),
   "hitl-in-chat": new HttpAgent({ url: `${AGENT_URL}/demo-main/agui` }),
   "gen-ui-interrupt": new HttpAgent({ url: `${AGENT_URL}/interrupt-adapted/agui` }),
+  // /human-in-the-loop/headless: the docs alias this id to the same agent.
+  "interrupt-headless": new HttpAgent({ url: `${AGENT_URL}/interrupt-adapted/agui` }),
   subagents: new HttpAgent({ url: `${AGENT_URL}/subagents/agui` }),
 };
 

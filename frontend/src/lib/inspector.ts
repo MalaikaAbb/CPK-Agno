@@ -24,6 +24,7 @@ export const NESTED_PROVIDER_ROUTES: readonly string[] = [
   "/shared-state/agent-readonly/demo-chat",
   "/human-in-the-loop/overview/demo-chat",
   "/multi-agent/subagents/demo-chat",
+  "/shared-state/demo-chat",
   "/generative-ui/components/demo-chat",
   "/generative-ui/components/surfaces/demo-chat",
   "/generative-ui/components/catalogs/demo-chat",

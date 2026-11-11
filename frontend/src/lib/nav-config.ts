@@ -433,6 +433,27 @@ export const NAV: NavGroup[] = [
     title: "Shared State",
     routes: [
       {
+        path: "/shared-state",
+        hasDemo: true,
+        title: "Shared State",
+        docPath: "/agno/shared-state",
+        summary:
+          "Two-way agent state: useAgent reads the agent's notes, agent.setState writes the user's preferences back for the next turn.",
+        status: "broken",
+        statusNote:
+          "The page has no demo and prints no Agno backend (setup skipped for agno), and none is filled in, so shared-state-read-write is unregistered. Its useAgent/setState fragments and notes-card.tsx are verbatim inside minimal glue. card/button are labelled stand-ins. The preferences UI that would call handlePreferencesChange isn't printed.",
+      },
+      {
+        path: "/shared-state/streaming",
+        title: "State Streaming",
+        docPath: "/agno/shared-state/streaming",
+        summary:
+          "A tool argument mapped into a state key so a document panel can follow the agent's writing through useAgent.",
+        status: "broken",
+        statusNote:
+          "The rendered Agno page says \"Not supported on Agno\" and prints no Agno code. Reference only: the .md export's useAgent snippet is shown; no demo or agent is filled in.",
+      },
+      {
         path: "/shared-state/rendering-in-app",
         hasDemo: true,
         title: "Render state in your app",

@@ -24,6 +24,7 @@ from agno.os.interfaces.agui import AGUI  # noqa: E402
 from agent import build_agent  # noqa: E402
 from agents.a2ui_dynamic_agent import agent as a2ui_dynamic_agent  # noqa: E402
 from agents.a2ui_fixed_agent import agent as a2ui_fixed_agent  # noqa: E402
+from agents.genui_agent import agent as genui_agent  # noqa: E402
 from agents.interrupt_agent import agent as interrupt_agent  # noqa: E402
 from agents.main import agent as demo_main_agent  # noqa: E402
 from agents.open_gen_ui_agent import agent as open_gen_ui_agent  # noqa: E402
@@ -61,6 +62,8 @@ agent = build_agent()
 _DEMO_INTERFACES = [
     AGUI(agent=a2ui_dynamic_agent, prefix="/declarative-gen-ui"),
     AGUI(agent=a2ui_fixed_agent, prefix="/a2ui-fixed-schema"),
+    # /generative-ui/components/*: no Agno agent is published; repo-authored.
+    AGUI(agent=genui_agent, prefix="/genui"),
     AGUI(agent=open_gen_ui_agent, prefix="/open-gen-ui"),
     AGUI(agent=demo_main_agent, prefix="/demo-main"),
     AGUI(agent=interrupt_agent, prefix="/interrupt-adapted"),
@@ -73,6 +76,7 @@ agent_os = AgentOS(
         agent,
         a2ui_dynamic_agent,
         a2ui_fixed_agent,
+        genui_agent,
         open_gen_ui_agent,
         demo_main_agent,
         interrupt_agent,

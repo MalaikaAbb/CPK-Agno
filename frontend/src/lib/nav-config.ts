@@ -382,25 +382,23 @@ export const NAV: NavGroup[] = [
       },
       {
         path: "/human-in-the-loop/use-interrupt",
-        hasDemo: true,
         title: "HITL · Pausing the Agent for Input",
         docPath: "/agno/human-in-the-loop/useInterrupt",
         summary:
-          "useInterrupt's render slot, shown on Agno through the gen-ui-interrupt demo: an async frontend tool that resolves only when the user picks a time.",
-        status: "partial",
+          "useInterrupt's render slot: pause a run, hand it to a React component, resume with the user's answer.",
+        status: "broken",
         statusNote:
-          "The page says useInterrupt isn't available on Agno, then embeds the gen-ui-interrupt demo, which is mounted here (the HITL overview's copy). Picking a slot ends in RUN_ERROR 'Frontend tool resume requires a database' (the published agent has no db). The two generic useInterrupt snippets are type-checked verbatim, not run. Not re-run in this change.",
+          "The rendered Agno page says \"Not supported on Agno\" and embeds no Agno demo. Only its two generic useInterrupt snippets are kept, verbatim and type-checked. They can't run because the stock Agno router emits no interrupt outcome. No demo is filled in.",
       },
       {
         path: "/human-in-the-loop/headless",
-        hasDemo: true,
         title: "HITL · Headless Interrupts",
         docPath: "/agno/human-in-the-loop/headless",
         summary:
           "Resolving an interrupt from an app pane with agent.subscribe and copilotkit.runAgent, no render slot and no chat picker.",
         status: "broken",
         statusNote:
-          "Code-tab demo verbatim (its fallback-slots helper borrowed from the GitHub showcase). It waits for a LangGraph on_interrupt event that the Agno agent never emits, and registers no schedule_meeting tool for the model to call, so the picker cannot appear. The page also says the feature isn't available on Agno. Typecheck only.",
+          "Reference only. The rendered Agno page says \"Not supported on Agno\" and prints no Agno code (no Code tab, no snippets). No demo or backend is filled in.",
       },
       {
         path: "/webmcp",

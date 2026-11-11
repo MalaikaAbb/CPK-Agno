@@ -27,8 +27,6 @@ from agents.a2ui_fixed_agent import agent as a2ui_fixed_agent  # noqa: E402
 from agents.interrupt_agent import agent as interrupt_agent  # noqa: E402
 from agents.main import agent as demo_main_agent  # noqa: E402
 from agents.open_gen_ui_agent import agent as open_gen_ui_agent  # noqa: E402
-from agents.shared_state_read_write import agent as shared_state_rw_agent  # noqa: E402
-from agents.state_streaming_agent import agent as state_streaming_agent  # noqa: E402
 from agents.subagents import agent as subagents_supervisor  # noqa: E402
 
 PORT = int(os.getenv("AGENT_PORT", "8000"))
@@ -64,13 +62,6 @@ _DEMO_INTERFACES = [
     AGUI(agent=a2ui_dynamic_agent, prefix="/declarative-gen-ui"),
     AGUI(agent=a2ui_fixed_agent, prefix="/a2ui-fixed-schema"),
     AGUI(agent=open_gen_ui_agent, prefix="/open-gen-ui"),
-    # /shared-state: the Code tab's agent, at its published prefix (the docs
-    # serve it from the custom router; the stock one emits the end-of-run
-    # STATE_SNAPSHOT the demo needs).
-    AGUI(agent=shared_state_rw_agent, prefix="/shared-state-rw"),
-    # /shared-state/streaming (and /generative-ui/state-rendering): unpublished
-    # for Agno; borrowed agent.
-    AGUI(agent=state_streaming_agent, prefix="/shared-state-streaming"),
     AGUI(agent=demo_main_agent, prefix="/demo-main"),
     AGUI(agent=interrupt_agent, prefix="/interrupt-adapted"),
     AGUI(agent=subagents_supervisor, prefix="/subagents"),
@@ -83,8 +74,6 @@ agent_os = AgentOS(
         a2ui_dynamic_agent,
         a2ui_fixed_agent,
         open_gen_ui_agent,
-        shared_state_rw_agent,
-        state_streaming_agent,
         demo_main_agent,
         interrupt_agent,
         subagents_supervisor,

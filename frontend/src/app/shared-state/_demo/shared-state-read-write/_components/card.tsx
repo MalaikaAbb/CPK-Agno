@@ -1,87 +1,28 @@
 "use client";
 
+// Not from the doc page: the printed notes-card.tsx imports this from
+// "./_components/..." but the page does not print it. Minimal stand-in.
+
 import React from "react";
 
-export function Card({
-  children,
-  className = "",
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
-  return (
-    <div
-      className={`rounded-2xl border border-[#DBDBE5] bg-white text-[#010507] shadow-sm ${className}`}
-      {...props}
-    >
-      {children}
-    </div>
-  );
+type DivProps = React.HTMLAttributes<HTMLDivElement>;
+
+export function Card({ className = "", ...props }: DivProps) {
+  return <div className={`rounded border ${className}`} {...props} />;
 }
 
-export function CardHeader({
-  children,
-  className = "",
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
-  return (
-    <div
-      className={`flex flex-col space-y-1.5 p-6 pb-4 ${className}`}
-      {...props}
-    >
-      {children}
-    </div>
-  );
+export function CardHeader({ className = "", ...props }: DivProps) {
+  return <div className={`p-4 ${className}`} {...props} />;
 }
 
-export function CardTitle({
-  children,
-  className = "",
-  ...props
-}: React.HTMLAttributes<HTMLHeadingElement>) {
-  return (
-    <h2
-      className={`text-xl font-semibold leading-none tracking-tight text-[#010507] ${className}`}
-      {...props}
-    >
-      {children}
-    </h2>
-  );
+export function CardTitle({ className = "", ...props }: DivProps) {
+  return <div className={`font-semibold ${className}`} {...props} />;
 }
 
-export function CardDescription({
-  children,
-  className = "",
-  ...props
-}: React.HTMLAttributes<HTMLParagraphElement>) {
-  return (
-    <p className={`text-sm text-[#57575B] ${className}`} {...props}>
-      {children}
-    </p>
-  );
+export function CardDescription({ className = "", ...props }: DivProps) {
+  return <div className={`text-sm ${className}`} {...props} />;
 }
 
-export function CardContent({
-  children,
-  className = "",
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
-  return (
-    <div className={`p-6 pt-0 ${className}`} {...props}>
-      {children}
-    </div>
-  );
-}
-
-export function CardFooter({
-  children,
-  className = "",
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
-  return (
-    <div
-      className={`flex items-center border-t border-[#E9E9EF] p-6 pt-4 ${className}`}
-      {...props}
-    >
-      {children}
-    </div>
-  );
+export function CardContent({ className = "", ...props }: DivProps) {
+  return <div className={`p-4 pt-0 ${className}`} {...props} />;
 }

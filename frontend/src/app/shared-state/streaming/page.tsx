@@ -1,60 +1,40 @@
 import { RouteHeader } from "@/components/route-header";
-import { SourceCodeGroup } from "@/components/source-code";
-import { Callout, Panel, TryIt } from "@/components/ui";
+import { Callout, CodeBlock, Panel } from "@/components/ui";
 
-const DEMO = "frontend/src/app/shared-state/streaming/_demo/shared-state-streaming";
+// The only code the page prints (its `.md` export). The rendered Agno page
+// shows a "Not supported on Agno" notice instead.
+const USE_AGENT_SNIPPET = `// src/app/demos/shared-state-streaming/page.tsx
+  // Subscribe to BOTH state changes and run-status changes. The former
+  // drives the per-token document rerender; the latter toggles the
+  // "LIVE" badge when the agent starts / stops.
+  const { agent } = useAgent({
+    agentId: "shared-state-streaming",
+    updates: [UseAgentUpdate.OnStateChanged, UseAgentUpdate.OnRunStatusChanged],
+  });`;
 
 export default function Page() {
   return (
     <>
       <RouteHeader path="/shared-state/streaming" />
 
-      <Panel title="What it demonstrates">
+      <Panel title="What it covers">
         <p className="text-sm leading-relaxed text-slate-700 dark:text-slate-300">
-          State streaming: a backend mapping pushes one streaming tool argument
-          (<code>write_document.document</code>) into one state key (
-          <code>document</code>) while the model is still generating it. The
-          frontend is an ordinary <code>useAgent</code> subscription with{" "}
-          <code>OnStateChanged</code>, plus <code>OnRunStatusChanged</code> for
-          the LIVE badge.
+          State streaming: a backend mapping pushes a streaming tool argument
+          into a state key while the model is still generating it, and the UI
+          follows along through an ordinary <code>useAgent</code> subscription.
         </p>
-        <div className="mt-4">
-          <TryIt
-            prompts={["Write a short poem about autumn leaves."]}
-            expect="The LIVE badge lights while the agent runs; once write_document finishes, the whole document appears in the panel. On Agno it arrives in one piece, not token by token."
-            fail="The panel stays empty and the text appears in the chat instead."
-          />
-        </div>
       </Panel>
 
-      <Callout tone="warn" title="The page's whole backend half is missing for Agno">
-        The backend section is the page&apos;s core, and for Agno both its
-        setup and its middleware snippet are skipped (&ldquo;not bundled for
-        agno&rdquo;). The integration grid excludes Agno too. The agent here,{" "}
-        <code>backend/agents/state_streaming_agent.py</code>, is{" "}
-        <strong>borrowed from the ms-agent-python showcase</strong> (prompt
-        and <code>write_document</code> tool). Agno&apos;s stock AG-UI router
-        can&apos;t stream a tool argument into state, so the document lands
-        whole when the tool finishes. The page&apos;s three requirements (the
-        key exists, the names match, the final value lands in the same key)
-        are met. The per-token part isn&apos;t.
+      <Callout tone="warn" title="Broken (reference only): the page prints no Agno code">
+        The rendered Agno page says &ldquo;Not supported on Agno&rdquo;. Its
+        backend setup and middleware snippet are skipped for Agno, and the
+        demo isn&apos;t embedded. Nothing is filled in from the showcase or a
+        sibling repo, so there is no demo and no agent here. The one frontend
+        snippet the <code>.md</code> export carries is shown below.
       </Callout>
 
-      <Callout tone="info" title="Same demo as Generative UI › State Rendering">
-        The page embeds the same <code>shared-state-streaming</code> demo as
-        the State Rendering page. The frontend here is the Code tab&apos;s,
-        verbatim, and the borrowed agent file, backend prefix and runtime id
-        are identical to that route&apos;s.
-      </Callout>
-
-      <Panel title="Source">
-        <SourceCodeGroup
-          files={[
-            { file: `${DEMO}/page.tsx` },
-            { file: `${DEMO}/document-view.tsx` },
-            { file: "backend/agents/state_streaming_agent.py" },
-          ]}
-        />
+      <Panel title="Snippet from the page's .md export (reference only)">
+        <CodeBlock code={USE_AGENT_SNIPPET} language="tsx" />
       </Panel>
     </>
   );

@@ -1,27 +1,30 @@
 "use client";
 
-import React, { useEffect } from "react";
+// The page prints two fragments of this file (the `useAgent` read and the
+// `handlePreferencesChange` write), verbatim below. Everything around them is
+// harness glue, not from the doc page: the provider, the `Preferences` /
+// `RWAgentState` types the fragments name, the `notes` value they read, and
+// mounting the printed `NotesCard`. The page prints no preferences UI, so
+// nothing calls `handlePreferencesChange`. It prints no Agno agent either, so
+// agent `shared-state-read-write` is not registered and the demo can't run.
+
+import React from "react";
 import {
   CopilotKit,
   useAgent,
   UseAgentUpdate,
 } from "@copilotkit/react-core/v2";
 
-import { Preferences } from "./preferences-card";
-import { DemoLayout } from "./demo-layout";
-import { useSharedStateReadWriteSuggestions } from "./suggestions";
+import { NotesCard } from "./notes-card";
 
-const INITIAL_PREFERENCES: Preferences = {
-  name: "",
-  tone: "casual",
-  language: "English",
-  interests: [],
-};
+// Harness glue: types the printed fragments name but the page never defines.
+interface Preferences {
+  name: string;
+  tone: "formal" | "casual" | "playful";
+  language: string;
+  interests: string[];
+}
 
-// Shape of the bidirectional shared state.
-// - `preferences` is WRITTEN by the UI via agent.setState().
-// - `notes` is WRITTEN by the agent via its `set_notes` tool and READ
-//   by the UI via useAgent().
 interface RWAgentState {
   preferences: Preferences;
   notes: string[];
@@ -36,8 +39,6 @@ export default function SharedStateReadWriteDemo() {
 }
 
 function DemoContent() {
-  // @region[use-agent]
-  // @region[use-agent-read]
   // Subscribe the component to agent state changes. Any time the agent
   // mutates its state (e.g. via its `set_notes` tool) this hook fires,
   // we re-render, and the sidebar panels reflect the new values.
@@ -45,29 +46,10 @@ function DemoContent() {
     agentId: "shared-state-read-write",
     updates: [UseAgentUpdate.OnStateChanged],
   });
-  // @endregion[use-agent-read]
-  // @endregion[use-agent]
 
-  useSharedStateReadWriteSuggestions();
+  // Harness glue: the value the fragments read.
+  const notes = (agent.state as RWAgentState | undefined)?.notes ?? [];
 
-  const agentState = agent.state as RWAgentState | undefined;
-  const preferences = agentState?.preferences ?? INITIAL_PREFERENCES;
-  const notes = agentState?.notes ?? [];
-
-  // Seed initial preferences + empty notes into agent state once, so the
-  // agent has something to read on the very first turn.
-  useEffect(() => {
-    if (!agentState?.preferences) {
-      agent.setState({
-        preferences: INITIAL_PREFERENCES,
-        notes: [],
-      } as RWAgentState);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // @region[set-state]
-  // @region[use-agent-write]
   // WRITE: every edit in the sidebar goes straight into agent state.
   // On the agent's next turn, `PreferencesInjectorMiddleware` reads this
   // back out of state and adds it to the system prompt — so the UI's
@@ -78,20 +60,8 @@ function DemoContent() {
       notes, // preserve what the agent has written
     } as RWAgentState);
   };
-  // @endregion[use-agent-write]
-  // @endregion[set-state]
+  void handlePreferencesChange; // nothing on the page calls it
 
-  // WRITE: let the user clear the agent-authored notes from the UI.
-  const handleClearNotes = () => {
-    agent.setState({ preferences, notes: [] } as RWAgentState);
-  };
-
-  return (
-    <DemoLayout
-      preferences={preferences}
-      notes={notes}
-      onPreferencesChange={handlePreferencesChange}
-      onClearNotes={handleClearNotes}
-    />
-  );
+  // Harness glue: the page prints no clear handler, so Clear does nothing.
+  return <NotesCard notes={notes} onClear={() => {}} />;
 }

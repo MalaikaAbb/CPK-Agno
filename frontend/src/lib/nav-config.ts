@@ -321,20 +321,19 @@ export const NAV: NavGroup[] = [
         docPath: "/agno/shared-state",
         summary:
           "Two-way agent state: useAgent reads the agent's notes, agent.setState writes the user's preferences back for the next turn.",
-        status: "partial",
+        status: "broken",
         statusNote:
-          "The page has no demo and skips its Agno backend setup; its snippets are cut from the shared-state-read-write demo, which is mounted whole from the Agno showcase with its agent. Notes reach the UI only in the run's closing STATE_SNAPSHOT (no jsonpatch, no custom router). Typecheck only — not run against the backend or in a browser.",
+          "The page has no demo and prints no Agno backend (setup skipped for agno), and none is filled in, so shared-state-read-write is unregistered. Its useAgent/setState fragments and notes-card.tsx are verbatim inside minimal glue. card/button are labelled stand-ins. The preferences UI that would call handlePreferencesChange isn't printed.",
       },
       {
         path: "/shared-state/streaming",
-        hasDemo: true,
         title: "State Streaming",
         docPath: "/agno/shared-state/streaming",
         summary:
           "A tool argument mapped into a state key so a document panel can follow the agent's writing through useAgent.",
-        status: "partial",
+        status: "broken",
         statusNote:
-          "Frontend is the Code tab's, verbatim. The page's whole backend half is skipped for Agno, so the write_document agent is borrowed from the ms-agent-python showcase. Agno's stock router can't stream a tool argument into state, so the document arrives whole after the tool. Typecheck only — not run against the backend or in a browser.",
+          "The rendered Agno page says \"Not supported on Agno\" and prints no Agno code. Reference only: the .md export's useAgent snippet is shown; no demo or agent is filled in.",
       },
       {
         path: "/shared-state/rendering-in-app",

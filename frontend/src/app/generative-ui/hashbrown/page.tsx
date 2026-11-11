@@ -30,28 +30,34 @@ export default function Page() {
               "Show me a sales dashboard with total revenue and revenue by segment.",
               "Show our top open deals and pipeline by stage.",
             ]}
-            expect="Components appear one after another while the reply streams: a metric first, then charts or deal cards."
+            expect="Expected to fail today: the runtime route /api/copilotkit-declarative-hashbrown and its agent are not published for Agno. If they are, components appear one by one while the reply streams."
             fail="Raw JSON or nothing in the assistant bubble: the envelope didn't match the kit schema, or the parser never produced a value."
           />
         </div>
       </Panel>
 
-      <Callout tone="info" title="All published code, verbatim">
-        The frontend is the page&apos;s <code>declarative-hashbrown</code>{" "}
-        demo for Agno (<code>page.tsx</code>, <code>chat.tsx</code> and{" "}
-        <code>hashbrown-renderer.tsx</code> match the page byte for byte). The
-        dedicated runtime route <code>/api/copilotkit-declarative-hashbrown</code>{" "}
-        and <code>backend/agents/byoc_hashbrown_agent.py</code> come from the
-        Code tab, and the agent is mounted at <code>/byoc-hashbrown</code>.
-        Hashbrown is pinned to the showcase&apos;s{" "}
-        <code>0.5.0-beta.4</code>, since the page names no version.
+      <Callout tone="info" title="What is doc code here">
+        <code>page.tsx</code>, <code>chat.tsx</code> and{" "}
+        <code>hashbrown-renderer.tsx</code> are the page&apos;s printed files,
+        verbatim, except for two things. The <code>useByocHashbrownSuggestions</code>{" "}
+        import and call in <code>chat.tsx</code> are commented out (
+        <code>// doc:</code>) because <code>suggestions.ts</code> isn&apos;t
+        printed. The renderer also carries one <code>@ts-expect-error</code> for
+        its verbatim type error. <code>metric-card.tsx</code>,{" "}
+        <code>charts/bar-chart.tsx</code>, <code>charts/pie-chart.tsx</code>{" "}
+        and <code>types.ts</code> are <strong>not from the doc page</strong>.
+        The renderer imports them, so they are minimal labelled stand-ins.
+        Hashbrown is pinned to <code>0.5.0-beta.4</code>, the version the page
+        names.
       </Callout>
 
-      <Callout tone="warn" title="Unverified model settings">
-        The published agent runs{" "}
-        <code>OpenAIChat(reasoning_effort=&quot;none&quot;, id=&quot;gpt-6-luna&quot;)</code>.
-        Both are kept as published. Neither was checked against the OpenAI
-        API in this change.
+      <Callout tone="warn" title="Broken: not supported on Agno, no backend published">
+        The rendered Agno page says &ldquo;Not available for Agno yet / Not
+        supported on Agno&rdquo;. It prints no Agno agent and no runtime route.
+        Nothing is filled in from the showcase. The printed{" "}
+        <code>page.tsx</code> points at{" "}
+        <code>/api/copilotkit-declarative-hashbrown</code>, which doesn&apos;t
+        exist here, so the demo chat cannot run.
       </Callout>
 
       <Panel title="Source">
@@ -60,8 +66,6 @@ export default function Page() {
             { file: `${DEMO}/page.tsx` },
             { file: `${DEMO}/chat.tsx` },
             { file: `${DEMO}/hashbrown-renderer.tsx` },
-            { file: "frontend/src/app/api/copilotkit-declarative-hashbrown/route.ts" },
-            { file: "backend/agents/byoc_hashbrown_agent.py" },
           ]}
         />
       </Panel>

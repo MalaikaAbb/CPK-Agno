@@ -235,9 +235,9 @@ export const NAV: NavGroup[] = [
         docPath: "/agno/generative-ui/json-render",
         summary:
           "The agent replies with a { root, elements } JSON spec that a custom assistant-message slot renders through a @json-render/react component registry.",
-        status: "partial",
+        status: "broken",
         statusNote:
-          "Everything is published code, verbatim: Code-tab frontend, dedicated runtime route and byoc_json_render agent; catalog.ts from the page (zod4 import). Typecheck only — not run against the backend or in a browser.",
+          "Rendered Agno page: \"Not supported on Agno\". It prints no agent, runtime route or demo page.tsx, and none is filled in, so byoc_json_render is unregistered. chat/renderer/catalog/registry are verbatim. metric-card, charts and types are minimal labelled stand-ins. suggestions.ts isn't printed, so its call is commented out.",
       },
       {
         path: "/generative-ui/hashbrown",
@@ -246,9 +246,9 @@ export const NAV: NavGroup[] = [
         docPath: "/agno/generative-ui/hashbrown",
         summary:
           "A Hashbrown UI kit shared through a provider; the agent's { ui: [...] } envelope streams through useJsonParser and renders piece by piece.",
-        status: "partial",
+        status: "broken",
         statusNote:
-          "Everything is published code, verbatim: Code-tab frontend (page/chat/renderer match the page), dedicated runtime route and byoc_hashbrown agent. Hashbrown pinned to the showcase's 0.5.0-beta.4 (the page names no version). Typecheck only — not run against the backend or in a browser.",
+          "Rendered Agno page: \"Not supported on Agno\". It prints no agent or runtime route, and none is filled in, so the printed page.tsx's runtime URL doesn't exist. page/chat/renderer are verbatim. metric-card, charts and types are minimal labelled stand-ins. suggestions.ts isn't printed, so its call is commented out. Hashbrown 0.5.0-beta.4 as the page names.",
       },
       {
         path: "/generative-ui/your-components/display-only",

@@ -29,31 +29,33 @@ export default function Page() {
               "Show me a sales dashboard with total revenue and revenue by region.",
               "Break down website traffic by source as a pie chart.",
             ]}
-            expect="Once the JSON finishes streaming, a metric card renders with a bar or pie chart under it instead of raw JSON."
+            expect="Expected to fail today: agent byoc_json_render is not registered (no Agno backend on the page). If one is published, a metric card and chart render instead of raw JSON."
             fail="Raw JSON stays visible in the chat (the spec failed to parse or used a type outside the allowlist), or the chart area is empty."
           />
         </div>
       </Panel>
 
-      <Callout tone="info" title="All published code, verbatim">
-        The frontend is the page&apos;s <code>declarative-json-render</code>{" "}
-        demo for Agno. <code>catalog.ts</code> is taken from the page itself,
-        which imports <code>zod4</code>; the showcase copy imports{" "}
-        <code>zod</code>. The dedicated runtime route{" "}
-        <code>/api/copilotkit-declarative-json-render</code> and{" "}
-        <code>backend/agents/byoc_json_render_agent.py</code> come from the
-        Code tab, and the agent is mounted at <code>/byoc-json-render</code>.
-        Packages: <code>@json-render/core</code> and{" "}
-        <code>@json-render/react</code> at <code>0.18.0</code> (the version
-        the page names), plus <code>zod4</code> as an alias for zod 4 next to
-        this repo&apos;s zod 3.
+      <Callout tone="info" title="What is doc code here">
+        <code>chat.tsx</code>, <code>json-render-renderer.tsx</code>,{" "}
+        <code>catalog.ts</code> and <code>registry.tsx</code> are the
+        page&apos;s printed files, verbatim, except that the{" "}
+        <code>useByocJsonRenderSuggestions</code> import and call in{" "}
+        <code>chat.tsx</code> are commented out (<code>// doc:</code>):{" "}
+        <code>suggestions.ts</code> isn&apos;t printed.{" "}
+        <code>metric-card.tsx</code>, <code>charts/bar-chart.tsx</code>,{" "}
+        <code>charts/pie-chart.tsx</code> and <code>types.ts</code> are{" "}
+        <strong>not from the doc page</strong>. The printed registry and
+        renderer import them, so they are minimal labelled stand-ins.
+        Packages: <code>@json-render/core</code>/<code>react</code>{" "}
+        <code>0.18.0</code> and a <code>zod4</code> alias, as the page names.
       </Callout>
 
-      <Callout tone="warn" title="Unverified model settings">
-        The published agent runs{" "}
-        <code>OpenAIChat(reasoning_effort=&quot;none&quot;, id=&quot;gpt-6-luna&quot;)</code>.
-        Both are kept as published. Neither was checked against the OpenAI
-        API in this change.
+      <Callout tone="warn" title="Broken: not supported on Agno, no backend published">
+        The rendered Agno page says &ldquo;Not available for Agno yet / Not
+        supported on Agno&rdquo;. It prints no Agno agent, no runtime route and
+        no demo <code>page.tsx</code>. Nothing is filled in from the showcase,
+        so agent <code>byoc_json_render</code> is not registered and the demo
+        chat cannot run.
       </Callout>
 
       <Panel title="Source">
@@ -63,8 +65,6 @@ export default function Page() {
             { file: `${DEMO}/json-render-renderer.tsx` },
             { file: `${DEMO}/catalog.ts` },
             { file: `${DEMO}/registry.tsx` },
-            { file: "frontend/src/app/api/copilotkit-declarative-json-render/route.ts" },
-            { file: "backend/agents/byoc_json_render_agent.py" },
           ]}
         />
       </Panel>

@@ -229,6 +229,27 @@ export const NAV: NavGroup[] = [
     title: "Generative UI",
     routes: [
       {
+        path: "/generative-ui/tool-based",
+        hasDemo: true,
+        title: "Controlled · Components as Tools",
+        docPath: "/agno/generative-ui/tool-based",
+        summary:
+          "Chart components registered with useComponent and mirrored by empty external-execution stubs on the Agno agent, so the agent can draw them in the chat.",
+        status: "broken",
+        statusNote:
+          "Page code only. The page never defines SYSTEM_PROMPT, so its chart_agent.py raises NameError on import; the agent is not mounted and gen-ui-tool-based is not registered. Also: no backend stub for the pie chart it registers, model id gpt-6-luna. bar-chart.tsx/pie-chart.tsx are minimal stand-ins (imported, not printed); suggestions.ts is not printed and its call is commented out.",
+      },
+      {
+        path: "/generative-ui/state-rendering",
+        title: "Controlled · State Rendering",
+        docPath: "/agno/generative-ui/state-rendering",
+        summary:
+          "Rendering agent state with useAgent as it streams in. The page marks it not supported on Agno.",
+        status: "broken",
+        statusNote:
+          "The rendered Agno page says \"Not supported on Agno\" and prints no Agno code (no demo files, no backend). Reference-only: the .md export's useAgent snippet is shown; no demo or agent is filled in.",
+      },
+      {
         path: "/generative-ui/your-components/display-only",
         hasDemo: true,
         title: "Your Components · Display-only",

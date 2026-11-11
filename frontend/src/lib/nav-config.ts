@@ -385,6 +385,16 @@ export const NAV: NavGroup[] = [
           "The central claim holds: with a card in the transcript the run payload carries only `user`. But a card added before the runtime connects goes to a provisional agent and is silently dropped (3/3), and step 3's component is never mounted by step 2 — see the route page.",
       },
       {
+        path: "/generative-ui/a2ui",
+        title: "Declarative · A2UI",
+        docPath: "/agno/generative-ui/a2ui",
+        summary:
+          "The A2UI overview: the runtime's a2ui option that adds the A2UI middleware, and the optional theme prop on <CopilotKit>.",
+        status: "reference",
+        statusNote:
+          "Overview page with no demo. Both snippets are kept byte-for-byte and type-checked (myAgent and children are undefined on the page, suppressed). The setup runs in the Fixed and Dynamic Schema routes.",
+      },
+      {
         path: "/generative-ui/a2ui/dynamic-schema",
         hasDemo: true,
         title: "A2UI · Dynamic Schema",

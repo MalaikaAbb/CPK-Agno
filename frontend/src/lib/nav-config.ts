@@ -235,20 +235,19 @@ export const NAV: NavGroup[] = [
         docPath: "/agno/generative-ui/tool-based",
         summary:
           "Chart components registered with useComponent and mirrored by empty external-execution stubs on the Agno agent, so the agent can draw them in the chat.",
-        status: "partial",
+        status: "broken",
         statusNote:
-          "Frontend is the Code tab's, verbatim; backend is the page's chart_agent.py, verbatim. The page never defines SYSTEM_PROMPT (borrowed from ms-agent-framework-py), declares no backend stub for the pie chart it registers, and uses model id gpt-6-luna. Typecheck only — not run against the backend or in a browser.",
+          "Page code only. The page never defines SYSTEM_PROMPT, so its chart_agent.py raises NameError on import; the agent is not mounted and gen-ui-tool-based is not registered. Also: no backend stub for the pie chart it registers, model id gpt-6-luna. bar-chart.tsx/pie-chart.tsx are minimal stand-ins (imported, not printed); suggestions.ts is not printed and its call is commented out.",
       },
       {
         path: "/generative-ui/state-rendering",
-        hasDemo: true,
         title: "Controlled · State Rendering",
         docPath: "/agno/generative-ui/state-rendering",
         summary:
-          "A document panel rendered from agent.state.document via useAgent, meant to fill token by token as the agent writes it.",
-        status: "partial",
+          "Rendering agent state with useAgent as it streams in. The page marks it not supported on Agno.",
+        status: "broken",
         statusNote:
-          "Frontend is the Code tab's, verbatim. The page publishes no Agno backend (setup and middleware skipped for agno), so the write_document agent is borrowed from the ms-agent-python showcase. Agno's stock router emits state only after the tool runs, so the document arrives whole, not per token. Typecheck only — not run against the backend or in a browser.",
+          "The rendered Agno page says \"Not supported on Agno\" and prints no Agno code (no demo files, no backend). Reference-only: the .md export's useAgent snippet is shown; no demo or agent is filled in.",
       },
       {
         path: "/generative-ui/your-components/display-only",

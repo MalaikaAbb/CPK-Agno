@@ -32,12 +32,6 @@ const DOC_DEMO_AGENTS = {
   "hitl-in-chat": new HttpAgent({ url: `${AGENT_URL}/demo-main/agui` }),
   "gen-ui-interrupt": new HttpAgent({ url: `${AGENT_URL}/interrupt-adapted/agui` }),
   subagents: new HttpAgent({ url: `${AGENT_URL}/subagents/agui` }),
-  // /generative-ui/tool-based: the docs alias this id to their main agent;
-  // the page itself publishes a dedicated chart agent, which is what runs here.
-  "gen-ui-tool-based": new HttpAgent({ url: `${AGENT_URL}/gen-ui-tool-based/agui` }),
-  // /generative-ui/state-rendering: no Agno agent is published for this demo;
-  // the one behind this prefix is borrowed (backend/agents/state_streaming_agent.py).
-  "shared-state-streaming": new HttpAgent({ url: `${AGENT_URL}/shared-state-streaming/agui` }),
 };
 
 // Two ids, one backend. `default` is what every prebuilt component picks up with

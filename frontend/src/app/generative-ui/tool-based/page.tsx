@@ -28,38 +28,47 @@ export default function Page() {
               "Show me a bar chart of quarterly sales for Q1, Q2, Q3, Q4.",
               "Show me a pie chart of website traffic by source.",
             ]}
-            expect="A bar chart card renders inline in the chat with the title and bars the agent supplied, and the run finishes with a short reply."
-            fail="Plain text or a markdown table instead of a chart (the tool was not called), or a RUN_ERROR after the chart draws (the resume failed)."
+            expect="Expected to fail today: the agent is not mounted (SYSTEM_PROMPT is missing from the page). If the page is fixed, a bar chart renders inline in the chat."
+            fail="An agent-not-found / connection error from the runtime: the documented gap."
           />
         </div>
       </Panel>
 
-      <Callout tone="info" title="Frontend files are the Code tab's, verbatim">
-        <code>page.tsx</code>, <code>bar-chart.tsx</code>,{" "}
-        <code>pie-chart.tsx</code> and <code>suggestions.ts</code> are copied
-        unchanged from the page&apos;s demo (the <code>gen-ui-tool-based</code>{" "}
-        showcase demo for Agno). The demo registers agent id{" "}
-        <code>gen-ui-tool-based</code>, which the runtime route here points at{" "}
-        <code>backend/agents/chart_agent.py</code>.
+      <Callout tone="info" title="What is doc code here">
+        <code>page.tsx</code> is the page&apos;s Code tab, verbatim, except
+        that its <code>useSuggestions</code> import and call are commented out
+        (<code>// doc:</code>): the page never prints{" "}
+        <code>suggestions.ts</code>. <code>bar-chart.tsx</code> and{" "}
+        <code>pie-chart.tsx</code> are <strong>not from the doc page</strong>:
+        the Code tab imports them without printing them, so they are minimal
+        stand-ins (the showcase&apos;s zod schemas plus a plain Recharts
+        chart). <code>backend/agents/chart_agent.py</code> is the page&apos;s
+        two snippets, verbatim.
       </Callout>
 
-      <Callout tone="warn" title="Gaps in the page's backend code">
+      <Callout tone="warn" title="Broken: the page's backend cannot load">
         <ul className="list-disc space-y-1 pl-5">
           <li>
             <code>instructions=SYSTEM_PROMPT</code> is never defined on the
-            page. The prompt here is <strong>borrowed from the
-            ms-agent-framework-py harness</strong>, not from the Agno doc.
+            page, so <code>chart_agent.py</code> raises <code>NameError</code>{" "}
+            on import. Nothing fills it in, so the agent is not mounted and
+            agent id <code>gen-ui-tool-based</code> is not registered in the
+            runtime route. The demo fails to find its agent.
           </li>
           <li>
             The frontend registers <code>render_pie_chart</code>, but the
             backend snippet only declares <code>render_bar_chart</code>. Left
-            as published, so pie-chart prompts may get a text answer.
+            as published.
           </li>
           <li>
             The model id is <code>gpt-6-luna</code>, as published. Every
             other agent in this repo runs <code>gpt-4o</code>/
-            <code>gpt-5-mini</code>. If OpenAI rejects the id, the run fails
-            with a model error.
+            <code>gpt-5-mini</code>.
+          </li>
+          <li>
+            The page&apos;s own Code-tab <code>route.ts</code> points this id
+            at the showcase&apos;s main agent rather than at the chart agent
+            the prose builds. That route file isn&apos;t used here.
           </li>
           <li>
             The page says Agno&apos;s AG-UI interface does not pass frontend
@@ -68,7 +77,7 @@ export default function Page() {
             <a className="underline" href="/generative-ui/your-components/display-only">
               Display-only
             </a>
-            ). The backend stub is kept anyway, because the page asks for it.
+            ).
           </li>
         </ul>
       </Callout>

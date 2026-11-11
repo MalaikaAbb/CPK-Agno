@@ -24,11 +24,9 @@ from agno.os.interfaces.agui import AGUI  # noqa: E402
 from agent import build_agent  # noqa: E402
 from agents.a2ui_dynamic_agent import agent as a2ui_dynamic_agent  # noqa: E402
 from agents.a2ui_fixed_agent import agent as a2ui_fixed_agent  # noqa: E402
-from agents.chart_agent import agent as chart_agent  # noqa: E402
 from agents.interrupt_agent import agent as interrupt_agent  # noqa: E402
 from agents.main import agent as demo_main_agent  # noqa: E402
 from agents.open_gen_ui_agent import agent as open_gen_ui_agent  # noqa: E402
-from agents.state_streaming_agent import agent as state_streaming_agent  # noqa: E402
 from agents.subagents import agent as subagents_supervisor  # noqa: E402
 
 PORT = int(os.getenv("AGENT_PORT", "8000"))
@@ -63,10 +61,6 @@ agent = build_agent()
 _DEMO_INTERFACES = [
     AGUI(agent=a2ui_dynamic_agent, prefix="/declarative-gen-ui"),
     AGUI(agent=a2ui_fixed_agent, prefix="/a2ui-fixed-schema"),
-    # /generative-ui/tool-based: the page publishes its own chart agent.
-    AGUI(agent=chart_agent, prefix="/gen-ui-tool-based"),
-    # /generative-ui/state-rendering: unpublished for Agno; borrowed agent.
-    AGUI(agent=state_streaming_agent, prefix="/shared-state-streaming"),
     AGUI(agent=open_gen_ui_agent, prefix="/open-gen-ui"),
     AGUI(agent=demo_main_agent, prefix="/demo-main"),
     AGUI(agent=interrupt_agent, prefix="/interrupt-adapted"),
@@ -79,8 +73,6 @@ agent_os = AgentOS(
         agent,
         a2ui_dynamic_agent,
         a2ui_fixed_agent,
-        chart_agent,
-        state_streaming_agent,
         open_gen_ui_agent,
         demo_main_agent,
         interrupt_agent,

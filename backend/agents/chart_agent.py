@@ -1,32 +1,21 @@
-"""Agent behind /generative-ui/tool-based.
+"""Code printed on /generative-ui/tool-based, nothing else.
 
 https://docs.copilotkit.ai/agno/generative-ui/tool-based
 
 Both of the page's `src/agents/chart_agent.py` snippets, verbatim, in the
 order a module needs them (step 2's `db` before step 1's `Agent(...)`, which
-reads it). Mounted at `/gen-ui-tool-based` by `main.py`.
+reads it).
 
-Not published on the page, and filled in here:
+Gaps left as published (route is broken):
 
-- `SYSTEM_PROMPT` — step 1 passes `instructions=SYSTEM_PROMPT` and never
-  defines it. The prompt below is borrowed from the ms-agent-framework-py
-  harness's version of this same page (that framework's page publishes one);
-  it is not Agno doc code.
+- `SYSTEM_PROMPT` — step 1 passes `instructions=SYSTEM_PROMPT` and the page
+  never defines it, so importing this module raises `NameError`. It is not
+  filled in, and for that reason `main.py` does not import or mount this
+  agent (an import error would take the whole backend down).
 - `render_pie_chart` — the page's frontend registers two components
   (`render_bar_chart`, `render_pie_chart`) but its backend declares only the
-  bar chart. Left as published: no pie-chart stub is added.
+  bar chart. No pie-chart stub is added.
 """
-
-# region borrowed-system-prompt
-# Borrowed from ms-agent-framework-py (backend/doc_agents/chart_agent.py),
-# not from the Agno doc page, which never defines SYSTEM_PROMPT.
-SYSTEM_PROMPT = """
-You are a data visualization assistant.
-
-When the user asks for a chart, call `render_bar_chart` with a concise
-title and a `data` array of `{label, value}` items.
-"""
-# endregion
 
 # region doc-step-2
 from agno.db.sqlite import SqliteDb

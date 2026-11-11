@@ -8,7 +8,7 @@ import {
 } from "@copilotkit/react-core/v2";
 import { BarChart, barChartPropsSchema } from "./bar-chart";
 import { PieChart, pieChartPropsSchema } from "./pie-chart";
-import { useSuggestions } from "./suggestions";
+// doc: import { useSuggestions } from "./suggestions";  (suggestions.ts is not printed on the page; removed)
 
 function Chat() {
   // @region[bar-chart-renderer]
@@ -29,7 +29,7 @@ function Chat() {
   });
   // @endregion[pie-chart-renderer]
 
-  useSuggestions();
+  // doc: useSuggestions();
 
   return (
     <div className="flex justify-center items-center h-screen w-full">

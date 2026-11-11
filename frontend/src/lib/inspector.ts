@@ -25,6 +25,16 @@ export const NESTED_PROVIDER_ROUTES: readonly string[] = [
   "/human-in-the-loop/overview/demo-chat",
   "/multi-agent/subagents/demo-chat",
   "/shared-state/demo-chat",
+  "/generative-ui/components/demo-chat",
+  "/generative-ui/components/surfaces/demo-chat",
+  "/generative-ui/components/catalogs/demo-chat",
+  "/generative-ui/components/standard-catalog/demo-chat",
+  "/generative-ui/components/state-and-actions/demo-chat",
+  "/generative-ui/components/theming/demo-chat",
+  "/generative-ui/components/transports/demo-chat",
+  "/generative-ui/components/markdown-mode/demo-chat",
+  "/generative-ui/components/from-a2ui/demo-chat",
+  "/generative-ui/tool-based/demo-chat",
 ];
 
 /** `enableInspector` for the app-wide provider: off where a nested one owns it. */

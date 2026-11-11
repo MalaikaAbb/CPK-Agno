@@ -229,6 +229,124 @@ export const NAV: NavGroup[] = [
     title: "Generative UI",
     routes: [
       {
+        path: "/generative-ui/components",
+        hasDemo: true,
+        title: "Components and surfaces",
+        docPath: "/agno/generative-ui/components",
+        summary:
+          "standardUI on the provider: the runtime adds render_ui and its guide, and the agent answers with streamed A2UI 1.0 components.",
+        status: "partial",
+        statusNote:
+          "The page's runtime is a BuiltInAgent TanStack factory (shown, not run); here the same provider config is served by a repo-authored Agno genui agent (no tools; the stock AG-UI router forwards render_ui and the guide). Needs @copilotkit 1.85 (bumped here). Not yet checked in a browser.",
+      },
+      {
+        path: "/generative-ui/components/surfaces",
+        hasDemo: true,
+        title: "Components · Surfaces",
+        docPath: "/agno/generative-ui/components/surfaces",
+        summary:
+          "GenerativeUISurface page targets the chat can fill, limit, scroll to, and replace, with per-component error boundaries.",
+        status: "partial",
+        statusNote:
+          "Ported from CPK-LangGraph-TS (itself from aws-strands-ts); built, not yet checked in a browser. Needs @copilotkit 1.85 (bumped here). All published snippets run. Product, ProductRow and the product list are repo scaffolding; ./catalog is taken to be the Catalogs page's shopUI; the model invents the products (no products tool).",
+      },
+      {
+        path: "/generative-ui/components/catalogs",
+        hasDemo: true,
+        title: "Components · Catalogs",
+        docPath: "/agno/generative-ui/components/catalogs",
+        summary:
+          "createGenerativeUI catalogs: typed components, zod and Valibot props, extends, parameterOrder and exportA2UICatalog.",
+        status: "partial",
+        statusNote:
+          "Ported from CPK-LangGraph-TS (itself from aws-strands-ts); built, not yet checked in a browser. Needs @copilotkit 1.85 (bumped here). Hero, Panel and cartUI are repo scaffolding. The fs.writeFileSync line is kept as a // doc: comment, and the demo prints the exported catalog. The schema-libraries catalog has no layout container added.",
+      },
+      {
+        path: "/generative-ui/components/standard-catalog",
+        hasDemo: true,
+        title: "Components · Standard catalog",
+        docPath: "/agno/generative-ui/components/standard-catalog",
+        summary:
+          "standardUI's 69 components as is, extended with a ProductCard, with Map/Video/HtmlView omitted, and with Card overridden.",
+        status: "partial",
+        statusNote:
+          "Ported from CPK-LangGraph-TS (itself from aws-strands-ts); built, not yet checked in a browser. Needs @copilotkit 1.85 (bumped here). ProductCard and productSchema are repo scaffolding.",
+      },
+      {
+        path: "/generative-ui/components/state-and-actions",
+        hasDemo: true,
+        title: "Components · State and actions",
+        docPath: "/agno/generative-ui/components/state-and-actions",
+        summary:
+          "App state bound into props, functions run on click, events sent to the agent, and writable props that keep user input.",
+        status: "partial",
+        statusNote:
+          "Ported from CPK-LangGraph-TS (itself from aws-strands-ts); built, not yet checked in a browser. Needs @copilotkit 1.85 (bumped here). Cart, cart.addItem, the state-catalog ProductCard and the catalogs around the fragment snippets are repo scaffolding. The state/functions catalogs are used as published, with no layout wrapper, so ask for one card. 'Send a click to the agent' isn't exercised because it names no component. Renderer functions cannot be called by the agent in this version, so allowedCallers is shown as exported only.",
+      },
+      {
+        path: "/generative-ui/components/theming",
+        hasDemo: true,
+        title: "Components · Theming",
+        docPath: "/agno/generative-ui/components/theming",
+        summary:
+          "The theme option's CSS variables, a typed GenerativeUITheme file, dark-mode overrides, map styles, and .a2ui-surface CSS.",
+        status: "partial",
+        statusNote:
+          "Ported from CPK-LangGraph-TS (itself from aws-strands-ts); built, not yet checked in a browser. Needs @copilotkit 1.85 (bumped here). The dark-mode script renders in the demo body, not <head>. The page's mapStyle URLs are placeholders, so the Map variant draws no basemap.",
+      },
+      {
+        path: "/generative-ui/components/transports",
+        hasDemo: true,
+        title: "Components · Transports",
+        docPath: "/agno/generative-ui/components/transports",
+        summary:
+          "The render_ui tool transport vs the markdown transport, the runtime's generativeUI flag, and agentIds scoping.",
+        status: "partial",
+        statusNote:
+          "Ported from CPK-LangGraph-TS (itself from aws-strands-ts); built, not yet checked in a browser. Needs @copilotkit 1.85 (bumped here). The runtime sample's agent is undefined; this repo's Agno genui agent stands in. The shop agent named in agentIds is never printed, so it isn't registered, and only the outside-the-list case is testable.",
+      },
+      {
+        path: "/generative-ui/components/markdown-mode",
+        hasDemo: true,
+        title: "Components · Markdown mode",
+        docPath: "/agno/generative-ui/components/markdown-mode",
+        summary:
+          "The agent writes A2UI operations in a2ui code blocks inside its reply; sendContext: false moves the catalog into forwardedProps.",
+        status: "partial",
+        statusNote:
+          "Ported from CPK-LangGraph-TS (itself from aws-strands-ts); built, not yet checked in a browser. Needs @copilotkit 1.85 (bumped here). The sendContext: false variant renders no UI by design: the only backend shown for it is Python reading forwarded_props, which the stock Agno AG-UI router does not pass to the agent.",
+      },
+      {
+        path: "/generative-ui/components/from-a2ui",
+        hasDemo: true,
+        title: "Components · Adopt from A2UI",
+        docPath: "/agno/generative-ui/components/from-a2ui",
+        summary:
+          "The v0.9 a2ui renderer → A2UI 1.0 migration: the After catalog running on the new engine, with the Before code shown.",
+        status: "partial",
+        statusNote:
+          "Ported from CPK-LangGraph-TS (itself from aws-strands-ts); built, not yet checked in a browser. Needs @copilotkit 1.85 (bumped here). Airport and Arrow are repo scaffolding. The support matrix rules out @ag-ui/a2ui-toolkit 0.0.5 agent tools, (aws-strands-ts's fixed-schema agent).",
+        path: "/generative-ui/tool-based",
+        hasDemo: true,
+        title: "Controlled · Components as Tools",
+        docPath: "/agno/generative-ui/tool-based",
+        summary:
+          "Chart components registered with useComponent and mirrored by empty external-execution stubs on the Agno agent, so the agent can draw them in the chat.",
+        status: "broken",
+        statusNote:
+          "Page code only. The page never defines SYSTEM_PROMPT, so its chart_agent.py raises NameError on import; the agent is not mounted and gen-ui-tool-based is not registered. Also: no backend stub for the pie chart it registers, model id gpt-6-luna. bar-chart.tsx/pie-chart.tsx are minimal stand-ins (imported, not printed); suggestions.ts is not printed and its call is commented out.",
+      },
+      {
+        path: "/generative-ui/state-rendering",
+        title: "Controlled · State Rendering",
+        docPath: "/agno/generative-ui/state-rendering",
+        summary:
+          "Rendering agent state with useAgent as it streams in. The page marks it not supported on Agno.",
+        status: "broken",
+        statusNote:
+          "The rendered Agno page says \"Not supported on Agno\" and prints no Agno code (no demo files, no backend). Reference-only: the .md export's useAgent snippet is shown; no demo or agent is filled in.",
+      },
+      {
         path: "/generative-ui/your-components/display-only",
         hasDemo: true,
         title: "Your Components · Display-only",

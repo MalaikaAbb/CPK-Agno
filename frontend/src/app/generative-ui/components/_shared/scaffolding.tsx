@@ -75,26 +75,6 @@ export function useCart(): Cart {
   return { items, addItem };
 }
 
-/** Repo-authored scaffolding: shows the cart so the effect of a click is visible. */
-export function CartView({ cart }: { cart: Cart }) {
-  return (
-    <div className="rounded-lg border border-slate-200 p-3 text-xs dark:border-slate-700">
-      <p className="font-semibold">Cart (app state)</p>
-      {cart.items.length === 0 ? (
-        <p className="text-slate-500">Empty</p>
-      ) : (
-        <ul>
-          {cart.items.map((i) => (
-            <li key={i.productId} className="font-mono">
-              {i.productId} × {i.quantity}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-}
-
 /** Repo-authored scaffolding: `Hero` is used by Catalogs' "Combine catalogs" but not defined. */
 export function Hero({ title }: { title: string }) {
   return <h2 className="text-2xl font-bold">{title}</h2>;

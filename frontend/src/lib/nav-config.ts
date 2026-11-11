@@ -259,7 +259,7 @@ export const NAV: NavGroup[] = [
           "createGenerativeUI catalogs: typed components, zod and Valibot props, extends, parameterOrder and exportA2UICatalog.",
         status: "partial",
         statusNote:
-          "Ported from CPK-LangGraph-TS (itself from aws-strands-ts); built, not yet checked in a browser. Needs @copilotkit 1.85 (bumped here). Every snippet runs; Hero, Panel and cartUI are repo scaffolding. fs.writeFileSync is replaced by printing the exported catalog.",
+          "Ported from CPK-LangGraph-TS (itself from aws-strands-ts); built, not yet checked in a browser. Needs @copilotkit 1.85 (bumped here). Hero, Panel and cartUI are repo scaffolding. The fs.writeFileSync line is kept as a // doc: comment, and the demo prints the exported catalog. The schema-libraries catalog has no layout container added.",
       },
       {
         path: "/generative-ui/components/standard-catalog",
@@ -281,7 +281,7 @@ export const NAV: NavGroup[] = [
           "App state bound into props, functions run on click, events sent to the agent, and writable props that keep user input.",
         status: "partial",
         statusNote:
-          "Ported from CPK-LangGraph-TS (itself from aws-strands-ts); built, not yet checked in a browser. Needs @copilotkit 1.85 (bumped here). Cart, cart.addItem, the state-catalog ProductCard and the catalogs around the fragment snippets are repo scaffolding. Renderer functions cannot be called by the agent in this version, so allowedCallers is shown as exported only.",
+          "Ported from CPK-LangGraph-TS (itself from aws-strands-ts); built, not yet checked in a browser. Needs @copilotkit 1.85 (bumped here). Cart, cart.addItem, the state-catalog ProductCard and the catalogs around the fragment snippets are repo scaffolding. The state/functions catalogs are used as published, with no layout wrapper, so ask for one card. 'Send a click to the agent' isn't exercised because it names no component. Renderer functions cannot be called by the agent in this version, so allowedCallers is shown as exported only.",
       },
       {
         path: "/generative-ui/components/theming",
@@ -303,7 +303,7 @@ export const NAV: NavGroup[] = [
           "The render_ui tool transport vs the markdown transport, the runtime's generativeUI flag, and agentIds scoping.",
         status: "partial",
         statusNote:
-          "Ported from CPK-LangGraph-TS (itself from aws-strands-ts); built, not yet checked in a browser. Needs @copilotkit 1.85 (bumped here). The runtime sample's agent is undefined; this repo's Agno genui agent stands in, plus an identical shop agent so agentIds has one agent inside and one outside.",
+          "Ported from CPK-LangGraph-TS (itself from aws-strands-ts); built, not yet checked in a browser. Needs @copilotkit 1.85 (bumped here). The runtime sample's agent is undefined; this repo's Agno genui agent stands in. The shop agent named in agentIds is never printed, so it isn't registered, and only the outside-the-list case is testable.",
       },
       {
         path: "/generative-ui/components/markdown-mode",

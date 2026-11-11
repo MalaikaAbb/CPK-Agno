@@ -25,13 +25,13 @@ export default function Page() {
         <div className="mt-4 space-y-3">
           <TryIt
             prompts={["Compare the Starter, Team, and Enterprise plans in a table"]}
-            expect="Tool: a table component in its own message. Markdown: prose with the table embedded in the same reply. As shop: a table component. As default: a plain-text or markdown answer — that agent got no catalog and no guide."
+            expect="Tool: a table component in its own message. Markdown: prose with the table embedded in the same reply. agentIds [shop]: a plain-text or markdown answer, because default is not in the list (and no shop agent exists to compare against)."
             fail="The 'as default' variant renders a component — agentIds was ignored."
           />
         </div>
       </Panel>
 
-      <Panel title="The runtime" description="The page's CopilotRuntime sample, with the shop agent added as harness glue.">
+      <Panel title="The runtime" description="The page's CopilotRuntime sample; its undefined agent is this repo's genui agent.">
         <SourceCode file="frontend/src/app/api/copilotkit-genui-transports/[[...slug]]/route.ts" />
       </Panel>
 
@@ -44,13 +44,13 @@ export default function Page() {
           <li>
             · The runtime sample references an <code>agent</code> it never
             builds; this repo&apos;s Agno <code>genui</code> agent is used
-            through <code>HttpAgent</code> (<code>/genui</code>, and{" "}
-            <code>/genui-shop</code> for <code>shop</code>).
+            through <code>HttpAgent</code> (<code>/genui</code>).
           </li>
           <li>
-            · The <code>shop</code> agent id comes from the &ldquo;Only some
-            agents&rdquo; sample&apos;s <code>agentIds</code>; it is added to the
-            runtime so there is an agent inside the list and one outside it.
+            · The &ldquo;Only some agents&rdquo; sample lists a{" "}
+            <code>shop</code> agent in <code>agentIds</code> that no page
+            builds. None is registered, so only the &ldquo;outside the
+            list&rdquo; half can be tested.
           </li>
           <li>
             · The runtime sample sets no <code>runner</code>; it gets the

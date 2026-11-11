@@ -25,7 +25,7 @@ export default function Page() {
         <div className="mt-4 space-y-3">
           <TryIt
             prompts={["Show a card with a primary button, a slider, and a bar chart of three months"]}
-            expect="On every variant except Map style, the button and slider use the amber #d97706 accent; Provider theme also uses Inter and 10px radii. Toggle dark: on Colors per mode the card panel turns #1f2937."
+            expect="On every variant except Map style, the button and slider use the amber #d97706 accent; Provider theme also uses Inter and 10px radii. With the OS in dark mode (reload the demo), Colors per mode turns the card panel #1f2937."
             fail="Default blue accent on Provider theme — the theme never reached the surface."
           />
           <TryIt

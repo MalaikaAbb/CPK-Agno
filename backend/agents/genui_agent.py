@@ -15,7 +15,7 @@ model. Agno's stock AG-UI router already does both:
 So this agent has no tools of its own. Repo-authored: the module, the model
 choice and the `db` (frontend-tool resume through the stock router needs one;
 see AGENTS.md). The one instruction is the page's own system prompt from its
-TanStack sample. Mounted at `/genui` and `/genui-shop` by `main.py`.
+TanStack sample. Mounted at `/genui` by `main.py`.
 """
 
 from __future__ import annotations
@@ -35,14 +35,4 @@ agent = Agent(
     ),
 )
 
-# A second, identical agent for the Transports page's `agentIds: ["shop"]`
-# sample, so its demo has one agent inside that list and one outside it.
-shop_agent = Agent(
-    model=OpenAIChat(id="gpt-4o", timeout=120),
-    db=SqliteDb(db_file="tmp/agno.db"),
-    instructions=(
-        "You are a helpful assistant. When a visual answer helps, render it "
-        "with generative UI."
-    ),
-)
 # endregion

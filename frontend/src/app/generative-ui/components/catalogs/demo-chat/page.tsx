@@ -39,9 +39,9 @@ export default function DemoPage() {
           {
             id: "schemas",
             label: "zod vs Valibot props",
-            note: "Two components whose props come from different schema libraries, plus standardUI (harness) so both fit in one surface.",
+            note: "Two components whose props come from different schema libraries. No layout container, so ask for one at a time.",
             generativeUI: { ui: schemaLibrariesUI },
-            welcome: "Try: show one ZodProductCard and one ValibotProductCard for a $40 mug.",
+            welcome: "Try: show a ValibotProductCard for a $40 mug.",
           },
           {
             id: "export",

@@ -94,11 +94,12 @@ export default function Page() {
           <li>
             · <strong>Pick a schema library</strong> prints two{" "}
             <code>props:</code> lines, not a catalog. The catalog around them is
-            scaffolding.
+            scaffolding. No layout container is added, so ask for one card at a
+            time.
           </li>
           <li>
             · <strong>Export</strong> ends in <code>fs.writeFileSync</code>, which
-            needs Node; the demo prints the same object in the browser.
+            needs Node. That line is kept as a <code>// doc:</code> comment and the demo prints the exported object instead.
           </li>
           <li>
             · <strong>ProductCard&apos;s description</strong> says to copy values

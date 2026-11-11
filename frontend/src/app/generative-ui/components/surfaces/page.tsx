@@ -71,8 +71,9 @@ export default function Page() {
           </li>
           <li>
             · The one-line targets (<code>sidebar-notes</code>, per-product
-            recommendations) are shown without a page around them; the layout and
-            the product picker are scaffolding.
+            recommendations) are shown without a page around them; the layout is
+            scaffolding, and the first scaffolding product stands in for the
+            page&apos;s undefined <code>product</code>.
           </li>
           <li>
             · No page gives the agent products, and this repo doesn&apos;t add a

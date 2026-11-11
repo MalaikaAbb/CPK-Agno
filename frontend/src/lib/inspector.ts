@@ -33,6 +33,7 @@ export const NESTED_PROVIDER_ROUTES: readonly string[] = [
   "/generative-ui/components/transports/demo-chat",
   "/generative-ui/components/markdown-mode/demo-chat",
   "/generative-ui/components/from-a2ui/demo-chat",
+  "/generative-ui/tool-based/demo-chat",
 ];
 
 /** `enableInspector` for the app-wide provider: off where a nested one owns it. */

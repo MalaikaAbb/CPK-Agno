@@ -8,6 +8,26 @@ import { Callout, CodeBlock, Panel, TryIt } from "@/components/ui";
 
 const BASE = "frontend/src/app/generative-ui/components/from-a2ui/demo-chat";
 
+const V1_PROVIDER = `import { basicCatalogV1 } from "@copilotkit/a2ui-renderer";
+
+<CopilotKit runtimeUrl="/api/copilotkit" a2ui={{ catalog: basicCatalogV1 }}>
+  {/* Your app */}
+</CopilotKit>`;
+const V1_CUSTOM_CATALOG = `import { z } from "zod";
+import {
+  createCatalog,
+  DynamicStringSchemaV1,
+} from "@copilotkit/a2ui-renderer";
+
+const myCatalog = createCatalog(
+  { Greeting: { props: z.object({ name: DynamicStringSchemaV1 }) } },
+  { Greeting: ({ props }) => <p>Hello {props.name}</p> },
+  {
+    catalogId: "acme/greetings@1",
+    protocolVersion: "1.0",
+    includeBasicCatalog: true,
+  },
+);`;
 const BEFORE_PROVIDER = `<CopilotKit runtimeUrl="/api/copilotkit" a2ui={{ catalog: myCatalog }}>`;
 const AFTER_PROVIDER = `<CopilotKitProvider runtimeUrl="/api/copilotkit" generativeUI={{ ui: appUI }}>`;
 const RUNTIME_BEFORE = `const runtime = new CopilotRuntime({
@@ -64,6 +84,8 @@ export default function Page() {
 
       <Panel title="Published but not run" description="The before/after pairs. The Before side is the A2UI fixed/dynamic-schema routes' territory.">
         <div className="space-y-4">
+          <CodeBlock code={V1_PROVIDER} filename="Use 1.0 with the React a2ui renderer — basic catalog" language="tsx" />
+          <CodeBlock code={V1_CUSTOM_CATALOG} filename="Use 1.0 with the React a2ui renderer — custom catalog" language="tsx" />
           <CodeBlock code={BEFORE_PROVIDER} filename="Before" language="tsx" />
           <CodeBlock code={AFTER_PROVIDER} filename="After" language="tsx" />
           <CodeBlock code={RUNTIME_BEFORE} filename="Runtime, before" language="ts" />
@@ -92,6 +114,15 @@ export default function Page() {
             fixed-schema agent (from the published <code>agent.ts</code>) uses,
             so its <code>display_flight</code> surfaces cannot move to this
             engine as published.
+          </li>
+          <li>
+            · The &ldquo;Use 1.0 with the React a2ui renderer&rdquo; snippets
+            import <code>basicCatalogV1</code> and{" "}
+            <code>DynamicStringSchemaV1</code> from{" "}
+            <code>@copilotkit/a2ui-renderer</code>, and pass{" "}
+            <code>protocolVersion: &quot;1.0&quot;</code> to{" "}
+            <code>createCatalog</code>. The installed 1.85.0 exports neither
+            name, so they are shown as text and not run (FINDINGS #41).
           </li>
           <li>
             · The Before catalog is shown only: running it belongs to the A2UI

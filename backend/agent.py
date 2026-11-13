@@ -56,7 +56,6 @@ def _model() -> OpenAIChat:
     reach a client that no longer speaks that type.
     """
     return OpenAIChat(
-        reasoning_effort="none",
         id=DEFAULT_MODEL,
         reasoning_effort="none",
         # A key pasted into an env file can arrive with surrounding whitespace,

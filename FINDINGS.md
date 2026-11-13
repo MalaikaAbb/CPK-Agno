@@ -48,6 +48,7 @@ Stack: `@copilotkit/react-core`/`runtime` 1.73.3, `@ag-ui/agno` 0.0.6, `@ag-ui/c
 - #33 Skill delivery: `apiUrl` without `wsUrl`, although the Intelligence quickstart says "set both".
 - #35 Plans: says Developer includes User Memory, but the API returns `403 MEMORY_NOT_ENTITLED`.
 - #38 Skill delivery: `"your-project-key"` vs `cpk-...`.
+- #41 [Adopt from A2UI](https://docs.copilotkit.ai/agno/generative-ui/components/from-a2ui): the "Use 1.0 with the React a2ui renderer" section imports `basicCatalogV1` and `DynamicStringSchemaV1` and passes `protocolVersion: "1.0"` to `createCatalog`, but `@copilotkit/a2ui-renderer` 1.85.0 (this repo's pin) exports neither name. Shown as text on `/generative-ui/components/from-a2ui`, not run.
 
 ## Build-only (`tsc` / `next build`; `npm run dev` runs fine)
 - **#1 [Tool Rendering](https://docs.copilotkit.ai/agno/generative-ui/tool-rendering):** `useRenderTool({ name, render: ({status, args}) => … args.location })` fails with `TS2769: Property 'parameters' is missing` and `TS2339: 'args' does not exist on RenderToolProps`. In dev the card probably renders "…for undefined." The harness adds `parameters`.

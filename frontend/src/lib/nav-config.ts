@@ -325,7 +325,7 @@ export const NAV: NavGroup[] = [
           "The v0.9 a2ui renderer → A2UI 1.0 migration: the After catalog running on the new engine, with the Before code shown.",
         status: "partial",
         statusNote:
-          "Ported from CPK-LangGraph-TS (itself from aws-strands-ts); built, not yet checked in a browser. Needs @copilotkit 1.85 (bumped here). Airport and Arrow are repo scaffolding. The support matrix rules out @ag-ui/a2ui-toolkit 0.0.5 agent tools, (aws-strands-ts's fixed-schema agent). The page's new "Use 1.0 with the React a2ui renderer" snippets (basicCatalogV1, DynamicStringSchemaV1, protocolVersion) are shown as text only: @copilotkit/a2ui-renderer 1.85.0 exports neither name.",
+          "Ported from CPK-LangGraph-TS (itself from aws-strands-ts); built, not yet checked in a browser. Needs @copilotkit 1.85 (bumped here). Airport and Arrow are repo scaffolding. The support matrix rules out @ag-ui/a2ui-toolkit 0.0.5 agent tools, (aws-strands-ts's fixed-schema agent). The page's new “Use 1.0 with the React a2ui renderer” snippets (basicCatalogV1, DynamicStringSchemaV1, protocolVersion) are shown as text only: @copilotkit/a2ui-renderer 1.85.0 exports neither name.",
       },
       {
         path: "/generative-ui/tool-based",

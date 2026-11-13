@@ -8,6 +8,137 @@ Holds the 3 most recent dated entries. When a change lands on a fourth
 date, the oldest entry is dropped. Entries are counted, not aged, so a gap of
 weeks between changes does not expire anything.
 
+## 2026-11-13
+
+### 11:08 UTC — 16 pages, highest severity high
+
+**High — A2UI · Dynamic Schema**
+
+`/agno/generative-ui/a2ui/dynamic-schema` · route `/generative-ui/a2ui/dynamic-schema` · under “Implement the React renderers” · in a `typescript` block
+
+4 code lines changed.
+
+````diff
+- ? "text-emerald-600"
++ ? "text-emerald-600 dark:text-emerald-400"
+- ? "text-rose-600"
++ ? "text-rose-600 dark:text-rose-400"
+````
+
+**High — A2UI · Fixed Schema**
+
+`/agno/generative-ui/a2ui/fixed-schema` · route `/generative-ui/a2ui/fixed-schema` · under “Implement the React renderers” · in a `typescript` block
+
+16 code lines changed.
+
+````diff
+- <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-neutral-500">
++ <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-neutral-500 dark:text-muted-foreground">
+- <h3 className="text-base font-semibold leading-none tracking-tight text-neutral-900">
++ <h3 className="text-base font-semibold leading-none tracking-tight text-neutral-900 dark:text-foreground">
+- <span className="font-mono text-2xl font-semibold tracking-wider text-neutral-900">
++ <span className="font-mono text-2xl font-semibold tracking-wider text-neutral-900 dark:text-foreground">
+- <Separator className="flex-1 bg-neutral-200" />
++ <Separator className="flex-1 bg-neutral-200 dark:bg-border" />
+````
+
+**High — Sub-agents**
+
+`/agno/multi-agent/subagents` · route `/multi-agent/subagents` · under “Rendering a live delegation log” · in a `typescript` block
+
+30 code lines changed.
+
+````diff
+- className="w-full h-full flex flex-col bg-white rounded-2xl shadow-sm border border-[#DBDBE5] overflow-hidden"
++ className="w-full h-full flex flex-col bg-white rounded-2xl shadow-sm border border-[#DBDBE5] overflow-hidden dark:bg-card dark:border-border"
+- <div className="flex items-center justify-between px-6 py-3 border-b border-[#E9E9EF] bg-[#FAFAFC]">
++ <div className="flex items-center justify-between px-6 py-3 border-b border-[#E9E9EF] bg-[#FAFAFC] dark:border-border dark:bg-muted">
+- <span className="text-lg font-semibold text-[#010507]">
++ <span className="text-lg font-semibold text-[#010507] dark:text-foreground">
+- className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full border border-[#BEC2FF] bg-[#BEC2FF1A] text-[#010507] text-[10px] font-semibold uppercase tracking-[0.12em]"
++ className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full border border-[#BEC2FF] bg-[#BEC2FF1A] text-[#010507] text-[10px] font-semibold uppercase tracking-[0.12em] dark:text-foreground"
+````
+
+**Info — Declarative · A2UI**
+
+`/agno/generative-ui/a2ui` · route `/generative-ui/a2ui`
+
+Now tracked for the first time.
+
+**Info — Components and surfaces**
+
+`/agno/generative-ui/components` · route `/generative-ui/components`
+
+Now tracked for the first time.
+
+**Info — Components · Catalogs**
+
+`/agno/generative-ui/components/catalogs` · route `/generative-ui/components/catalogs`
+
+Now tracked for the first time.
+
+**Info — Components · Markdown mode**
+
+`/agno/generative-ui/components/markdown-mode` · route `/generative-ui/components/markdown-mode`
+
+Now tracked for the first time.
+
+**Info — Components · Standard catalog**
+
+`/agno/generative-ui/components/standard-catalog` · route `/generative-ui/components/standard-catalog`
+
+Now tracked for the first time.
+
+**Info — Components · State and actions**
+
+`/agno/generative-ui/components/state-and-actions` · route `/generative-ui/components/state-and-actions`
+
+Now tracked for the first time.
+
+**Info — Components · Surfaces**
+
+`/agno/generative-ui/components/surfaces` · route `/generative-ui/components/surfaces`
+
+Now tracked for the first time.
+
+**Info — Components · Theming**
+
+`/agno/generative-ui/components/theming` · route `/generative-ui/components/theming`
+
+Now tracked for the first time.
+
+**Info — Components · Transports**
+
+`/agno/generative-ui/components/transports` · route `/generative-ui/components/transports`
+
+Now tracked for the first time.
+
+**Info — Controlled · State Rendering**
+
+`/agno/generative-ui/state-rendering` · route `/generative-ui/state-rendering`
+
+Now tracked for the first time.
+
+**Info — Controlled · Components as Tools**
+
+`/agno/generative-ui/tool-based` · route `/generative-ui/tool-based`
+
+Now tracked for the first time.
+
+**Info — Shared State**
+
+`/agno/shared-state` · route `/shared-state`
+
+Now tracked for the first time.
+
+**Info — State Streaming**
+
+`/agno/shared-state/streaming` · route `/shared-state/streaming`
+
+Now tracked for the first time.
+
+---
+
 ## 2026-11-09
 
 ### 10:47 UTC — 21 pages, highest severity high
@@ -318,6 +449,8 @@ Content changed.
 
 ---
 
+---
+
 ## 2026-10-07
 
 ### 14:21 UTC — 8 pages, highest severity none
@@ -587,34 +720,6 @@ Now tracked for the first time.
 + [scope AG-UI Streams to the signed-in user](/agno/threads-lifecycle#scope-rich-threads-to-the-signed-in-user).
 - - [Rich Threads overview](/agno/threads): compare thread UI and deployment paths
 + - [AG-UI Streams overview](/agno/threads): compare thread UI and deployment paths
-````
-
----
-
----
-
----
-
-## 2026-09-25
-
-### 07:48 UTC — 1 page, highest severity high · _npm run drift:sync_
-
-**High — /agno/intelligence/learned-skills**
-
-`/agno/intelligence/learned-skills` · route `/intelligence/learned-skills` · `agno__intelligence__learned-skills.md`
-
-Code fence count changed. Hash e459e3d5 ➔ 98291e25.
-
-````diff
-- Skill delivery makes one Learning container's published skills available to an agent without another CLI download or process restart. A framework adapter adds an alphabetical catalog and two tools.
-- <Image
-- src="/images/cloud-hosted/cloud-hosted-skill-delivery.png"
-- alt="The Skills tab of a Learning container in cloud-hosted Intelligence. The Skill delivery toggle is on, and skill candidates wait for review."
-+ Skill delivery makes published skills from one or more Learning containers available to an agent without another CLI download or process restart. A framework adapter adds an alphabetical catalog and two tools.
-+ <Image
-+ src="/images/cloud-hosted/cloud-hosted-skill-delivery.png"
-+ alt="The Skills tab of a Learning container in cloud-hosted Intelligence. The Skill delivery toggle is on, and skill candidates wait for review."
-  … region truncated
 ````
 
 ---
